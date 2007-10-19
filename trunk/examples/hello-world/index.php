@@ -22,6 +22,16 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
                  
 Zend_Loader::registerAutoload();
 
+
+/* =======================================================================
+ * Enable Error Handling
+ * ======================================================================= */
+
+error_reporting(E_ALL | E_STRICT);
+
+set_error_handler(array('Error', 'handleError'));
+set_exception_handler(array('Error', 'handleException'));
+
 /* =======================================================================
  * Dispatch Request
  * ======================================================================= */
@@ -33,7 +43,7 @@ try {
 } catch (Exception $e) {
 
     if ($e->getCode() == 404) {
-        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+        header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
         View::render('views/404.php');
     } else {
         throw $e;
