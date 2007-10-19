@@ -231,8 +231,6 @@ class Error {
 
         View::render('views/error.php', $error);
 
-        @ob_end_flush();
-
         die;
     }
 }
