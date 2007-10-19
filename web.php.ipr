@@ -253,6 +253,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/web.php.iml" filepath="$PROJECT_DIR$/web.php.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web.php.iml" filepath="$PROJECT_DIR$/web.php.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="false" jdk-15="false">
