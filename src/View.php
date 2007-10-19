@@ -148,7 +148,7 @@ class View {
 
     public static function writeZone($zone) {
 
-        if (self::$layout) {
+        if (self::$layout != self::NO_LAYOUT) {
 
             self::$zones_current = $zone;
 
@@ -186,6 +186,14 @@ class View {
         } else {
             return false;
         }
+    }
+
+    /* =======================================================================
+     * Include Resource Method
+     * ======================================================================= */
+
+    public static function includeResource($resource) {
+        // Todo: implement this
     }
 }
 
