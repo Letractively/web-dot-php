@@ -1,4 +1,4 @@
-#summary web.php Frequently Asked Questions
+#summary web.php frequently asked questions
 #labels Featured
 
 = Frequently Asked Questions =
