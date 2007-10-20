@@ -8,7 +8,7 @@
   * [Download Downloading web.php]
   * [Introduction Introduction to web.php]
 
-== web.php API Reference ==
+== API Reference ==
 
   * [WebAPI Web.php API Reference]
   * [ViewAPI View.php API Reference]
