@@ -12,4 +12,6 @@ Well, it's more than clear, that web.php project has named after this Python pro
 
 == CakePHP ==
 
-  Cake is a rapid development framework for PHP which uses commonly known design patterns like ActiveRecord, Association Data Mapping, Front Controller and MVC.
+  [http://www.cakephp.org/ Cake] is a rapid development framework for PHP which uses commonly known design patterns like ActiveRecord, Association Data Mapping, Front Controller and MVC.
+
+CakePHP is a reference in PHP web frameworks. It's big, complete and very active. It can be described as a full stack framework and it has support for all the parts in a mvc framework. If you like to get things done fast and are not interested in building your own framework using web.php, we recommend you to take a look at CakePHP.
