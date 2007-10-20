@@ -1,10 +1,12 @@
 #summary web.php's documentation.
 #labels Featured
 
-= Getting Started =
+= web.php's documentation =
 
-= web.php's API Reference =
+== Getting Started ==
 
-= Support =
+== web.php's API Reference ==
 
-= About web.php =
+== Support ==
+
+== About web.php ==
