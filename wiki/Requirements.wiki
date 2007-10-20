@@ -8,10 +8,10 @@ Add your content here.
 
 == Web Class (Web.php) Dependencies ==
 
-=== run-method dependencies ===
+=== Web::run-method dependencies ===
 
-Web::run-method depends on Zend_Session class.
+  * Zend_Session class
 
-=== redirect-method dependencies ===
+=== Web::redirect-method dependencies ===
 
-Web::redirect-method depends on Zend_Session class.
+  * Zend_Session class
