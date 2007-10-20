@@ -20,4 +20,4 @@ Cake is a reference in PHP web frameworks. It's big, complete and very active. I
 
   Based on the best practices of web development, thoroughly tried on several active websites, [http://www.symfony-project.com/ symfony] aims to speed up the creation and maintenance of web applications, and to replace the repetitive coding tasks by power, control and pleasure.
 
-It's not fair to include Cake in this list if you don't also include Symfony. Symfony is very active project, and it's really well documented. web.php's view and layout system is hugely inspired from Symfony's view and layout system. Symfony is a safe choice, and you won't be disappointed in it.
+It's not fair to include Cake in this list if you don't also include Symfony. Symfony is a very active project, and it's really well documented. web.php's view and layout system is hugely inspired from Symfony's view and layout system. Symfony is a safe choice, and you won't be disappointed in it.
