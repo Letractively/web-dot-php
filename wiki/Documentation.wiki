@@ -22,7 +22,7 @@
 
 == See Also ==
 
-  * [Alternative Frameworks]
+  * [Alternatives Alternative Frameworks]
 
 == About web.php ==
 
