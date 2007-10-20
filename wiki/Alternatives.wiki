@@ -10,12 +10,14 @@ You looked at web.php and didn't like what you saw. Or maybe you liked it, but t
 
 Well, it's more than clear, that web.php project has named after this Python project. web.php's design also resembles web.py in certain places. So, if you are a Python programmer and are looking for something similar to web.php, web.py might be the way to go.
 
-== CakePHP ==
+== Cake ==
 
   [http://www.cakephp.org/ Cake] is a rapid development framework for PHP which uses commonly known design patterns like ActiveRecord, Association Data Mapping, Front Controller and MVC.
 
-CakePHP is a reference in PHP web frameworks. It's big, complete and very active. It can be described as a full stack framework and it has support for all the parts in a mvc framework. If you like to get things done fast and are not interested in building your own framework using web.php, we recommend you to take a look at CakePHP.
+Cake is a reference in PHP web frameworks. It's big, complete and very active. It can be described as a full stack framework and it has support for all the parts in a mvc framework. If you like to get things done fast and are not interested in building your own framework using web.php, we recommend you to take a look at Cake.
 
 == Symfony ==
 
   Based on the best practices of web development, thoroughly tried on several active websites, [http://www.symfony-project.com/ symfony] aims to speed up the creation and maintenance of web applications, and to replace the repetitive coding tasks by power, control and pleasure.
+
+It's not fair to include Cake in this list if you don't also include Symfony. Symfony is very active project, and it's really well documented. web.php's view and layout system is hugely inspired from Symfony's view and layout system. Symfony is a safe choice, and you won't be disappointed in it.
