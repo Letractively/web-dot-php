@@ -7,8 +7,17 @@
 
 == web.php's API Reference ==
 
+  * [Web.php]
+  * [View.php]
+  * [Error.php]
+
 == Support ==
+
+  * [FAQ Frequently Asked Questions]
+  * [http://groups.google.com/group/web-dot-php Discussion Group]
+  * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or Feature Request]
 
 == About web.php ==
 
   * [Contributors]
+  * [http://www.opensource.org/licenses/mit-license.php License]
