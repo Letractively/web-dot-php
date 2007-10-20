@@ -4,8 +4,8 @@
 
 You looked at web.php and didn't like what you saw. Or maybe you liked it, but the feature set didn't match your needs this time. That's alright and fine to us, and we do even like to tell you about the alternatives. We also feel that we should give credit to these alternatives as they have made our life a lot easier. We admit that we have taken the ideas from the other frameworks and built web.php on that. There isn't many original ideas in web.php - it's rather a collection of ideas taken from other projects that we liked.
 
-== [http://webpy.org/ web.py] ==
+== web.py ==
 
-  web.py is a web framework for python that is as simple as it is powerful.
+  [http://webpy.org/ web.py] is a web framework for python that is as simple as it is powerful.
 
-Well, it's more than clear, that web.php project has named after this Python project. web.php's design also resembles web.py in certain places. So, if you are a Python programmer and are looking for something similar to web.php, web.py is the way to go.
+Well, it's more than clear, that web.php project has named after this Python project. web.php's design also resembles web.py in certain places. So, if you are a Python programmer and are looking for something similar to web.php, web.py might be the way to go.
