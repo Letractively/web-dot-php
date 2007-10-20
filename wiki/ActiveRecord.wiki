@@ -1,4 +1,4 @@
-#summary web.php statement on active record
+#summary web.php statement on active record.
 
 = Active Record =
 
