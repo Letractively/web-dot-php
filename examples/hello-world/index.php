@@ -22,7 +22,6 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
                  
 Zend_Loader::registerAutoload();
 
-
 /* =======================================================================
  * Enable Error Handling
  * ======================================================================= */
@@ -38,7 +37,7 @@ set_exception_handler(array('Error', 'handleException'));
 
 try {
 
-    Web::run(array('/' => 'IndexController'));
+    Web::run(array('/' => 'IndexController->GET'));
 
 } catch (Exception $e) {
 

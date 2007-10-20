@@ -9,6 +9,7 @@ class Web {
     public static function run($urls) {
 
         $matches = array();
+        $static = false;
         $matchfound = false;
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -16,20 +17,21 @@ class Web {
 
             $route = (isset($_GET['__route__'])) ? '/'. $_GET['__route__'] : '/';
 
-            $regex = '/^' . str_replace('/', '\/', $pattern) . '$/';
+            $regex = '/^' . str_replace('/', '\/', $pattern) . '$/i';
 
             if (preg_match($regex, $route, $matches) > 0) {
 
                 $matchfound = true;
 
-                if (is_array($controller)) {
-                    switch (count($controller)) {
-                        case 2:
-                            $method = $controller[1];
-                        case 1:
-                            $controller = $controller[0];
-                            break;
-                    }
+                if (strpos($controller, '::') !== false) {
+                    $static = true;
+                    $controller = explode('::', $controller, 2);
+                    $method = $controller[1];
+                    $controller = $controller[0];
+                } else if (strpos($controller, '->') !== false) {
+                    $controller = explode('->', $controller, 2);
+                    $method = $controller[1];
+                    $controller = $controller[0];
                 }
 
                 break;
@@ -38,8 +40,11 @@ class Web {
 
         if ($matchfound) {
 
-            $controller = new ReflectionClass($controller);
-            $controller = $controller->newInstance();
+            if (!$static) {
+                $controller = new ReflectionClass($controller);
+                $controller = $controller->newInstance();
+            }
+            
             $method = new ReflectionMethod($controller, $method);
 
             if (count($matches) > 1) {
