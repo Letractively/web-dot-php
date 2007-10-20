@@ -1,14 +1,10 @@
 #summary web.php's documentation.
 #labels Featured
 
-= Introduction =
+= Getting Started =
 
-Add your content here.
+= web.php's API Reference =
 
+= Support =
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= About web.php =
