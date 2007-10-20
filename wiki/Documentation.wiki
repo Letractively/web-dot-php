@@ -5,6 +5,7 @@
 
 == Getting Started ==
 
+  * [Requirements Requirements]
   * [Download Downloading web.php]
   * [Introduction Introduction to web.php]
 
