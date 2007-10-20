@@ -2,3 +2,5 @@
 #labels Featured
 
 = Contributors =
+
+== Aapo Laakkonen aka bungle (Helsinki, Finland) ==
