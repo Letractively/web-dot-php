@@ -1,15 +1,15 @@
-#summary web.php's documentation.
+#summary web.php documentation.
 #labels Featured
 
-= web.php's documentation =
+= web.php documentation =
 
 == Getting Started ==
 
-== web.php's API Reference ==
+== web.php API Reference ==
 
-  * [WebAPI Web.php's API Reference]
-  * [ViewAPI View.php's API Reference]
-  * [ErrorAPI Error.php's API Reference]
+  * [WebAPI Web.php API Reference]
+  * [ViewAPI View.php API Reference]
+  * [ErrorAPI Error.php API Reference]
 
 == Support ==
 
