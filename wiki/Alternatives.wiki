@@ -21,3 +21,9 @@ Cake is a reference in PHP web frameworks. It's big, complete and very active. I
   Based on the best practices of web development, thoroughly tried on several active websites, [http://www.symfony-project.com/ symfony] aims to speed up the creation and maintenance of web applications, and to replace the repetitive coding tasks by power, control and pleasure.
 
 It's not fair to include Cake in this list if you don't also include Symfony. Symfony is a very active project, and it's really well documented. web.php's view and layout system is hugely inspired from Symfony's view and layout system. Symfony is a safe choice, and you won't be disappointed in it.
+
+== Zend Framework (http://framework.zend.com/) ==
+
+  The leading open-source PHP framework has a flexible architecture that lets you easily build modern web applications and web services.
+
+We might not have developed web.php in a first place, if we did like Zend Framework's front controller implementation. Unfortunately we didn't, but it definitely doesn't mean that you shouldn't check it out. It might be just what you are looking for. We are huge fans of Zend Framework and we think that Zend Framework has really raised a bar in reusable PHP class design. Zend Framework is also very loosely coupled and you can easily use the components in Zend Framework together with web.php. In fact we refuse to implement anything that has, in our opinion, a good implementation within Zend Framework.
