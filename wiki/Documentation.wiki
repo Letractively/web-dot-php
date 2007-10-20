@@ -1,7 +1,7 @@
 #summary web.php documentation.
 #labels Featured
 
-= web.php documentation =
+= web.php Documentation =
 
 == Getting Started ==
 
