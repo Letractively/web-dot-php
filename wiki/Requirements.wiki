@@ -5,3 +5,13 @@
 Add your content here.
 
 = Dependencies =
+
+== Web Class (Web.php) Dependencies ==
+
+=== run-method dependencies ===
+
+Web::run-method depends on Zend_Session class.
+
+=== redirect-method dependencies ===
+
+Web::redirect-method depends on Zend_Session class.
