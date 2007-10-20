@@ -7,9 +7,9 @@
 
 == web.php's API Reference ==
 
-  * [Web.php]
-  * [View.php]
-  * [Error.php]
+  * [Web Web.php's API Reference]
+  * [View View.php's API Reference]
+  * [Error.php Error.php's API Reference]
 
 == Support ==
 
