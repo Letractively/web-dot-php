@@ -10,8 +10,8 @@ Add your content here.
 
 === Web::run-method dependencies ===
 
-  * Zend_Session class
+  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session]
 
 === Web::redirect-method dependencies ===
 
-  * Zend_Session class
+  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session]
