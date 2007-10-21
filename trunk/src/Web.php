@@ -111,6 +111,8 @@ class Web {
 
     public static function redirect($url, $controller = false, $data = false) {
 
+        while (ob_get_level()) @ob_end_clean();
+
         $location = $url; 
 
         if (strrpos($url, '/') === 0) {
