@@ -12,4 +12,4 @@
 
 ==== Web::run(Array $urls) ====
 
-==== Web::redirect(string $url, string $controller [= false], mixed $data [= false]) ====
+==== `Web::redirect(string $url, string $controller [= false], mixed $data [= false])` ====
