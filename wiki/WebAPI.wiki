@@ -22,12 +22,17 @@
 
   `Web::run` method contains web.php's front controller logic.
 
-  *Parameters*
+*Parameters*
 
-  `$urls`
+`$urls`
 
-    `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an key to value Array.
+  `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an Array with a key and value pair entries.
 
-  *Examples*
+*Examples*
+
+  {{{
+  // Creates IndexController class and calls it's `GET()` or `POST()` method
+  Web::run(array('/' => 'IndexController'));
+  }}}
 
 ==== Web::redirect(string $url, string $controller = false, mixed $data = false) ====
