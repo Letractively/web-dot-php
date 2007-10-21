@@ -31,7 +31,8 @@
 *Examples*
 
   {{{
-  // Creates IndexController class and calls it's `GET()` or `POST()` method
+  // Creates IndexController class and calls it's `$_SERVER['REQUEST_METHOD']` method.
+  // That is in most cases a GET() or a POST() method.
   Web::run(array('/' => 'IndexController'));
   }}}
 
