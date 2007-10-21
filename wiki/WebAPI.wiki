@@ -39,7 +39,7 @@
   Web::run(array('/' => 'IndexController'));
   }}}
 
-  *`IndexController:`*
+  `*IndexController:*`
 
   {{{
   class IndexController {
