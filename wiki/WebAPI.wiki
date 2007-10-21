@@ -2,35 +2,33 @@
 
 = Web Class =
 
-== Web Members ==
+== Properties ==
 
-=== Properties ===
+=== Web::$base_url ===
 
-==== Web::$base_url ====
+=== Web::$base_path ===
 
-==== Web::$base_path ====
+=== Web::$base_root ===
 
-==== Web::$base_root ====
+== Methods ==
 
-=== Methods ===
-
-==== Web::initialize() ====
+=== Web::initialize() ===
 
   `Web::initialize` method is called automatically when you include Web.php or call it's methods or properties (using `autoload`). `Web::initialize` is responsible of initializing static properties of `Web.php` class (PHP doesn't have a support for static contructors). As a developer, you should never need to this method directly.
 
-==== Web::run(Array $urls) ====
+=== Web::run(Array $urls) ===
 
   `Web::run` method contains web.php's front controller logic.
 
-*Parameters*
+==== Parameters ====
 
 `$urls`
 
   `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an Array with a key and value pair entries.
 
-*Examples*
+==== Examples ====
 
-  *Example 1.*
+===== Example 1. =====
 
   {{{
   // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
