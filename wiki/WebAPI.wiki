@@ -33,18 +33,30 @@
   _Execute `IndexController`, if application root is the requested url:_
 
   {{{
-  // Creates IndexController class and calls it's `$_SERVER['REQUEST_METHOD']` method.
-  // That is in most cases a GET() or a POST() method.
+  // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
+  // That is in the most cases a GET() or a POST() method.
   //
   // `'/'` as a `key` means that this URL should execute a controller specified as a `value`.
 
   Web::run(array('/' => 'IndexController'));
   }}}
 
-
+  _IndexController:_
 
   {{{
+  class IndexController {
 
+    public GET() {
+      // TODO: Implement this method.
+    }    
+
+  }
+  }}}
+
+  _Execute_
+
+  {{{
+  sadasd
   }}}
 
 ==== Web::redirect(string $url, string $controller = false, mixed $data = false) ====
