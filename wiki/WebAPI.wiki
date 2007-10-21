@@ -41,7 +41,7 @@
       // HelloController->hello()
       '/hello-world' => 'HelloController->hello',
       // HelloController::hello()
-      '/hello-static-world' => 'HelloController::hello',
+      '/hello-static-world' => 'HelloController::helloStatic',
       // CalculatorController::sum($x, $y)
       // Example Url: /calculator/sum/5/2
       '/calculator/sum/(\d+)/(\d+)' => 'CalculatorController::sum',
@@ -119,4 +119,6 @@
   }}}
 
 
-=== Web::redirect(string $url, string $controller \= false, mixed $data \= false) ===
+=== Web::redirect(string $url, string $controller = false, mixed $data = false) ===
+
+  Used to redirect the browser.
