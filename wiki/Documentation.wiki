@@ -23,8 +23,8 @@
 
 == See Also ==
 
-  * [ActiveRecord Active Record Implementations]
   * [Alternatives Alternative Web Frameworks]
+  * [ActiveRecord Active Record Implementations]
 
 == About web.php ==
 
