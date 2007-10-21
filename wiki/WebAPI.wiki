@@ -30,7 +30,7 @@
 
 *Examples*
 
-  Example 1.
+  *Example 1.*
 
   {{{
   // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
@@ -41,22 +41,14 @@
   Web::run(array('/' => 'IndexController'));
   }}}
 
-  `IndexController`:
+  *`IndexController:`*
 
   {{{
   class IndexController {
-
-    public GET() {
+    function GET() {
       // TODO: Implement this method.
     }    
-
   }
-  }}}
-
-  _Execute_
-
-  {{{
-  sadasd
   }}}
 
 ==== Web::redirect(string $url, string $controller = false, mixed $data = false) ====
