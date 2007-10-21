@@ -24,9 +24,9 @@
 
 *Parameters*
 
-`_$urls_`
+_`$urls`_
 
-  Lorem...
+  `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an key to value Array.
 
 *Examples*
 
