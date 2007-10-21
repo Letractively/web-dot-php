@@ -1,0 +1,3 @@
+#summary web.php irc channel.
+
+= IRC Channel on freenode network =
