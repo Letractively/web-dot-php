@@ -119,6 +119,6 @@
   }}}
 
 
-=== Web::redirect(string $url, string $controller = false, mixed $data = false) ===
+=== Web::redirect(string $url [, string $controller  [, mixed $data]]) ===
 
   Used to redirect the browser.
