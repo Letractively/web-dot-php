@@ -7,3 +7,17 @@
 === Public Fields ===
 
 === Public Methods ===
+
+{{{
+initialize()
+}}}
+
+
+{{{
+run(Array $urls)
+}}}
+
+
+{{{
+redirect(string $url, string $controller [= false], mixed $data [= false])
+}}}
