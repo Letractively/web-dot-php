@@ -14,8 +14,8 @@ Our ultimate goal is to keep external dependencies at absolute minimum, but we h
 
 ==== Web::run-method dependencies ====
 
-  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session]
+  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
 
 ==== Web::redirect-method dependencies ====
 
-  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session]
+  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
