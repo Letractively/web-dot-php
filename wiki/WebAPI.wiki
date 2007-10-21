@@ -8,16 +8,8 @@
 
 === Public Methods ===
 
-{{{
-initialize()
-}}}
+==== Web::initialize() ====
 
+==== Web::run(Array $urls) ====
 
-{{{
-run(Array $urls)
-}}}
-
-
-{{{
-redirect(string $url, string $controller [= false], mixed $data [= false])
-}}}
+==== Web::redirect(string $url, string $controller [= false], mixed $data [= false]) ====
