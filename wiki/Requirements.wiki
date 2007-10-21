@@ -12,10 +12,10 @@ Our ultimate goal is to keep external dependencies at absolute minimum, but we h
 
 === Web Class (Web.php) Dependencies ===
 
-==== Web::run-method dependencies ====
+==== Web::run method dependencies ====
 
   * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
 
-==== Web::redirect-method dependencies ====
+==== Web::redirect method dependencies ====
 
   * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
