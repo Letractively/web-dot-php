@@ -3,7 +3,7 @@
 
 = Requirements =
 
-web.php depends on some classes found in the Zend Framework, and that's why it has the same requirements. The Zend Framework requirements can be found from [http://framework.zend.com/manual/en/requirements.html here].
+web.php depends on some classes found in the Zend Framework, and that's why it has the same requirements as the Zend Framework. The Zend Framework requirements can be found from [http://framework.zend.com/manual/en/requirements.html here].
 
 = Dependencies =
 
