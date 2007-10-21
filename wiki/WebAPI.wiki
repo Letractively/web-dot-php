@@ -30,6 +30,8 @@
 
 ===== Example 1. =====
 
+  `index.php:`
+
   {{{
   // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
   // That is in the most cases a GET() or a POST() method.
@@ -39,7 +41,7 @@
   Web::run(array('/' => 'IndexController'));
   }}}
 
-  `*IndexController:*`
+  `IndexController.php:`
 
   {{{
   class IndexController {
