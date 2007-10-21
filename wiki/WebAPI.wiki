@@ -26,10 +26,11 @@
 
   `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an Array with a key and value pair entries. Key is a [http://en.wikipedia.org/wiki/Regular_expression regular expression].
 
-  `$urls` format:
+  Here are some examples of valid urls:
 
   {{{
     array(
+      // regex-pattern => string
       'key' => 'value',
       ...
     )
@@ -40,20 +41,17 @@
       '/', 'IndexController',
       // HelloController->hello()
       '/hello-world' => 'HelloController->hello',
-      // HelloController::hello()
+      // HelloController::helloStatic()
       '/hello-static-world' => 'HelloController::helloStatic',
-      // CalculatorController::sum($x, $y)
-      // Example Url: /calculator/sum/5/2
-      '/calculator/sum/(\d+)/(\d+)' => 'CalculatorController::sum',
+      // CalculatorController::sum($x, $y), example url: /calculator/sum/5/2
+      '/calculator/sum/(\d+)/(\d+)' => 'CalculatorController::sum'
     )
   }}}
 
   `key` is matched using this code:
 
   {{{
-  // Actual Url of the Request
   $route = (isset($_GET['__route__'])) ? '/'. $_GET['__route__'] : '/';
-  // $pattern is same as the key in $urls array
   $regex = '/^' . str_replace('/', '\/', $pattern) . '$/i';
   if (preg_match($regex, $route, $matches) > 0) {
     ...
