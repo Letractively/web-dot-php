@@ -19,7 +19,7 @@
 
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
-  * [irc://irc.freenode.net/web-dot-php IRC Channel on freenode]
+  * [IRC IRC Channel on freenode]
   * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or a Feature Request]
 
 == See Also ==
