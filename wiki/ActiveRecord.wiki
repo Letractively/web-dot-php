@@ -16,4 +16,4 @@ We think that Doctrine is the perfect solution for PHP developer's active record
 
   [http://propel.phpdb.org/ Propel] is an Object-Relational Mapping (ORM) framework for PHP5. It allows you to access your database using a set of objects, providing a simple API for storing and retrieving data.
 
-Propel is not actually an implementation of active record pattern, but it's a rather good object relation mapping framework that is driven with simple XML configuration. Propel is also one of the first open source orm frameworks for PHP, and it has been in development for many years. That's what makes it very stable and mature.
+Propel is not actually an implementation of active record pattern, but it's a rather good object relation mapping framework that is driven with simple XML configuration. Propel is also one of the first open source ORM frameworks for PHP, and it has been in development for many years. That's what makes it very stable and mature.
