@@ -2,7 +2,7 @@
 
 = Alternative Frameworks =
 
-You looked at web.php and didn't like what you saw. Or maybe you liked it, but the feature set didn't match your needs this time. That's alright and fine to us, and we do even like to tell you about the alternatives. We also feel that we should give credit to these alternatives as they have made our life a lot easier. We admit that we have taken the ideas from the other frameworks and built web.php on that. There isn't many original ideas in web.php - it's rather a collection of ideas taken from other projects that we liked.
+You looked at web.php and didn't like what you saw. Or maybe you liked it, but the feature set didn't match your needs this time. That's alright and fine to us, and we do even like to tell you about the alternatives. We also feel that we should give credit to these alternative frameworks as they have made our life a lot easier. We admit that we have taken the ideas from the other frameworks and built web.php on that. There isn't many original ideas in web.php - it's rather a collection of ideas taken from other projects that we liked.
 
 == Zend Framework (http://framework.zend.com/) ==
 
