@@ -45,10 +45,44 @@
 
   {{{
   class IndexController {
-    function GET() {
+    public function GET() {
       // TODO: Implement this method.
     }    
   }
   }}}
 
-==== Web::redirect(string $url, string $controller = false, mixed $data = false) ====
+===== Example 2. =====
+
+  `index.php:`
+
+  {{{
+  // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
+  // That is in the most cases a GET() or a POST() method.
+  //
+  // `'/'` as a `key` means that this URL should execute a controller specified as a `value`.
+
+  Web::run(array(
+    '/' => 'IndexController',
+    '/hello-world' => 'IndexController->helloWorld',
+    '/hello-static-world' => 'IndexController::helloStaticWorld'
+  ));
+  }}}
+
+  `IndexController.php:`
+
+  {{{
+  class IndexController {
+    function GET() {
+      // TODO: Implement this method.
+    }    
+    public function helloWorld() {
+      // TODO: Implement this method.
+    }    
+    public static function helloStaticWorld() {
+      // TODO: Implement this method.
+    }    
+  }
+  }}}
+
+
+=== Web::redirect(string $url, string $controller = false, mixed $data = false) ===
