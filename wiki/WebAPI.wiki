@@ -14,7 +14,7 @@
 
 === Web::initialize() ===
 
-  `Web::initialize` method is called automatically when you include Web.php or call it's methods or properties (using `autoload`). `Web::initialize` is responsible of initializing static properties of `Web.php` class (PHP doesn't have a support for static contructors). As a developer, you should never need to this method directly.
+  `Web::initialize` method is called automatically when you include Web.php or call it's methods or properties (using `autoload`). `Web::initialize` is responsible of initializing static properties of `Web.php` class (PHP doesn't have a support for static contructors). As a developer, you should never need to call this method directly.
 
 === Web::run(array $urls) ===
 
@@ -121,7 +121,7 @@
 
 `$controller`
 
-  This is optional parameter that defines what controller is executed after redirect. Default value of this parameter is false. This creates temporary url for your web application that gets merged to Web::run method's `$urls` parameter. This works on if you use application relative urls (e.g. 'hello-world' or 'calculator/sum/5/2').
+  This is optional parameter that defines what controller is executed after redirect. Default value of this parameter is false. This creates temporary url for your web application that gets merged to Web::run method's `$urls` parameter. This works only if you use application relative urls (e.g. 'hello-world' or 'calculator/sum/5/2').
 
 `data`
 
