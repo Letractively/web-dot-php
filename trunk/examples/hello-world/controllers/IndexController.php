@@ -6,7 +6,6 @@ class IndexController {
      }
 
      function redirect() {
-        //Web::redirect('http://www.fchaps.com/', 'IndexController->redirected');
         Web::redirect('redirected', 'IndexController->redirected');
      }
 
