@@ -30,7 +30,7 @@
 
 *Examples*
 
-  _Execute `IndexController`, if application root is the requested url:_
+  Example 1.
 
   {{{
   // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
@@ -41,7 +41,7 @@
   Web::run(array('/' => 'IndexController'));
   }}}
 
-  _IndexController:_
+  `IndexController`:
 
   {{{
   class IndexController {
