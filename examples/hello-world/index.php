@@ -37,7 +37,12 @@ set_exception_handler(array('Error', 'handleException'));
 
 try {
 
-    Web::run(array('/' => 'IndexController->GET'));
+    Web::run(array(
+        '/' => 'IndexController->GET',
+        '/redirect' => 'IndexController->redirect',
+        '/redirect-with-data' => 'IndexController->redirectWithData'
+    ));
+
 
 } catch (Exception $e) {
 
