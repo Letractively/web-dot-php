@@ -24,7 +24,41 @@
 
 `$urls`
 
-  `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an Array with a key and value pair entries.
+  `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an Array with a key and value pair entries. Key is a [http://en.wikipedia.org/wiki/Regular_expression regular expression].
+
+  `$urls` format:
+
+  {{{
+    array(
+      'key' => 'value',
+      ...
+    )
+
+    // For example:
+    $urls = array(
+      // IndexController->GET() or IndexController->POST()
+      '/', 'IndexController',
+      // HelloController->hello()
+      '/hello-world' => 'HelloController->hello',
+      // HelloController::hello()
+      '/hello-static-world' => 'HelloController::hello',
+      // CalculatorController::sum($x, $y)
+      // Example Url: /calculator/sum/5/2
+      '/calculator/sum/(\d+)/(\d+)' => 'CalculatorController::sum',
+    )
+  }}}
+
+  `key` is matched using this code:
+
+  {{{
+  // Actual Url of the Request
+  $route = (isset($_GET['__route__'])) ? '/'. $_GET['__route__'] : '/';
+  // $pattern is same as the key in $urls array
+  $regex = '/^' . str_replace('/', '\/', $pattern) . '$/i';
+  if (preg_match($regex, $route, $matches) > 0) {
+    ...
+  }
+  }}}
 
 ==== Examples ====
 
@@ -33,7 +67,7 @@
   `index.php:`
 
   {{{
-  // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
+  // Instantiates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
   // That is in the most cases a GET() or a POST() method.
   //
   // `'/'` as a `key` means that this URL should execute a controller specified as a `value`.
@@ -85,4 +119,4 @@
   }}}
 
 
-=== Web::redirect(string $url, string $controller = false, mixed $data = false) ===
+=== Web::redirect(string $url, string $controller \= false, mixed $data \= false) ===
