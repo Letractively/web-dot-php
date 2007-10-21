@@ -50,13 +50,14 @@ class View {
 
     public static function initialize() {
 
+        $scheme = 'http://';
+
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-            self::$base_root = 'https://' .
-                preg_replace('/[^a-z0-9-:._]/i', '', $_SERVER['HTTP_HOST']);
-        } else {
-            self::$base_root = 'http://' .
-                preg_replace('/[^a-z0-9-:._]/i', '', $_SERVER['HTTP_HOST']);
+            $scheme = 'https://';
         }
+
+        self::$base_root = $scheme .
+            preg_replace('/[^a-z0-9-:._]/i', '', $_SERVER['HTTP_HOST']);
 
         if ($path = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/')) {
             self::$base_url = self::$base_root . '/' . $path;
@@ -90,7 +91,7 @@ class View {
             self::$layout = $layout;
         }
 
-        if (!self::$view_data) {
+        if (self::$view_data === false) {
             extract(self::$data_view);
         }
 
