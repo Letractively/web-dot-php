@@ -22,12 +22,12 @@
 
   `Web::run` method contains web.php's front controller logic.
 
-*Parameters*
+  *Parameters*
 
-_`$urls`_
+  `$urls`
 
-  `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an key to value Array.
+    `$urls` parameter defines permanent urls used in web.php based application. `$urls` parameter is an key to value Array.
 
-*Examples*
+  *Examples*
 
 ==== Web::redirect(string $url, string $controller = false, mixed $data = false) ====
