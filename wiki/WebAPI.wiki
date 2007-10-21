@@ -4,11 +4,17 @@
 
 == Web Members ==
 
-=== Public Fields ===
+=== Properties ===
 
-=== Public Methods ===
+==== Web::$base_url ====
 
-`==== Web::initialize() ====`
+==== Web::$base_path ====
+
+==== Web::$base_root ====
+
+=== Methods ===
+
+==== Web::initialize() ====
 
 ==== Web::run(Array $urls) ====
 
