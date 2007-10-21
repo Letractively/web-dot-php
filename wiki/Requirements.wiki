@@ -1,4 +1,5 @@
 #summary web.php requirements and dependencies.
+#labels Featured
 
 = Requirements =
 
