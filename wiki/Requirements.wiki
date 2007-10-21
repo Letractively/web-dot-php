@@ -20,3 +20,7 @@ Our ultimate goal is to keep external dependencies at absolute minimum, but we h
 ==== Web::redirect method dependencies ====
 
   * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
+
+=== View Class (Web.php) Dependencies ===
+
+Currently none.
