@@ -65,10 +65,7 @@
   `index.php:`
 
   {{{
-  // Instantiates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
-  // That is in the most cases a GET() or a POST() method.
-  //
-  // `'/'` as a `key` means that this URL should execute a controller specified as a `value`.
+  // Instantiates IndexController object and calls it's $_SERVER['REQUEST_METHOD'] method.
 
   Web::run(array('/' => 'IndexController'));
   }}}
@@ -88,11 +85,6 @@
   `index.php:`
 
   {{{
-  // Creates IndexController object and calls it's `$_SERVER['REQUEST_METHOD']` method.
-  // That is in the most cases a GET() or a POST() method.
-  //
-  // `'/'` as a `key` means that this URL should execute a controller specified as a `value`.
-
   Web::run(array(
     '/' => 'IndexController',
     '/hello-world' => 'IndexController->helloWorld',
@@ -120,3 +112,17 @@
 === Web::redirect(string $url [, string $controller  [, mixed $data]]) ===
 
   Used to redirect the browser.
+
+==== Parameters ====
+
+`$url`
+
+  This parameter defines the redirect location. You can use absolute url, server relative url and application relative urls.
+
+`$controller`
+
+  This is optional parameter that defines what controller is executed after redirect. Default value of this parameter is false. This creates temporary url for your web application that gets merged to Web::run method's `$urls` parameter. This works on if you use application relative urls (e.g. 'hello-world' or 'calculator/sum/5/2').
+
+`data`
+
+  This parameter is passed to a controller specified with `$controller` parameter.
