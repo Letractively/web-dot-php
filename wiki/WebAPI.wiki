@@ -139,7 +139,7 @@
 
 === Web::redirect(string $url [, string $controller  [, mixed $data]]) ===
 
-  Used to redirect the browser.
+  Used to redirect the browser. It's a little bit more sophisticated `header("Location: http://www.example.com/")`.
 
 ==== Parameters ====
 
