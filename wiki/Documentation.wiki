@@ -13,6 +13,7 @@
 
   * [WebAPI Web.php API Reference]
   * [ViewAPI View.php API Reference]
+  * [LayoutAPI Layout.php API Reference]
   * [ErrorAPI Error.php API Reference]
 
 == Support ==
