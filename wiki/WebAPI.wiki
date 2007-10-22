@@ -108,6 +108,34 @@
   }
   }}}
 
+===== Example 3. =====
+
+  `index.php`
+
+  {{{
+  try {
+    Web::run(array(
+      '/calculator/sum/(\d+)/(\d+)' => 'CalculatorController->sum',
+    ));
+  } catch (Exception $e) {
+    if ($e->getCode() == 404) {
+      header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+      View::render('views/404.php');
+    } else {
+      throw $e;
+    }
+  }
+  }}}
+
+  `CalculatorController.php:`
+
+  {{{
+  class IndexController {
+    function sum($x, $y) {
+      echo $x . ' + ' . $y . ' = ' . ($x + $y);
+    }    
+  }
+  }}}
 
 === Web::redirect(string $url [, string $controller  [, mixed $data]]) ===
 
