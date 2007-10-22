@@ -6,9 +6,15 @@
 
 === Web::$base_url ===
 
+  Base URL for web.php application.
+
 === Web::$base_path ===
 
+  Base path for web.php application.
+
 === Web::$base_root ===
+
+  Base root for a web server where the web.php is installed.
 
 == Methods ==
 
