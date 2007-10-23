@@ -2,11 +2,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title><?php View::writeZone('title'); echo $title; View::flushZone(); ?></title>
+    <title>Hello, World from a View!</title>
 </head>
-<body>
-    <?php View::writeZone(View::DATA); ?>
-        <h1><?php echo $message; ?></h1>
-    <?php View::flushZone(); ?>
+<body class="kala" title=s auto="koira" ilves='kissa'>
+    Hello, World!
 </body>
 </html>

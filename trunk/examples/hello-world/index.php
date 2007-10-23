@@ -28,8 +28,8 @@ Zend_Loader::registerAutoload();
 
 error_reporting(E_ALL | E_STRICT);
 
-set_error_handler(array('Error', 'handleError'));
-set_exception_handler(array('Error', 'handleException'));
+//set_error_handler(array('Error', 'handleError'));
+//set_exception_handler(array('Error', 'handleException'));
 
 /* =======================================================================
  * Dispatch Request

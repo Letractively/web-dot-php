@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title><?php if (!View::renderZone('title')): ?>Example - Default Title<?php endif; ?></title>
+    <title>Layout Title :: <?php echo $view->title ?></title>
 </head>
 <body>
-    <?php echo View::getData(); ?>
+    <?php echo $view->body; ?>
 </body>
 </html>
