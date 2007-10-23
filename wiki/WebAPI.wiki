@@ -2,20 +2,6 @@
 
 = Web Class =
 
-== Properties ==
-
-=== Web::$base_url ===
-
-  Base URL for web.php application.
-
-=== Web::$base_path ===
-
-  Base path for web.php application.
-
-=== Web::$base_root ===
-
-  Base root for a web server where the web.php is installed.
-
 == Methods ==
 
 === Web::initialize() ===
@@ -143,7 +129,7 @@
   }
   }}}
 
-=== Web::redirect(string $url [, string $controller  [, mixed $data]]) ===
+=== Web::redirect(string $url) ===
 
   Used to redirect a browser. It's a little bit more sophisticated `header("Location: http://www.example.com/")`.
 
@@ -151,12 +137,4 @@
 
 `$url`
 
-  This parameter defines the redirect location. You can use absolute url, server relative url and application relative urls.
-
-`$controller`
-
-  This is optional parameter that defines what controller is executed after redirect. Default value of this parameter is false. This creates temporary url for your web application that gets merged to Web::run method's `$urls` parameter. This works only if you use application relative urls (e.g. 'hello-world' or 'calculator/sum/5/2').
-
-`data`
-
-  This parameter is passed to a controller specified with `$controller` parameter.
+  This parameter defines the redirect location. You can use absolute url (urls starting with `http://` or `https://`), server relative url (urls starting with `/`) and application relative urls. When redirecting inside web.php application, use application relative urls e.g. `calculator/sum/5/2`.
