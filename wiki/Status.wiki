@@ -1,0 +1,10 @@
+#summary web.php development status.
+#labels Featured
+
+= Development Status =
+
+== October 24th, 2007 ==
+
+We started developing web.php about a week ago. It's progressing very well. We have already implemented front controller logic, redirection logic, view and layout system and view zones feature. Features have been coming in, but more importantly we have frequently thrown away useless, complex and weird stuff.
+
+It will take some time until web.php matures enough to gain a stable status. And when this time comes in, we certainly need to have unit tests.
