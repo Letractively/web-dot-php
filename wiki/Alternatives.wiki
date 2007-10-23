@@ -8,7 +8,7 @@ You looked at web.php and didn't like what you saw. Or maybe you liked it, but t
 
   The leading open-source PHP framework has a flexible architecture that lets you easily build modern web applications and web services.
 
-We might not have developed web.php in a first place, if we did like Zend Framework's front controller and view implementation. Unfortunately we didn't, but it definitely doesn't mean that you shouldn't check it out. It might be just what you are looking for. We are huge fans of Zend Framework and we think that Zend Framework has really raised a bar in reusable PHP class design. Zend Framework is also very loosely coupled and you can easily use the components found in Zend Framework in a web.php based project. In fact we refuse to implement anything that has, in our opinion, a good implementation within Zend Framework. Zend Framework is currently the only library on which web.php has [Requirements dependencies].
+We might not have developed web.php in a first place, if we did like Zend Framework's front controller and view implementation. Unfortunately we didn't, but it definitely doesn't mean that you shouldn't check it out. It might be just what you are looking for. We are huge fans of Zend Framework and we think that Zend Framework has really raised a bar in reusable PHP class design. Zend Framework is also very loosely coupled and you can easily use the components found in Zend Framework in a web.php based project. In fact we refuse to implement anything that has, in our opinion, a good implementation within Zend Framework.
 
 == web.py (http://webpy.org/) ==
 
