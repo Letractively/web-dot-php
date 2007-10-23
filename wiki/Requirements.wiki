@@ -15,11 +15,11 @@ Our ultimate goal is to keep external dependencies at absolute minimum, but we h
 
 ==== Web::run method dependencies ====
 
-  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
+Currently none.
 
 ==== Web::redirect method dependencies ====
 
-  * [http://framework.zend.com/manual/en/zend.session.html Zend_Session_Namespace]
+Currently none.
 
 === View Class (Web.php) Dependencies ===
 
