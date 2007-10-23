@@ -136,7 +136,7 @@
   `CalculatorController.php:`
 
   {{{
-  class IndexController {
+  class CalculatorController {
     function sum($x, $y) {
       echo $x . ' + ' . $y . ' = ' . ($x + $y);
     }    
