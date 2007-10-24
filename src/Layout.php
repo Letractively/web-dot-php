@@ -40,16 +40,18 @@ class Layout {
         if ($layout === null) {
             $layout = self::get();
         }
-        
+
         if ($layout !== null) {
             extract(array_merge(self::$data, array('view' => $view)));
             require $layout;
         } else if ($view->raw !== null) {
             echo $view->raw;
         }
+
+        self::reset();
     }
 
-    public static function reset() {
+    private static function reset() {
         self::$layout = null;
         self::$data = array();
     }
