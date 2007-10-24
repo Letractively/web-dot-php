@@ -55,15 +55,19 @@ class View {
 
         if ($layout === null) {
             $layout = Layout::get();
-        }        
+        }
+
+        if ($data !== null && is_array($data)) {
+            $data = array_merge(self::$data, $data);
+        } else {
+            $data = self::$data;
+        }
+
+        self::reset();
 
         if ($view !== null) {
 
-            extract(self::$data);
-
-            if ($data !== null && is_array($data)) {
-                extract($data);
-            }
+            extract($data);
 
             if ($layout !== null) {
 
@@ -102,17 +106,13 @@ class View {
 
                 $view = new View($head, $body, $view);
                 Layout::decorate($view, $layout);
-                Layout::reset();
-
             } else {
                 require self::$view;
             }
         }
-
-        View::reset();
     }
 
-    public static function reset() {
+    private static function reset() {
         self::$view = null;
         self::$data = array();
     }
