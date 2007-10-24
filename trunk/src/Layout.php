@@ -44,8 +44,8 @@ class Layout {
         if ($layout !== null) {
             extract(array_merge(self::$data, array('view' => $view)));
             require $layout;
-        } else if ($view->raw !== null) {
-            echo $view->raw;
+        } else if ($view->body !== null) {
+            echo $view->body;
         }
 
         self::reset();

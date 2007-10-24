@@ -11,8 +11,6 @@ class View {
     private static $data = array();
 
     // Instance Properties
-    public $raw = null;
-    public $head = null;
     public $title = null;
     public $body = null;
 
@@ -20,11 +18,9 @@ class View {
      * Constructors
      * ======================================================================= */
 
-    public function __construct($head, $body, $raw = null) {
-        $this->head = $head;
-        $this->title = $head->title;
+    public function __construct($body, $title = null) {
         $this->body = $body;
-        $this->raw = $raw;
+        $this->title = $title;
     }
 
     /* =======================================================================
@@ -74,15 +70,14 @@ class View {
                 ob_start();
                 require $view;
                 $view = ob_get_clean();
-                $head = new Head();
                 $body = new Body();
 
                 if (preg_match('#<body\b([^>]*)>(.*?)</body>#si', $view, $bodymatches) !== 0)
                 {
-                    $body->content = (isset($bodymatches[2])) ? $bodymatches[2] : '';
+                    $body[] = (isset($bodymatches[2])) ? $bodymatches[2] : '';
 
                     if (preg_match_all(
-                        '#(\w+)=["\'](.*?)["\']#s',
+                        '#(\w+)="([^"].*?)"#s',
                         $bodymatches[1],
                         $attributematches,
                         PREG_PATTERN_ORDER) !== 0) {
@@ -90,22 +85,35 @@ class View {
                         $count = count($attributematches[0]);
 
                         for($i = 0; $i < $count; $i++) {
-                            $body->attributes[$attributematches[1][$i]] = $attributematches[2][$i]; 
+                            $body[$attributematches[1][$i]] = $attributematches[2][$i]; 
                         }
                     }
-                }
 
-                if (preg_match('#<head\b[^>]*>(.*?)</head>#si', $view, $headmatches) !== 0) {
+                    if (preg_match_all(
+                        '#(\w+)=\'([^\'].*?)\'#s',
+                        $bodymatches[1],
+                        $attributematches,
+                        PREG_PATTERN_ORDER) !== 0) {
 
-                    $head->content = $headmatches[1];
+                        $count = count($attributematches[0]);
 
-                    if (preg_match('#<title\b[^>]*>(.*?)</title>#si', $head->content, $titlematches) !== 0) {
-                        $head->title = $titlematches[1];
+                        for($i = 0; $i < $count; $i++) {
+                            $body[$attributematches[1][$i]] = $attributematches[2][$i];
+                        }
                     }
+
+                } else {
+                    $body[] = $view;
                 }
 
-                $view = new View($head, $body, $view);
+                if (preg_match('#<title\b[^>]*>(.*?)</title>#si', $view, $titlematches) !== 0) {
+                    $view = new View($body, $titlematches[1]);
+                } else {
+                    $view = new View($body);
+                }
+                
                 Layout::decorate($view, $layout);
+                
             } else {
                 require self::$view;
             }
