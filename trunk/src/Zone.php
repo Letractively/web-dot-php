@@ -35,7 +35,7 @@ class Zone {
 
         if (self::$zone !== null) {
             array_pop(self::$zones[self::$zone]);
-            array_push(self::$zones[self::$zone], ob_get_clean(););
+            array_push(self::$zones[self::$zone], ob_get_clean());
             self::$zone = null;
         }
         
