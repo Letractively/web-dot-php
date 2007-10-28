@@ -64,7 +64,7 @@ class Web {
         }
     }
 
-    public static function redirect($url) {
+    public static function redirect($url, $permanently = false) {
 
         while (ob_get_level()) @ob_end_clean();
 
@@ -93,6 +93,10 @@ class Web {
 
                 $location .= $path . $url;
             }
+        }
+
+        if ($permanently) {
+            header($_SERVER['SERVER_PROTOCOL'] .  ' 301 Moved Permanently');
         }
 
         header('Location: ' . $location);
