@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Hello, World from a View!</title>
 </head>
-<body class="kala" title=s auto="koira" ilves='kissa'>
+<body>
     Hello, World!
 </body>
 </html>
