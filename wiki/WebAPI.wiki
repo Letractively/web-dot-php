@@ -129,7 +129,7 @@
   }
   }}}
 
-=== Web::redirect(string $url [, boolean $permanently = false]) ===
+=== Web::redirect(string $url [, boolean $permanently]) ===
 
   Used to redirect a browser. It's a little bit more sophisticated `header("Location: http://www.example.com/")`.
 
@@ -141,4 +141,4 @@
 
 `$permanently`
 
-  Specifies whether to redirect permanently (301) or temporarily (302).
+  Specifies whether to redirect permanently (301) or temporarily (302). Default is false.
