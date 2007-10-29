@@ -44,7 +44,7 @@
 
   {{{
   $route = (isset($_GET['__route__'])) ? '/'. $_GET['__route__'] : '/';
-  $regex = '/^' . str_replace('/', '\/', $pattern) . '$/i';
+  $regex = '#^' . $pattern . '$#i';
   if (preg_match($regex, $route, $matches) > 0) {
     ...
   }
