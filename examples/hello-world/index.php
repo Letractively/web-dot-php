@@ -38,9 +38,7 @@ error_reporting(E_ALL | E_STRICT);
 try {
 
     Web::run(array(
-        '/' => 'IndexController->GET',
-        '/redirect' => 'IndexController->redirect',
-        '/redirect-with-data' => 'IndexController->redirectWithData'
+        '/' => 'IndexController->GET'
     ));
 
 
