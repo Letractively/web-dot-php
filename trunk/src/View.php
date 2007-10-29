@@ -115,7 +115,7 @@ class View {
                 Layout::decorate($view, $layout);
                 
             } else {
-                require self::$view;
+                require $view;
             }
         }
     }
