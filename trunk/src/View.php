@@ -97,7 +97,7 @@ class View {
                     }
 
                     if (preg_match_all(
-                        '#(\w+)=\'([^\'].*?)\'#s',
+                        "#(\w+)='([^'].*?)'#s",
                         $bodymatches[1],
                         $attributematches,
                         PREG_PATTERN_ORDER) !== 0) {

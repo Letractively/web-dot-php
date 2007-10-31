@@ -37,6 +37,8 @@ error_reporting(E_ALL | E_STRICT);
 
 try {
 
+    Helper::register('IncludeHelper');
+
     Web::run(array(
         '/' => 'IndexController->GET'
     ));
