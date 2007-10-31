@@ -63,13 +63,20 @@ class View {
 
         if ($view !== null) {
 
+            $isphp = ((stristr(substr($view, -4), '.php')) === false) ? false : true;
+
             extract($data);
 
             if ($layout !== null) {
 
-                ob_start();
-                require $view;
-                $view = ob_get_clean();
+                if ($isphp) {
+                    ob_start();
+                    require $view;
+                    $view = ob_get_clean();
+                } else {
+                    $view = file_get_contents($view);
+                }
+
                 $body = new Body();
 
                 if (preg_match('#<body\b([^>]*)>(.*?)</body>#si', $view, $bodymatches) !== 0)
@@ -115,7 +122,11 @@ class View {
                 Layout::decorate($view, $layout);
                 
             } else {
-                require $view;
+                if ($isphp) {
+                    require $view;
+                } else {
+                    readfile($view);
+                }
             }
         }
     }
