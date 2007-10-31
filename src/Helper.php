@@ -18,8 +18,13 @@ class Helper {
      * Methods
      * ======================================================================= */
 
-    public static function register($key, $helper) {
-        self::$helpers[$key] = array('helper' => $helper, 'loaded' => false);
+    public static function register($key, $helper = null) {
+        if ($helper === null) {
+            self::$helpers[$key] = array('helper' => $key, 'loaded' => false);
+        } else {
+            self::$helpers[$key] = array('helper' => $helper, 'loaded' => false);
+        }
+
     }
 
     public static function import($key) {
