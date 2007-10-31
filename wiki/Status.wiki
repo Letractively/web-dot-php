@@ -3,6 +3,10 @@
 
 = Development Status =
 
+== October 31st, 2007 ==
+
+This week we finalized our initial design and corrected some bugs we found. Helper system is now in place (see Helper.php). We also developed our first helper class, IncludeHelper.php. Next we will spend some time to develop additional helper classes. After that we are going to look at how to build our elements system (elements are something like partial reusable views or view blocks). And yes, we should not forget to write better documentation.
+
 == October 24th, 2007 ==
 
 We started developing web.php about a week ago. It's progressing very well. We have already implemented front controller logic, redirection logic, view and layout system and view zones feature. Features have been coming in, but more importantly we have frequently thrown away useless, complex and weird stuff.
