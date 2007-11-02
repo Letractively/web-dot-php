@@ -43,6 +43,10 @@ class View {
         }
     }
 
+    public static function has($key) {
+        return (isset(self::$data[$key]));
+    }
+
     public static function render($view = null, $data = null, $layout = null) {
 
         if ($view === null) {
