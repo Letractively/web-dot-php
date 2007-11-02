@@ -66,7 +66,11 @@ class Flash {
 
             }
 
-            Session::set('urn:web.php:flash', $flashes);
+            if (count($flashes) > 0) {
+                Session::set('urn:web.php:flash', $flashes);
+            } else {
+                Session::remove('urn:web.php:flash');
+            }
         }
     }
 }
