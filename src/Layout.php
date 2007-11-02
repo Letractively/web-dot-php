@@ -35,6 +35,10 @@ class Layout {
         }
     }
 
+    public static function has($key) {
+        return (isset(self::$data[$key]));
+    }
+
     public static function decorate($view, $layout = null) {
 
         if ($layout === null) {
