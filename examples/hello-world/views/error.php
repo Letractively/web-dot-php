@@ -27,36 +27,32 @@
 
         <div class="column span-24">
 
-            <?php View::writeZone(View::DATA); ?>
+            <h2><?php echo $type . ' on ' . $file . ', line ' . $line . ':'; ?></h2>
 
-                <h2><?php echo $type . ' on ' . $file . ', line ' . $line . ':'; ?></h2>
+            <div class="<?php echo $class; ?>"><?php echo $message; ?></div>
 
-                <div class="<?php echo $class; ?>"><?php echo $message; ?></div>
+            <h4>Source:</h4>
+            <pre name="code" class="php:nocontrols:firstline[<?php echo $startline; ?>]"><?php echo $code; ?></pre>
 
-                <h4>Source:</h4>
-                <pre name="code" class="php:nocontrols:firstline[<?php echo $startline; ?>]"><?php echo $code; ?></pre>
+            <hr class="space" />
 
-                <hr class="space" />
+            <h3>Backtrace</h3>
 
-                <h3>Backtrace</h3>
+            <?php foreach($backtrace as $trace): ?>
+                <?php if (isset($trace['file'])): ?>
+                    <div class="success"><?php echo $trace['func'] . '() was called from ' . $trace['file'] . ', line: ' . $trace['line']; ?>.</div>
 
-                <?php foreach($backtrace as $trace): ?>
-                    <?php if (isset($trace['file'])): ?>
-                        <div class="success"><?php echo $trace['func'] . '() was called from ' . $trace['file'] . ', line: ' . $trace['line']; ?>.</div>
-
-                        <?php if(count($trace['args']) > 0): ?>
-                        <h4>Arguments:</h4>
-                        <pre name="code" class="php:nocontrols:nogutter"><?php print_r($trace['args']); ?></pre>
-                        <?php endif; ?>
-
-                        <?php if(isset($trace['startline'])): ?>
-                        <h4>Source:</h4>
-                        <pre name="code" class="php:nocontrols:firstline[<?php echo $trace['startline']; ?>]"><?php echo $trace['code']; ?></pre>
-                        <?php endif; ?>
+                    <?php if(count($trace['args']) > 0): ?>
+                    <h4>Arguments:</h4>
+                    <pre name="code" class="php:nocontrols:nogutter"><?php print_r($trace['args']); ?></pre>
                     <?php endif; ?>
-                <?php endforeach; ?>
 
-            <?php View::flushZone(); ?>
+                    <?php if(isset($trace['startline'])): ?>
+                    <h4>Source:</h4>
+                    <pre name="code" class="php:nocontrols:firstline[<?php echo $trace['startline']; ?>]"><?php echo $trace['code']; ?></pre>
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
 
         </div>
        

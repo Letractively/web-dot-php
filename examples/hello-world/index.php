@@ -28,20 +28,16 @@ Zend_Loader::registerAutoload();
 
 error_reporting(E_ALL | E_STRICT);
 
-//set_error_handler(array('Error', 'handleError'));
-//set_exception_handler(array('Error', 'handleException'));
-
-/* =======================================================================
- * Shutdown Functions
- * ======================================================================= */
-
-register_shutdown_function('Flash::shutdown');
+set_error_handler('Error::handleError');
+set_exception_handler('Error::handleException');
 
 /* =======================================================================
  * Dispatch Request
  * ======================================================================= */
 
 try {
+
+    Session::start();
 
     Helper::register('IncludeHelper');
 
