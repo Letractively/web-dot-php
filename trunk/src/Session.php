@@ -26,7 +26,6 @@ class Session {
     }
 
     public static function get($key) {
-        self::start();
         return (self::has($key)) ? $_SESSION[$key] : null;
     }
 
