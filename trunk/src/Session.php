@@ -13,15 +13,22 @@ class Session {
      * ======================================================================= */
 
     public static function start() {
-        if (!self::started()) session_start();
-    }
 
-    public static function started() {
-        return defined('SID');
+        static $started;
+
+        if (!$started) {
+
+            if (!defined('SID') && !headers_sent()) {
+                session_start();
+            }
+
+            register_shutdown_function('Flash::shutdown');
+
+            $started = true;
+        }
     }
 
     public static function set($key, $value) {
-        self::start();
         $_SESSION[$key] = $value;
     }
 
@@ -30,15 +37,11 @@ class Session {
     }
 
     public static function has($key) {
-        self::start();
         return (isset($_SESSION[$key]));
     }
 
     public static function remove($key) {
-
-        self::start();
-
-        if (isset($_SESSION[$key])) {
+        if (self::has($key)) {
             unset($_SESSION[$key]);
         }
     }
