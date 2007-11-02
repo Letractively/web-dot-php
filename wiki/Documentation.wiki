@@ -18,6 +18,8 @@
   * [LayoutAPI Layout.php API Reference]
   * [ZoneAPI Zone.php API Reference]
   * [HelperAPI Helper.php API Reference]
+  * [SessionAPI Session.php API Reference]
+  * [FlashAPI Flash.php API Reference]
   * [ErrorAPI Error.php API Reference]
 
 === Helpers ===
