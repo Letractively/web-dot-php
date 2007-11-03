@@ -48,6 +48,20 @@ class Flash {
         }
     }
 
+    public static function remove($key = null) {
+        if ($key === null) {
+            Session::remove('urn:web.php:flash');
+        } else {
+
+            $flashes = self::get();
+
+            if (isset($flashes[$key])) {
+                unset($flashes[$key]);
+                Session::set('urn:web.php:flash', $flashes);
+            }
+        }
+    }
+
     public static function shutdown() {
 
         if (self::has()) {

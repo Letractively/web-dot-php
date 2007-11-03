@@ -18,7 +18,7 @@ class Session {
 
         if (!$started) {
 
-            if (!defined('SID') && !headers_sent()) {
+            if (!defined('SID')) {
                 session_start();
             }
 
