@@ -14,7 +14,10 @@
 === Core ===
 
   * [WebAPI Web.php API Reference]
+  * [RequestAPI Request.php API Reference]
+  * [ResponseAPI Request.php API Reference]
   * [ViewAPI View.php API Reference]
+  * [BodyAPI Body.php API Reference]
   * [LayoutAPI Layout.php API Reference]
   * [ZoneAPI Zone.php API Reference]
   * [HelperAPI Helper.php API Reference]
@@ -24,6 +27,7 @@
 
 === Helpers ===
 
+  * [UrlHelperAPI UrlHelper.php API Reference]
   * [IncludeHelperAPI IncludeHelper.php API Reference]
 
 == Support ==
