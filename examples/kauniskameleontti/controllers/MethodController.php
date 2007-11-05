@@ -10,7 +10,7 @@ class MethodController extends Controller {
 
         $method = new Method();
 
-	    if (Request::isPost()) {
+        if (Request::isPost()) {
 
             $form = new Zend_Form();
             $form->setDataSource($_POST);
@@ -98,14 +98,14 @@ class MethodController extends Controller {
                 Response::redirect('methods/add');
             }
 
-	     } else {
+         } else {
 
-	        if (Flash::has('method')) {
-	            return View::render('views/methods-add.php', array('method' => Flash::get('method')));
-	        }
-	        else {
-	            return View::render('views/methods-add.php', array('method' => $method));
-	        }
-	    }
-	}
+            if (Flash::has('method')) {
+                return View::render('views/methods-add.php', array('method' => Flash::get('method')));
+            }
+            else {
+                return View::render('views/methods-add.php', array('method' => $method));
+            }
+        }
+    }
 }
