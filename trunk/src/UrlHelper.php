@@ -27,6 +27,6 @@ class UrlHelper {
             $location = $path . $src;
         }
 
-        echo $location;
+        return $location;
     }
 }
