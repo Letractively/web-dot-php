@@ -15,7 +15,7 @@
 
   * [WebAPI Web.php API Reference]
   * [RequestAPI Request.php API Reference]
-  * [ResponseAPI Request.php API Reference]
+  * [ResponseAPI Response.php API Reference]
   * [ViewAPI View.php API Reference]
   * [BodyAPI Body.php API Reference]
   * [LayoutAPI Layout.php API Reference]
