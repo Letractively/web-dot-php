@@ -18,11 +18,11 @@ class Helper {
      * Methods
      * ======================================================================= */
 
-    public static function register($key, $helper = null) {
+    public static function register($key, $helper = null, $echo = true) {
         if ($helper === null) {
-            self::$helpers[$key] = array('helper' => $key, 'loaded' => false);
+            self::$helpers[$key] = array('helper' => $key, 'loaded' => false, 'echo' => $echo);
         } else {
-            self::$helpers[$key] = array('helper' => $helper, 'loaded' => false);
+            self::$helpers[$key] = array('helper' => $helper, 'loaded' => false, 'echo' => $echo);
         }
 
     }
@@ -37,10 +37,17 @@ class Helper {
                 $method = null;
 
                 if (strpos($class, '::') !== false) {
+                    $echo = (self::$helpers[$key]['echo'] === true) ? true : false;
                     $class = explode('::', $class, 2);
                     $method = $class[1];
                     $class = $class[0];
-                    $helper = create_function(null, '$args = func_get_args(); return call_user_func_array(array("' . $class . '", "' . $method . '"), $args);');
+
+                    if ($echo) {
+                        $helper = create_function(null, '$args = func_get_args(); echo call_user_func_array(array("' . $class . '", "' . $method . '"), $args);');
+                    } else {
+                        $helper = create_function(null, '$args = func_get_args(); return call_user_func_array(array("' . $class . '", "' . $method . '"), $args);');
+                    }
+
                 } else {
                     $class = new ReflectionClass($class);
                     $helper = $class->newInstance();
