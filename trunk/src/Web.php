@@ -1,17 +1,31 @@
 <?php
+/*
+    Class: Web
 
+        Implements Front Controller Logic in web.php Framework
+
+    About: License
+
+        This file is licensed under the MIT.
+*/
 class Web {
-
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
 
     private function __construct() {}
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
+    /*
+    Function: run
 
+        Compares route against user supplied urls and executes appropriate
+        controller method.
+
+    Parameters:
+
+        array $urls - Associative URL array containing acceptable routes.
+
+    Returns:
+
+        Throws an exception if a route doesn't exists.
+    */
     public static function run($urls) {
 
         $matches = array();

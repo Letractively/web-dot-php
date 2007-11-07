@@ -1,24 +1,28 @@
 <?php
+/*
+    Class: Zone
 
+        Zone class is used to define placeholders in views and layouts 
+
+    About: License
+
+        This file is licensed under the MIT.
+*/
 class Zone {
 
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
-
     private function __construct() {}
-
-    /* =======================================================================
-     * Properties
-     * ======================================================================= */
-
     private static $zones = array();
     private static $zone = null;
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
+    /*
+    Function: write
 
+        Opens Zone for Writing.
+
+    Parameters:
+
+        string $zone - Name of the Zone to open write buffer for.
+    */
     public static function write($zone) {
 
         self::$zone = $zone;
@@ -31,6 +35,12 @@ class Zone {
         ob_start();
     }
 
+    /*
+    Function: flush
+
+        Flushes write buffer and stores Zone data.
+
+    */
     public static function flush() {
 
         if (self::$zone !== null) {
@@ -41,6 +51,20 @@ class Zone {
         
     }
 
+    /*
+    Function: render
+
+        Renders Zone.
+
+    Parameters:
+
+        string $zone - Name of the Zone to render.
+
+    Returns:
+
+        true - if there was data written on $zone.
+        false - if there is nothing to render.
+    */
     public static function render($zone) {
 
         if (isset(self::$zones[$zone]) && count(self::$zones[$zone]) > 0) {
