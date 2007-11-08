@@ -31,6 +31,8 @@ Group: Core Classes  {
 
    File: Web  (Web.php)
    File: Request  (Request.php)
+   File: Flash  (Flash.php)
+   File: View  (View.php)
    }  # Group: Core Classes
 
 Group: View Classes  {
