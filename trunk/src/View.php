@@ -1,5 +1,8 @@
 <?php
-
+/*
+  Class: View
+  View functionality.
+*/
 class View {
 
     /* =======================================================================
@@ -14,19 +17,29 @@ class View {
     public $title = null;
     public $body = null;
 
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
 
+    /*
+      Contruct: __contruct
+      Initializes the object.
+
+      Parameters:
+      $body - Textual body representation.
+      $title - Textual title representation. Defaults to null.
+    */
     public function __construct($body, $title = null) {
         $this->body = $body;
         $this->title = $title;
     }
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
 
+    /*
+      Function: set
+      Sets key value pairs.
+
+      Parameters:
+      $key - Key, eg. 'title'.
+      $value - Value of key, eg. 'web.dot.php'. Defaults to null.
+    */
     public static function set($key, $value = null) {
         if ($value === null) {
             self::$view = $key;            
@@ -35,6 +48,17 @@ class View {
         }
     }
 
+    /*
+       Function: get
+       Gets the value for key.
+
+       Parameters:
+       $key - Key of the value we're getting, defaults to null.
+
+       Returns:
+       Associated value for key or null.
+       
+    */
     public static function get($key = null) {
         if ($key === null) {
             return self::$view;
@@ -43,10 +67,29 @@ class View {
         }
     }
 
+    /*
+      Function: has
+      Checks wheter a key has a value.
+
+      Parameters:
+      $key - Key we're trying to check.
+
+      Returns:
+      True or false.
+    */
     public static function has($key) {
         return (isset(self::$data[$key]));
     }
 
+    /*
+      Function: render
+      Renders the view.
+    
+      Parameters:
+      $view - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
+      $data - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
+      $layout - Path to the layout file that wraps the view (if wanted). Defaults to null.
+    */
     public static function render($view = null, $data = null, $layout = null) {
 
         if ($view === null) {
