@@ -1,17 +1,32 @@
 <?php
+/* Version: $id$ */
 
+/*
+Class: Flash
+
+    Handles sessionwide variables. Used for example to notify the user about form action, ie.
+    was operation executed succesfully.
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Flash {
-
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
 
     private function __construct() {}
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
 
+    /*
+    Function: set
+
+        Sets a session variable.
+
+    Parameters:
+
+        string $key - name of the variable.
+        string $value - value of the variable.
+        string $hops - number of requests the variable is available.
+    */
     public static function set($key, $value, $hops = 1) {
         if (self::has()) {
             $flashes = self::get();
@@ -26,6 +41,19 @@ class Flash {
         Session::set('urn:web.php:flash', $flashes);
     }
 
+    /*
+    Function: get
+
+        Returns the specified session variable, if one is set.
+
+    Parameters:
+        
+        string $key - name of the variable.
+
+    Returns:
+
+        The variable if it is set.
+    */
     public static function get($key = null) {
         if ($key === null) {
             return Session::get('urn:web.php:flash');
@@ -37,6 +65,20 @@ class Flash {
         }
     }
 
+    /*
+    Function: has
+        
+        Checks whether a session variable by this name is set.
+
+    Parameters:
+
+        string $key - name of the variable.
+
+    Returns:
+
+        true - if the variable is set.
+        false - if the varaible is not set.
+    */
     public static function has($key = null) {
         if ($key === null) {
             return (Session::has('urn:web.php:flash'));
@@ -48,6 +90,15 @@ class Flash {
         }
     }
 
+    /*
+    Function: remove
+
+        Removes the specified session variable.
+
+    Parameters:
+
+        string $key - name of the variable.
+    */
     public static function remove($key = null) {
         if ($key === null) {
             Session::remove('urn:web.php:flash');
