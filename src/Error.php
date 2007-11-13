@@ -1,5 +1,17 @@
 <?php
+/*
+Class: Error
 
+    Error debugging functionality.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Error {
 
     /* =======================================================================

@@ -1,5 +1,17 @@
 <?php
+/*
+Class: Response
 
+    HTTP response related functionality.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Response {
 
     /* =======================================================================

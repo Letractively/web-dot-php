@@ -1,5 +1,18 @@
 <?php
+/*
+Class: Body
 
+    View body implementation, wraps content and attributes of a view to
+    a layout variable.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Body implements ArrayAccess {
 
     /* =======================================================================

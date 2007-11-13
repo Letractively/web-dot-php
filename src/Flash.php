@@ -1,11 +1,13 @@
 <?php
-/* Version: $id$ */
-
 /*
 Class: Flash
 
     Handles sessionwide variables. Used for example to notify the user about form action, ie.
     was operation executed succesfully.
+
+About: Version
+
+    $Id$
 
 About: License
 

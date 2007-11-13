@@ -1,5 +1,17 @@
 <?php
+/*
+Class: Session
 
+    Session management functionality.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Session {
 
     /* =======================================================================

@@ -1,5 +1,17 @@
 <?php
+/*
+Class: IncludeHelper
 
+    Include helper for external view resources (eg. javascripts and stylesheets)
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class IncludeHelper {
 
     /* =======================================================================
