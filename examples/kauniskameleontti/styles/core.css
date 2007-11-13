@@ -1,6 +1,0 @@
-.button.normal                  { width: 10em; text-align: center; }
-input.error                     { border: 1px solid #FBC2C4; background: #f6f6f6; }
-input.error:focus               { border: 1px solid #D12F19; background: #fff; }
-
-.field div.error                { padding: 0.2em 0 0 0; border: none; margin: 0; background: transparent; }
-.field label span.required      { color: #D12F19; }
