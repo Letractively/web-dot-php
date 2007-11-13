@@ -1,30 +1,32 @@
 <?php
 /*
-  Class: View
-  View functionality.
+Class: View
+
+    View functionality. Views are templates that are rendered to a browser.
+
+About: License
+
+    This file is licensed under the MIT.
 */
 class View {
 
-    /* =======================================================================
-     * Properties
-     * ======================================================================= */
-
-    // Static Properties
     private static $view = null;
     private static $data = array();
 
-    // Instance Properties
     public $title = null;
     public $body = null;
 
-
     /*
-      Contruct: __contruct
-      Initializes the object.
+    Contruct: __contruct
 
-      Parameters:
-      $body - Textual body representation.
-      $title - Textual title representation. Defaults to null.
+        Initializes the View object.
+
+    Parameters:
+
+        string $body  - Textual body representation.
+        string $title - Textual title representation. Defaults to null.
+
+    
     */
     public function __construct($body, $title = null) {
         $this->body = $body;
@@ -82,13 +84,15 @@ class View {
     }
 
     /*
-      Function: render
-      Renders the view.
-    
-      Parameters:
-      $view - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
-      $data - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
-      $layout - Path to the layout file that wraps the view (if wanted). Defaults to null.
+    Function: render
+
+        Renders the view.
+
+    Parameters:
+
+        $view   - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
+        $data   - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
+        $layout - Path to the layout file that wraps the view (if wanted). Defaults to null.
     */
     public static function render($view = null, $data = null, $layout = null) {
 

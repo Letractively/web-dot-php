@@ -1,12 +1,17 @@
 <?php
 /*
-    Class: Zone
+Class: Zone
 
-        Zone class is used to define placeholders in views and layouts 
+    Zone class is used to define and render placeholders in views
+    and layouts.
 
-    About: License
+Version:
 
-        This file is licensed under the MIT.
+    $Id
+
+About: License
+
+    This file is licensed under the MIT.
 */
 class Zone {
 
@@ -17,11 +22,27 @@ class Zone {
     /*
     Function: write
 
-        Opens Zone for Writing.
+        Opens a zone for writing.
 
     Parameters:
 
-        string $zone - Name of the Zone to open write buffer for.
+        string $zone - Name of the zone to open a write buffer for.
+
+    Returns:
+
+        true  - If write buffer was successfully opened.
+        false - If there was an error opening write buffer.
+
+    See also:
+
+        <flush>,
+        <render>,
+        <View::render>,
+        <Layout::decorate>
+
+    Example:
+
+        > Zone::write('left-zone');
     */
     public static function write($zone) {
 
@@ -32,14 +53,33 @@ class Zone {
         }
 
         array_push(self::$zones[$zone], null);
-        ob_start();
+        return ob_start();
     }
 
     /*
     Function: flush
 
-        Flushes write buffer and stores Zone data.
+        Flushes previous write buffer and stores zone data, that
+        can later be rendered with <render> method.
 
+    Parameters:
+
+        None.
+
+    Returns:
+
+        No value is returned.
+
+    See also:
+
+        <write>,
+        <render>,
+        <View::render>,
+        <Layout::decorate>
+
+    Example:
+
+        > Zone::flush();
     */
     public static function flush() {
 
@@ -54,16 +94,29 @@ class Zone {
     /*
     Function: render
 
-        Renders Zone.
+        Renders a zone.
 
     Parameters:
 
-        string $zone - Name of the Zone to render.
+        string $zone - Name of the zone to render.
 
     Returns:
 
-        true - if there was data written on $zone.
-        false - if there is nothing to render.
+        true  - if there was data written on zone.
+        false - if there was nothing to render on zone.
+
+    See also:
+
+        <write>,
+        <flush>,
+        <View::render>,
+        <Layout::decorate>
+
+    Example:
+
+        > <? if (!Zone::render('left-zone')): ?>
+        > Default Content.
+        > <? endif; ?>
     */
     public static function render($zone) {
 

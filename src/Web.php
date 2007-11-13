@@ -1,12 +1,12 @@
 <?php
 /*
-    Class: Web
+Class: Web
 
-        Implements Front Controller Logic in web.php Framework
+    Manages controllers' execution.
 
-    About: License
+About: License
 
-        This file is licensed under the MIT.
+    This file is licensed under the MIT.
 */
 class Web {
 
@@ -24,14 +24,26 @@ class Web {
 
     Returns:
 
-        Throws an exception if a route doesn't exists.
+        true  - if a route was found.
+        false - if a route was not found. 
+
+    See also:
+        <execute>,
+        <forward>
+
+    Example:
+
+        > Web::run(
+        >     '/' => 'IndexController',
+        >     '/home' => 'IndexController::GET',
+        >     '/blog/posts' => 'BlogController->viewPosts',
+        >     '/blog/posts/(\d+) => 'BlogController->viewPost'
+        > );
     */
     public static function run($urls) {
 
         $matches = array();
-        $static = false;
         $matchfound = false;
-        $method = $_SERVER['REQUEST_METHOD'];
 
         foreach ($urls as $pattern => $controller) {
 
@@ -42,39 +54,108 @@ class Web {
             if (preg_match($regex, $route, $matches) > 0) {
 
                 $matchfound = true;
-
-                if (strpos($controller, '::') !== false) {
-                    $static = true;
-                    $controller = explode('::', $controller, 2);
-                    $method = $controller[1];
-                    $controller = $controller[0];
-                } else if (strpos($controller, '->') !== false) {
-                    $controller = explode('->', $controller, 2);
-                    $method = $controller[1];
-                    $controller = $controller[0];
-                }
-
                 break;
             }
         }
 
         if ($matchfound) {
 
-            if (!$static) {
-                $controller = new ReflectionClass($controller);
-                $controller = $controller->newInstance();
-            }
-            
-            $method = new ReflectionMethod($controller, $method);
-
             if (count($matches) > 1) {
-                $method->invokeArgs($controller, array_slice($matches, 1));
+                self::execute($controller, array_slice($matches, 1));
             } else {
-                $method->invoke($controller);
+                self::execute($controller);
             }
 
+            return true;
+            
         } else {
-            throw new Exception('404 Not Found', 404);
+            return false;
         }
+    }
+
+    /*
+    Function: execute
+
+        Executes a controller method.
+
+    Parameters:
+
+        string $controller - Controller and (optionally) a method.
+         mixed $arguments  - Method arguments.
+
+    Returns:
+
+        No value is returned.
+
+    See also:
+        <forward>,
+        <Response::redirect>
+
+    Examples:
+
+        > Web::execute('IndexController');
+        > Web::execute('IndexController::index');
+        > Web::execute('IndexController->echoArgs', array('Hello, ', 'World!'));
+        > Web::execute('BlogController->viewPost', 1);
+    */
+    public static function execute($controller, $arguments = null) {
+
+        $method = $_SERVER['REQUEST_METHOD'];
+        $static = false;
+
+        if (strpos($controller, '::') !== false) {
+            $static = true;
+            $controller = explode('::', $controller, 2);
+            $method = $controller[1];
+            $controller = $controller[0];
+        } else if (strpos($controller, '->') !== false) {
+            $controller = explode('->', $controller, 2);
+            $method = $controller[1];
+            $controller = $controller[0];
+        }
+
+        if (!$static) {
+            $controller = new ReflectionClass($controller);
+            $controller = $controller->newInstance();
+        }
+
+        $method = new ReflectionMethod($controller, $method);
+
+        if ($arguments !== null) {
+            if (is_array($arguments)) {
+                $method->invokeArgs($controller, $arguments);
+            } else {
+                $method->invokeArgs($controller, array($arguments));            
+            }
+        } else {
+            $method->invoke($controller);
+        }
+    }
+
+    /*
+    Function: forward
+
+        Forwards to a controller method and terminates.
+
+    Parameters:
+
+        string $controller - Controller and (optionally) a method.
+         mixed $arguments  - Method arguments.
+
+    Returns:
+
+        No value is returned.
+
+    See also:
+        <execute>,
+        <Response::redirect>
+
+    Examples:
+
+        See <execute> examples.
+    */
+    public static function forward($controller, $arguments = null) {
+        self::execute($controller, $arguments);
+        exit;
     }
 }
