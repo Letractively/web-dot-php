@@ -7,7 +7,7 @@ Class: Zone
 
 Version:
 
-    $Id
+    $Id$
 
 About: License
 
