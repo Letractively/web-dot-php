@@ -31,14 +31,27 @@ Group: Core Classes  {
 
    File: Web  (Web.php)
    File: Request  (Request.php)
+   File: Response  (Response.php)
+   File: Session  (Session.php)
    File: Flash  (Flash.php)
-   File: View  (View.php)
    }  # Group: Core Classes
 
-Group: View Classes  {
+Group: Presentation Classes  {
 
+   File: Body  (Body.php)
+   File: View  (View.php)
+   File: Layout  (Layout.php)
    File: Zone  (Zone.php)
-   }  # Group: View Classes
+   }  # Group: Presentation Classes
+
+Group: Helper Classes  {
+
+   File: Helper  (Helper.php)
+   File: IncludeHelper  (IncludeHelper.php)
+   File: UrlHelper  (UrlHelper.php)
+
+   }  # Group: Helper Classes
+
 
 Group: Index  {
 
