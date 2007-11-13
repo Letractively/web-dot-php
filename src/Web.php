@@ -4,6 +4,10 @@ Class: Web
 
     Manages controllers' execution.
 
+About: Version
+
+    $Id$
+
 About: License
 
     This file is licensed under the MIT.

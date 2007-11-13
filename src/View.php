@@ -3,6 +3,10 @@
 Class: View
 
     View functionality. Views are templates that are rendered to a browser.
+    
+About: Version
+
+    $Id$
 
 About: License
 
@@ -25,8 +29,6 @@ class View {
 
         string $body  - Textual body representation.
         string $title - Textual title representation. Defaults to null.
-
-    
     */
     public function __construct($body, $title = null) {
         $this->body = $body;
@@ -35,12 +37,14 @@ class View {
 
 
     /*
-      Function: set
-      Sets key value pairs.
+    Function: set
 
-      Parameters:
-      $key - Key, eg. 'title'.
-      $value - Value of key, eg. 'web.dot.php'. Defaults to null.
+        Sets key value pairs.
+
+    Parameters:
+
+        $key   - Key, eg. 'title'.
+        $value - Value of key, eg. 'web.dot.php'. Defaults to null.
     */
     public static function set($key, $value = null) {
         if ($value === null) {
@@ -51,15 +55,17 @@ class View {
     }
 
     /*
-       Function: get
-       Gets the value for key.
+    Function: get
 
-       Parameters:
-       $key - Key of the value we're getting, defaults to null.
+        Gets the value for key.
 
-       Returns:
-       Associated value for key or null.
-       
+    Parameters:
+
+        $key - Key of the value we're getting, defaults to null.
+
+    Returns:
+
+        Associated value for key or null.
     */
     public static function get($key = null) {
         if ($key === null) {
@@ -70,14 +76,17 @@ class View {
     }
 
     /*
-      Function: has
-      Checks wheter a key has a value.
+    Function: has
 
-      Parameters:
-      $key - Key we're trying to check.
+        Checks wheter a key has a value.
 
-      Returns:
-      True or false.
+    Parameters:
+
+        $key - Key we're trying to check.
+
+    Returns:
+
+        true or false.
     */
     public static function has($key) {
         return (isset(self::$data[$key]));

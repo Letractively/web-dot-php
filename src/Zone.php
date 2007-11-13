@@ -5,7 +5,7 @@ Class: Zone
     Zone class is used to define and render placeholders in views
     and layouts.
 
-Version:
+About: Version
 
     $Id$
 
