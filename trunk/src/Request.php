@@ -1,12 +1,16 @@
 <?php
 /*
-    Class: Request
+Class: Request
 
-        HTTP Request Related Methods
+    HTTP request related functionlity.
 
-    About: License
+About: Version
 
-        This file is licensed under the MIT.
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
 */
 class Request {
 

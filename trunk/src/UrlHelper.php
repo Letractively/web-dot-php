@@ -1,5 +1,17 @@
 <?php
+/*
+Class: UrlHelper
 
+    Url helper for views.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class UrlHelper {
 
     /* =======================================================================

@@ -1,5 +1,17 @@
 <?php
+/*
+Class: Helper
 
+    Helper retrieving and registration functionlity.
+
+About: Version
+
+    $Id$
+
+About: License
+
+    This file is licensed under the MIT.
+*/
 class Helper {
 
     /* =======================================================================
