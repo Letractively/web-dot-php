@@ -35,24 +35,14 @@ set_exception_handler('Error::handleException');
  * Dispatch Request
  * ======================================================================= */
 
-try {
+Session::start();
+Helper::register('IncludeHelper');
 
-    Session::start();
+Web::run(array(
+    '/' => 'IndexController->GET'
+)) or notfound();
 
-    Helper::register('IncludeHelper');
-
-    Web::run(array(
-        '/' => 'IndexController->GET'
-    ));
-
-
-} catch (Exception $e) {
-
-    if ($e->getCode() == 404) {
-        header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-        View::render('views/404.php');
-    } else {
-        throw $e;
-    }
-
+function notfound() {
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+    View::render('views/404.php');
 }

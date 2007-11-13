@@ -59,8 +59,8 @@ class Zone {
     /*
     Function: flush
 
-        Flushes previous write buffer and stores zone data, that
-        can later be rendered with <render> method.
+        Flushes previous write buffer and stores it's data,
+        that can later be rendered with <render> method.
 
     Parameters:
 
@@ -114,9 +114,9 @@ class Zone {
 
     Example:
 
-        > <? if (!Zone::render('left-zone')): ?>
-        > Default Content.
-        > <? endif; ?>
+        > <?php if (!Zone::render('left-zone')): ?>
+        > Default content.
+        > <?php endif; ?>
     */
     public static function render($zone) {
 

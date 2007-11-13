@@ -23,28 +23,48 @@ class View {
     /*
     Contruct: __contruct
 
-        Initializes the View object.
+        Instantiates a new view object.
 
     Parameters:
 
         string $body  - Textual body representation.
-        string $title - Textual title representation. Defaults to null.
+        string $title - Textual title representation, optional and defaults to null.
     */
     public function __construct($body, $title = null) {
         $this->body = $body;
         $this->title = $title;
     }
 
-
     /*
     Function: set
 
-        Sets key value pairs.
+        Sets a view to be rendered or a view variable identified by key.
 
     Parameters:
 
-        $key   - Key, eg. 'title'.
-        $value - Value of key, eg. 'web.dot.php'. Defaults to null.
+        $key   - If value is omitted,  $key is a view to be rendered, otherwise
+                 this is an identifier for a view variable defined by value.
+        $value - Value of a view variable, optional and defaults to null.
+
+    Returns:
+
+        No value is returned.
+
+    See also:
+
+        <get>,
+        <has>,
+        <render>
+
+    Examples:
+
+        > // This is how to set a view variable ($user):
+        >
+        > View::set('user', new User('John', 'Doe'));
+        >
+        > // And this is how to set a view that is rendered with render():
+        >
+        > View::set('views/display-user.php');
     */
     public static function set($key, $value = null) {
         if ($value === null) {
@@ -57,15 +77,31 @@ class View {
     /*
     Function: get
 
-        Gets the value for key.
+        Gets a view to be rendered or a value identified by a key.
 
     Parameters:
 
-        $key - Key of the value we're getting, defaults to null.
+        $key - Key of the value we're getting, optional and defaults to null.
 
     Returns:
 
-        Associated value for key or null.
+        A view to be rendered or an associated value for a key, or null.
+
+    See also:
+
+        <get>,
+        <has>,
+        <render>
+
+    Examples:
+
+        > // This is how to get a view to be rendered:
+        >
+        > $view = View::get();
+        >
+        > // If you need to get a variable identified by a key, use this syntax:
+        >
+        > $user = View::get('user');
     */
     public static function get($key = null) {
         if ($key === null) {
@@ -82,14 +118,39 @@ class View {
 
     Parameters:
 
-        $key - Key we're trying to check.
+        $key - Key for a value we're trying to check, optional and defaults to null.
 
     Returns:
 
-        true or false.
+        true  - if a view is defined or a value identified with key exists.
+        false - if none of the above is true.
+
+    See also:
+
+        <get>,
+        <has>,
+        <render>
+
+    Examples:
+
+        > // Let's see if a view is defined:
+        >
+        > if (!View::has()) {
+        >     View::set('views/display-user.php');
+        > }
+        >
+        > // Let's see if a view variable is defined:
+        >
+        > if (!View::has('user')) {
+        >     View::set('user', new User('John', 'Doe'));
+        > }
     */
-    public static function has($key) {
-        return (isset(self::$data[$key]));
+    public static function has($key = null) {
+        if ($key === null) {
+            return (isset(self::$view));
+        } else {
+            return (isset(self::$data[$key]));
+        }
     }
 
     /*

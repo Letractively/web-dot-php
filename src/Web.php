@@ -37,12 +37,12 @@ class Web {
 
     Example:
 
-        > Web::run(
+        > Web::run(array(
         >     '/' => 'IndexController',
         >     '/home' => 'IndexController::GET',
         >     '/blog/posts' => 'BlogController->viewPosts',
         >     '/blog/posts/(\d+) => 'BlogController->viewPost'
-        > );
+        > ));
     */
     public static function run($urls) {
 
@@ -80,7 +80,7 @@ class Web {
     /*
     Function: execute
 
-        Executes a controller method.
+        Executes a controller method using reflection.
 
     Parameters:
 
@@ -101,6 +101,13 @@ class Web {
         > Web::execute('IndexController::index');
         > Web::execute('IndexController->echoArgs', array('Hello, ', 'World!'));
         > Web::execute('BlogController->viewPost', 1);
+        >
+        > // Normally you should use controllers directly:
+        >
+        > IndexController::index();
+        >
+        > $ctl = new IndexController();
+        > $ctl->echoArgs('Hello, ', 'World!');
     */
     public static function execute($controller, $arguments = null) {
 
