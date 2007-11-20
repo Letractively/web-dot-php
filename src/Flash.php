@@ -3,7 +3,7 @@
 Class: Flash
 
     Handles sessionwide variables. Used for example to notify the user about form action, ie.
-    was operation executed succesfully.
+    was the operation executed succesfully.
 
 About: Version
 
@@ -25,10 +25,26 @@ class Flash {
 
     Parameters:
 
-        string $key - name of the variable.
+        string $key   - name of the variable.
         string $value - value of the variable.
-        string $hops - number of requests the variable is available.
+        string $hops  - number of requests the variable is available.
+
+    See also:
+        <get>,
+        <has>,
+        <remove>
+
+    Examples:
+
+        > // sets a session wide variable that is valid for two requests
+        > Flash::set('reminder', 'Brush your teeth twice a day!', 2);
+        > // in the view
+        > if (Flash::has('reminder')):
+        >   echo "<div class='notice'>" . Flash::get('reminder') . "</div>";
+        > endif;
+
     */
+
     public static function set($key, $value, $hops = 1) {
         if (self::has()) {
             $flashes = self::get();
@@ -55,6 +71,19 @@ class Flash {
     Returns:
 
         The variable if it is set.
+
+    See also:
+
+        <set>,
+        <has>,
+        <remove>
+
+    Examples:
+        
+        > // gets the specified variable
+        > if (Flash::has('reminder')) {
+        >     $reminder = Flash::get('reminder');
+        > }
     */
     public static function get($key = null) {
         if ($key === null) {
@@ -80,6 +109,21 @@ class Flash {
 
         true - if the variable is set.
         false - if the varaible is not set.
+
+    See also:
+
+        <get>,
+        <set>,
+        <remove>
+
+    Examples:
+
+        > // checks if a variable is set
+        > if (Flash::has('reminder')) {
+        >    echo "Thank you, I have been reminded.";
+        > } else {
+        >    echo "I haven't been reminded.";
+        > }
     */
     public static function has($key = null) {
         if ($key === null) {
@@ -100,6 +144,21 @@ class Flash {
     Parameters:
 
         string $key - name of the variable.
+
+    See also:
+        
+        <get>,
+        <set>,
+        <has>
+
+    Examples:
+
+        > // removes a variable from session (let's assume the variable was set with 2 hops)
+        > if (Flash::has('reminder')) {
+        >    echo "Reminder: " . Flash::get('reminder');
+        >    // one reminder is enough
+        >    Flash::remove('reminder');
+        > }
     */
     public static function remove($key = null) {
         if ($key === null) {
@@ -114,6 +173,20 @@ class Flash {
             }
         }
     }
+
+    /*
+    Function: shutdown
+
+        Counts the remaining hops?
+
+    See also:
+        
+        <get>,
+        <set>,
+        <has>,
+        <remove>
+
+    */
 
     public static function shutdown() {
 
