@@ -14,16 +14,27 @@ About: License
 */
 class Response {
 
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
-
     private function __construct() {}
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
+    /*
+    Function: redirect
 
+        Makes a bit more sophisticated header("Location: url");
+
+    Parameters:
+
+        string $url          - The redirect location, it can be an absolute url, server relative url or application relative url.
+        boolean $permanently - Specifies whether the redirect is permanent (301) or temporary. Defaults to false.
+
+    Examples:
+
+        > // permanent absolute url redirect
+        > Response::redirect('http://www.example.com', true);
+        > // nonpermanent server relative url redirect
+        > Response::redirect('/');
+        > // nonpermanent application relative url redirect
+        > Response::redirect('posts');
+    */
     public static function redirect($url, $permanently = false) {
 
         while (ob_get_level()) @ob_end_clean();
