@@ -163,6 +163,12 @@ class View {
         $view   - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
         $data   - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
         $layout - Path to the layout file that wraps the view (if wanted). Defaults to null.
+
+    Examples:
+        
+        >  // Render a view with a variable and a layout
+        >  View::render('views/view.php', array('variable' => $variable), 'layouts/default.php');
+
     */
     public static function render($view = null, $data = null, $layout = null) {
 
@@ -252,6 +258,12 @@ class View {
         }
     }
 
+    /*
+    Function: reset
+
+        Resets the view.
+
+    */
     private static function reset() {
         self::$view = null;
         self::$data = array();
