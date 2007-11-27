@@ -1,7 +1,13 @@
 <?php
 class IndexController {
      function GET() {
-        View::set('message', 'Hello, World!');
+     
+        if (Request::isMobile()) {
+            View::set('message', 'Hello, Mobile World!');
+        } else {
+            View::set('message', 'Hello, World!');
+        }
+
         View::render('views/index.php', null, 'layouts/default.php');
      }
 }
