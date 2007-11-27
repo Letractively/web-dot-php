@@ -7,6 +7,6 @@
     <?php echo $include->javascript('scripts/alert.js'); ?>
 </head>
 <body>
-    Hello, World!
+    <?php echo $message ?>
 </body>
 </html>
