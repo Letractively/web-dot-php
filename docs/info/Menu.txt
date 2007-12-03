@@ -31,10 +31,10 @@ Group: Core Classes  {
 
    File: Web  (Web.php)
    File: Request  (Request.php)
-   File: Response  (Response.php)
    File: Session  (Session.php)
    File: Flash  (Flash.php)
    File: Error  (Error.php)
+   File: Browser  (Browser.php)
    }  # Group: Core Classes
 
 Group: Presentation Classes  {

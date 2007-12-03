@@ -93,7 +93,7 @@ class Web {
 
     See also:
         <forward>,
-        <Response::redirect>
+        <Browser::redirect>
 
     Examples:
 
@@ -159,7 +159,7 @@ class Web {
 
     See also:
         <execute>,
-        <Response::redirect>
+        <Browser::redirect>
 
     Examples:
 
