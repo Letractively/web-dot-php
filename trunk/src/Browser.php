@@ -12,7 +12,7 @@ About: License
 
     This file is licensed under the MIT.
 */
-class Response {
+class Browser {
 
     private function __construct() {}
 
@@ -35,11 +35,11 @@ class Response {
         > // nonpermanent application relative url redirect
         > Browser::redirect('posts');
     */
-    public static function redirect($url, $permanently = false) {
+    public static function redirect($url = null, $permanently = false) {
 
         while (ob_get_level()) @ob_end_clean();
 
-        $location = $url;
+        $location = ($url === null) ? '' : $url;
         $urlarray = parse_url($url);
 
         if (!isset($urlarray['scheme'])) {
