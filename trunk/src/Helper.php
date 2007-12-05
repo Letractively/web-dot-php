@@ -8,7 +8,7 @@ Class: Helper
 
 About: Version
 
-    $Revision$ ($Date$)
+    $Revision$
 
 About: Author
 
