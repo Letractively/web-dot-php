@@ -8,7 +8,7 @@ Class: Session
 
 About: Version
 
-    $Revision$ ($Date$)
+    $Revision$
 
 About: Author
 

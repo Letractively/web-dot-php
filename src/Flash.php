@@ -9,7 +9,7 @@ Class: Flash
 
 About: Version
 
-    $Revision$ ($Date$)
+    $Revision$
 
 About: Author
 

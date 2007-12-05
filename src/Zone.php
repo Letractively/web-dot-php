@@ -9,7 +9,7 @@ Class: Zone
 
 About: Version
 
-    $Revision$ ($Date$)
+    $Revision$
 
 About: Author
 

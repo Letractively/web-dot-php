@@ -8,7 +8,7 @@ Class: Browser
 
 About: Version
 
-    $Revision$ ($Date$)
+    $Revision$
 
 About: Author
 
