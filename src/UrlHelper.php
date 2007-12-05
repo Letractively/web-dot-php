@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: UrlHelper
 
     Url helper for views.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

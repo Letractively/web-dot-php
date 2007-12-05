@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Layout
 
     View layout/decoration functionality.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

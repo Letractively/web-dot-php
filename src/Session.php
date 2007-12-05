@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Session
 
     Session management functionality.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

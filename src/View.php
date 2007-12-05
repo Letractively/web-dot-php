@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: View
 
     View functionality. Views are templates that are rendered to a browser.
     
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

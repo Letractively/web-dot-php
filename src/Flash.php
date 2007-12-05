@@ -1,5 +1,7 @@
 <?php
 /*
+$Id$
+
 Class: Flash
 
     Handles sessionwide variables. Used for example to notify the user about form action, ie.
@@ -7,7 +9,11 @@ Class: Flash
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

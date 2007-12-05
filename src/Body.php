@@ -1,5 +1,7 @@
 <?php
 /*
+$Id$
+
 Class: Body
 
     View body implementation, wraps content and attributes of a view to
@@ -7,7 +9,11 @@ Class: Body
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 
