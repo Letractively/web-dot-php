@@ -11,16 +11,4 @@ Our ultimate goal is to keep external dependencies at absolute minimum, but we h
 
 == List of external dependencies in web.php ==
 
-=== Web Class (Web.php) Dependencies ===
-
-==== Web::run method dependencies ====
-
-Currently none.
-
-==== Web::redirect method dependencies ====
-
-Currently none.
-
-=== View Class (Web.php) Dependencies ===
-
-Currently none.
+Currently none (except standard PHP, and some common PHP extensions).
