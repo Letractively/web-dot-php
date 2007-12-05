@@ -6,7 +6,7 @@ Class: Request
 
 About: Version
 
-    $Id: Request.php 201 2007-11-27 22:33:11Z aapo.laakkonen $
+    $Id$
 
 About: License
 
