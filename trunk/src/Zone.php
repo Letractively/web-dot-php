@@ -1,5 +1,7 @@
 <?php
 /*
+$Id$
+
 Class: Zone
 
     Zone class is used to define and render placeholders in views
@@ -7,7 +9,11 @@ Class: Zone
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

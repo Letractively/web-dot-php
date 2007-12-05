@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Web
 
     Manages controllers' execution.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

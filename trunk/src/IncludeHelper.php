@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: IncludeHelper
 
     Include helper for external view resources (eg. javascripts and stylesheets)
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

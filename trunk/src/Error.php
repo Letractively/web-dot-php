@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Error
 
     Error debugging functionality.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

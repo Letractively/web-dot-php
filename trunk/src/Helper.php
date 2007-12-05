@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Helper
 
     Helper retrieving and registration functionlity.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 

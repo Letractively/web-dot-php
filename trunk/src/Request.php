@@ -1,12 +1,18 @@
 <?php
 /*
+$Id$
+
 Class: Request
 
     HTTP request related functionlity.
 
 About: Version
 
-    $Id$
+    $Revision$ ($Date$)
+
+About: Author
+
+    $Author$
 
 About: License
 
