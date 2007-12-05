@@ -11,24 +11,26 @@
 
 == API Reference ==
 
-=== Core ===
+=== Core Classes ===
 
-  * [WebAPI Web.php API Reference]
-  * [RequestAPI Request.php API Reference]
-  * [ResponseAPI Response.php API Reference]
-  * [ViewAPI View.php API Reference]
-  * [BodyAPI Body.php API Reference]
-  * [LayoutAPI Layout.php API Reference]
-  * [ZoneAPI Zone.php API Reference]
-  * [HelperAPI Helper.php API Reference]
-  * [SessionAPI Session.php API Reference]
-  * [FlashAPI Flash.php API Reference]
-  * [ErrorAPI Error.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Web-php.html Web.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Request-php.html Request.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Browser-php.html Browser.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Session-php.html Session.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Flash-php.html Flash.php API Reference]
 
-=== Helpers ===
+=== Presentation Classes ===
 
-  * [UrlHelperAPI UrlHelper.php API Reference]
-  * [IncludeHelperAPI IncludeHelper.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/View-php.html View.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Body-php.html Body.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Layout-php.html Layout.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Zone-php.html Zone.php API Reference]
+
+=== Helper Classes ===
+
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/Helper-php.html Helper.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/UrlHelper-php.html UrlHelper.php API Reference]
+  * [http://web-dot-php.googlecode.com/svn/trunk/docs/files/IncludeHelper-php.html IncludeHelper.php API Reference]
 
 == Support ==
 
