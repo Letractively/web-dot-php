@@ -20,16 +20,21 @@ About: License
 */
 class UrlHelper {
 
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
-
     private function __construct() { }
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
+    /*
+    Function: url
+    
+		Url helper for views.
 
+    Parameters:
+
+        string $src    - Url of the link, path to the image, etc..
+
+    Examples:
+    
+		> <button type='submit'><img src='<?php echo $url('images/tick.png'); ?>' />Send!</img></button>
+    */
     public static function url($src) {
 
         $location = $src;
