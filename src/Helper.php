@@ -20,22 +20,26 @@ About: License
 */
 class Helper {
 
-    /* =======================================================================
-     * Properties
-     * ======================================================================= */
-
     private static $helpers = array();
-
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
 
     private function __construct() {}
 
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
+    /*
+    Function: register
 
+        Registers a helper.
+
+    Parameters:
+
+        string $key    - Name of the helper.
+        string $helper - This specifies which helper is to be registred.
+		boolean $echo  - 	
+
+    Examples:
+    
+    	> Helper::register('include', 'IncludeHelper');
+		> Helper::register('url', 'UrlHelper::url');
+   */
     public static function register($key, $helper = null, $echo = true) {
         if ($helper === null) {
             self::$helpers[$key] = array('helper' => $key, 'loaded' => false, 'echo' => $echo);
@@ -44,7 +48,20 @@ class Helper {
         }
 
     }
+    
+    /*
+    Function: import
+    
+		Imports a helper.
 
+    Parameters:
+
+        string $key    - Name of the helper used when registering it.
+
+    Examples:
+    
+		> $url = Helper::import('url');
+   */
     public static function import($key) {
 
         if (isset(self::$helpers[$key])) {
