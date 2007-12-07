@@ -20,25 +20,13 @@ About: License
 */
 class IncludeHelper {
 
-    /* =======================================================================
-     * Properties
-     * ======================================================================= */
-
     protected $javascripts;
     protected $stylesheets;
-
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
 
     public function __construct() {
         $this->javascripts = array();
         $this->stylesheets = array();
     }
-
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
 
     private function location($src) {
 
@@ -57,12 +45,41 @@ class IncludeHelper {
 
         return $location;
     }
+    
+    /*
+    Function: javascript
+    
+		Registers a javascript-file include.
 
+    Parameters:
+
+        string $src    - Path to the file.
+        string $before - Content before the actual <script>-tag. 
+        string $after  - Content after the actual </script>-tag.
+
+    Examples:
+    
+		> // We're assuming that you've imported the helper to $include
+		> echo $include->javascript('scripts/javascript.js');
+		> echo $include->javascript('scripts/pngfix.js', '<!--[if lt IE 7.]>', '<![endif]-->');
+    */
     public function javascript($src, $before = '', $after = '') {
         $this->javascripts[$src] = sprintf('%s<script type="text/javascript" src="%s"></script>%s', $before, self::location($src), $after);
         return $this->javascripts[$src];
     }
 
+    /*
+    Function: javascripts
+    
+		Goes through all registred javascript-files.
+
+    Examples:
+    
+		> // We're assuming that you've imported the helper to $include
+		> $include->javascript('scripts/javascript.js');
+		> $include->javascript('scripts/pngfix.js', '<!--[if lt IE 7.]>', '<![endif]-->');
+		> echo $include->javascripts();
+    */
     public function javascripts() {
 
         $space = '';
@@ -76,11 +93,43 @@ class IncludeHelper {
         }
     }
 
+    /*
+    Function: stylesheet
+    
+		Registers a css-file include.
+
+    Parameters:
+
+        string $src    - Path to the file.
+        string $media  - Media parameter of the <link .. />-tag. Defaults to 'screen, projection'
+        string $before - Content before the actual <link rel.. />-tag. 
+        string $after  - Content after the actual <link rel.. />-tag.
+
+    Examples:
+    
+		> // We're assuming that you've imported the helper to $include
+		> echo $include->stylesheet('css/screen.css');
+		> echo $include->stylesheet('css/ie.js', 'screen, projection', '<!--[if IE]>', '<![endif]-->');
+		> echo $include->stylesheet('css/print.css', 'print');
+    */
     public function stylesheet($src, $media = 'screen, projection', $before = '', $after = '') {
         $this->stylesheets[$src] = sprintf('%s<link rel="stylesheet" href="%s" type="text/css" media="%s" />%s', $before, self::location($src), $media, $after);
         return $this->stylesheets[$src];
     }
 
+    /*
+    Function: stylesheets
+    
+		Goes through all registred css-files.
+
+    Examples:
+    
+		> // We're assuming that you've imported the helper to $include
+		> $include->stylesheet('css/screen.css');
+		> $include->stylesheet('css/ie.js', 'screen, projection', '<!--[if IE]>', '<![endif]-->');
+		> $include->stylesheet('css/print.css', 'print');
+		> echo $include->stylesheets();
+    */
     public function stylesheets() {
 
         $space = '';
