@@ -101,7 +101,9 @@ class GoogleChart {
 
             } else {
 
-                $maxValue = (is_int($maxValue) === true) ? $maxValue : max($data);
+                if (is_int($maxValue) !== true) {
+                    $maxValue = max($data);
+                }
 
                 for($i=0; $i < $size; $i++) {
 
