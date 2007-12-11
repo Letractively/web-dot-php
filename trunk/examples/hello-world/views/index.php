@@ -8,5 +8,9 @@
 </head>
 <body>
     <?php echo $message ?>
+
+    <img src="<?php echo $chart ?>" />
+    <img src="<?php echo $chart2 ?>" />
+    
 </body>
 </html>
