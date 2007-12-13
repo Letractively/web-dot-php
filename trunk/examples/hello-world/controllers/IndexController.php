@@ -8,19 +8,42 @@ class IndexController {
             View::set('message', 'Hello, World!');
         }
 
-        $chart = new GoogleChart('200x125', array(10, 40, 1, 60), 'lc');
+        $chart = new GoogleChart('200x125', 'lc', 'text');
+        $chartUrl = $chart->addData(array(10, 40, 1, 60))->encode();
 
-        $chart2 = new GoogleChart(
-            '200x125',
-            array(
-                array(10, 40, 1, 60),
-                array(60, 1, 40, 10)
-            ),
-            'lc'
-        );
+        $chart = new GoogleChart('200x225', 'bhs', 'extended');
+        $chartUrl2 = $chart
+            ->addData(array(10, 40, 1, 61))
+            ->addColor('FF00FF')
+            ->addData(array(50, 11, 40, 0))
+            ->addColor('00FF00')
+            ->setMaxValue('automatic')
+            ->encode();
 
-        View::set('chart', $chart->buildUrl());
-        View::set('chart2', $chart2->buildUrl());
+        $chart = new GoogleChart('200x225', 'bhs', 'extended');
+        $chartUrl3 = $chart
+            ->addData(array(10, 40, 1, 61))
+            ->addColor('FF00FF')
+            ->addData(array(50, 11, 40, 0))
+            ->addColor('00FF00')
+            ->setMaxValue('automatic')
+            ->encode();
+
+        $chart = new GoogleChart('200x225', 'lc', 'extended');
+        $chartUrl4 = $chart
+            ->addData(array(10, 40, 5))
+            ->addColor('FF00FF')
+            ->addData(array(40, 30, 0))
+            ->addColor('00FF00')
+            ->addData(array(15, 22, 60))
+            ->addColor('0000FF')
+            ->setMaxValue('automatic')
+            ->encode();
+
+        View::set('chart', $chartUrl);
+        View::set('chart2', $chartUrl2);
+        View::set('chart3', $chartUrl3);
+        View::set('chart4', $chartUrl4);
 
         View::render('views/index.php', null, 'layouts/default.php');
      }
