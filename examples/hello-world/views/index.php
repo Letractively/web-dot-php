@@ -11,6 +11,8 @@
 
     <img src="<?php echo $chart ?>" />
     <img src="<?php echo $chart2 ?>" />
+    <img src="<?php echo $chart3 ?>" />
+    <img src="<?php echo $chart4 ?>" />
     
 </body>
 </html>
