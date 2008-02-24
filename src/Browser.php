@@ -77,7 +77,6 @@ class Browser {
         }
 
         header('Location: ' . $location);
-        exit;
     }
 
     /*

@@ -37,10 +37,6 @@ class Web {
         true  - if a route was found.
         false - if a route was not found. 
 
-    See also:
-        <execute>,
-        <forward>
-
     Example:
 
         > Web::run(array(
@@ -70,10 +66,37 @@ class Web {
 
         if ($matchfound) {
 
+            $arguments = null;
+
             if (count($matches) > 1) {
-                self::execute($controller, array_slice($matches, 1));
+                $arguments = array_slice($matches, 1);
+            }
+
+            $method = $_SERVER['REQUEST_METHOD'];
+            $static = false;
+
+            if (strpos($controller, '::') !== false) {
+                $static = true;
+                $controller = explode('::', $controller, 2);
+                $method = $controller[1];
+                $controller = $controller[0];
+            } else if (strpos($controller, '->') !== false) {
+                $controller = explode('->', $controller, 2);
+                $method = $controller[1];
+                $controller = $controller[0];
+            }
+
+            if (!$static) {
+                $controller = new ReflectionClass($controller);
+                $controller = $controller->newInstance();
+            }
+
+            $method = new ReflectionMethod($controller, $method);
+
+            if ($arguments !== null) {
+                $method->invokeArgs($controller, $arguments);
             } else {
-                self::execute($controller);
+                $method->invoke($controller);
             }
 
             return true;
@@ -81,98 +104,5 @@ class Web {
         } else {
             return false;
         }
-    }
-
-    /*
-    Function: execute
-
-        Executes a controller method using reflection.
-
-    Parameters:
-
-        string $controller - Controller and (optionally) a method.
-         mixed $arguments  - Method arguments.
-
-    Returns:
-
-        No value is returned.
-
-    See also:
-        <forward>,
-        <Browser::redirect>
-
-    Examples:
-
-        > Web::execute('IndexController');
-        > Web::execute('IndexController::index');
-        > Web::execute('IndexController->echoArgs', array('Hello, ', 'World!'));
-        > Web::execute('BlogController->viewPost', 1);
-        >
-        > // Normally you should use controllers directly:
-        >
-        > IndexController::index();
-        >
-        > $ctl = new IndexController();
-        > $ctl->echoArgs('Hello, ', 'World!');
-    */
-    public static function execute($controller, $arguments = null) {
-
-        $method = $_SERVER['REQUEST_METHOD'];
-        $static = false;
-
-        if (strpos($controller, '::') !== false) {
-            $static = true;
-            $controller = explode('::', $controller, 2);
-            $method = $controller[1];
-            $controller = $controller[0];
-        } else if (strpos($controller, '->') !== false) {
-            $controller = explode('->', $controller, 2);
-            $method = $controller[1];
-            $controller = $controller[0];
-        }
-
-        if (!$static) {
-            $controller = new ReflectionClass($controller);
-            $controller = $controller->newInstance();
-        }
-
-        $method = new ReflectionMethod($controller, $method);
-
-        if ($arguments !== null) {
-            if (is_array($arguments)) {
-                $method->invokeArgs($controller, $arguments);
-            } else {
-                $method->invokeArgs($controller, array($arguments));            
-            }
-        } else {
-            $method->invoke($controller);
-        }
-    }
-
-    /*
-    Function: forward
-
-        Forwards to a controller method and terminates.
-
-    Parameters:
-
-        string $controller - Controller and (optionally) a method.
-         mixed $arguments  - Method arguments.
-
-    Returns:
-
-        No value is returned.
-
-    See also:
-        <execute>,
-        <Browser::redirect>
-
-    Examples:
-
-        See <execute> examples.
-    */
-    public static function forward($controller, $arguments = null) {
-        self::execute($controller, $arguments);
-        exit;
     }
 }
