@@ -164,7 +164,8 @@ class Error {
             $j++;
         }
 
-        View::render('views/error.php', $error);
+        Layout::set(null);
+        View::render('views/error.phtml', $error);
 
         die;
     }
@@ -253,7 +254,8 @@ class Error {
             $j++;
         }
 
-        View::render('views/error.php', $error);
+        Layout::set(null);
+        View::render('views/error.phtml', $error);
 
         die;
     }

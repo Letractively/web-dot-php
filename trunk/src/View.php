@@ -168,23 +168,20 @@ class View {
 
         $view   - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
         $data   - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
-        $layout - Path to the layout file that wraps the view (if wanted). Defaults to null.
 
     Examples:
         
-        >  // Render a view with a variable and a layout
-        >  View::render('views/view.php', array('variable' => $variable), 'layouts/default.php');
+        >  // Render a view with a variable
+        >  View::render('views/view.php', array('variable' => $variable));
 
     */
-    public static function render($view = null, $data = null, $layout = null) {
+    public static function render($view = null, $data = null) {
 
         if ($view === null) {
             $view = self::get();
         }
 
-        if ($layout === null) {
-            $layout = Layout::get();
-        }
+        $layout = Layout::get();
 
         if ($data !== null && is_array($data)) {
             $data = array_merge(self::$data, $data);
@@ -196,7 +193,10 @@ class View {
 
         if ($view !== null) {
 
-            $isphp = ((stristr(substr($view, -4), '.php')) === false) ? false : true;
+            $ext = pathinfo($view);
+            $ext = $ext['extension'];
+
+            $isphp = ($ext === 'php' || $ext === 'phtml') ? true : false;
 
             extract($data);
 
