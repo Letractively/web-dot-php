@@ -230,7 +230,7 @@ class Error {
             $error['backtrace'][$j]['file'] = $file;
             $error['backtrace'][$j]['args'] = $args;
             $error['backtrace'][$j]['code'] = '';
-
+            
             // TODO: Shitty Code, Cleanup Needed
             if (is_readable($file)) {
                 $lines = file($file);
