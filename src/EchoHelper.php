@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: EchoHelper
@@ -17,12 +17,12 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class EchoHelper {
 
-    private function __construct() { }
+    private function __construct() {}
 
-    /*
+    /**
     Function: echo
 
 		Echo helper for views using htmlspecialchars.
@@ -34,7 +34,7 @@ class EchoHelper {
     Examples:
 
 		> <?php $e('<html> <- with entities'); ?>
-    */
+     */
     public static function e($string) {
         echo htmlspecialchars($string);
     }

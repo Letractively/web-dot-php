@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: Flash
@@ -18,13 +18,12 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class Flash {
 
     private function __construct() {}
 
-
-    /*
+    /**
     Function: set
 
         Sets a session variable.
@@ -49,23 +48,22 @@ class Flash {
         >   echo "<div class='notice'>" . Flash::get('reminder') . "</div>";
         > endif;
 
-    */
-
+     */
     public static function set($key, $value, $hops = 1) {
         if (self::has()) {
             $flashes = self::get();
         } else {
             $flashes = array();
         }
-
+        
         $flashes[$key] = array();
         $flashes[$key]['value'] = $value;
         $flashes[$key]['hops'] = $hops;
-
+        
         Session::set('urn:web.php:flash', $flashes);
     }
 
-    /*
+    /**
     Function: get
 
         Returns the specified session variable, if one is set.
@@ -90,7 +88,7 @@ class Flash {
         > if (Flash::has('reminder')) {
         >     $reminder = Flash::get('reminder');
         > }
-    */
+     */
     public static function get($key = null) {
         if ($key === null) {
             return Session::get('urn:web.php:flash');
@@ -102,7 +100,7 @@ class Flash {
         }
     }
 
-    /*
+    /**
     Function: has
         
         Checks whether a session variable by this name is set.
@@ -130,7 +128,7 @@ class Flash {
         > } else {
         >    echo "I haven't been reminded.";
         > }
-    */
+     */
     public static function has($key = null) {
         if ($key === null) {
             return (Session::has('urn:web.php:flash'));
@@ -142,7 +140,7 @@ class Flash {
         }
     }
 
-    /*
+    /**
     Function: remove
 
         Removes the specified session variable.
@@ -165,14 +163,14 @@ class Flash {
         >    // one reminder is enough
         >    Flash::remove('reminder');
         > }
-    */
+     */
     public static function remove($key = null) {
         if ($key === null) {
             Session::remove('urn:web.php:flash');
         } else {
-
+            
             $flashes = self::get();
-
+            
             if (isset($flashes[$key])) {
                 unset($flashes[$key]);
                 Session::set('urn:web.php:flash', $flashes);
@@ -180,7 +178,7 @@ class Flash {
         }
     }
 
-    /*
+    /**
     Function: shutdown
 
         Counts the remaining hops?
@@ -192,26 +190,25 @@ class Flash {
         <has>,
         <remove>
 
-    */
-
+     */
     public static function shutdown() {
-
+        
         if (self::has()) {
-
+            
             $flashes = self::get();
-
+            
             foreach ($flashes as $key => $flash) {
-
+                
                 --$flash['hops'];
-
+                
                 if ($flash['hops'] < 0) {
                     unset($flashes[$key]);
                 } else {
                     $flashes[$key] = $flash;
                 }
-
+            
             }
-
+            
             if (count($flashes) > 0) {
                 Session::set('urn:web.php:flash', $flashes);
             } else {

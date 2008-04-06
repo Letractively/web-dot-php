@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: Request
@@ -17,13 +17,12 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class Request {
 
     private function __construct() {}
 
-
-    /*
+    /**
     Function: isPost
 
         Tells whether HTTP request method is POST
@@ -44,12 +43,12 @@ class Request {
         > if (Request::isPost()) {
         >    // this is a POST request
         > } 
-    */
+     */
     public static function isPost() {
         return ($_SERVER['REQUEST_METHOD'] === 'POST');
     }
 
-    /*
+    /**
     Function: isGet
 
         Tells whether HTTP request method is GET
@@ -70,12 +69,12 @@ class Request {
         > if (Request::isGet()) {
         >     // this is a GET request
         > }
-    */
+     */
     public static function isGet() {
         return ($_SERVER['REQUEST_METHOD'] === 'GET');
     }
 
-    /*
+    /**
     Function: isAjax
 
         Tells whether HTTP request is made with XMLHttpRequest  
@@ -96,7 +95,7 @@ class Request {
         > if (Request::isAjax()) {
         >    // the request is made with XMLHttpRequest
         > }
-    */
+     */
     public static function isAjax() {
         return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest');
     }

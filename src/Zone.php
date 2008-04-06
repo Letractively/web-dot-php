@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: Zone
@@ -18,14 +18,15 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class Zone {
 
     private function __construct() {}
+    
     private static $zones = array();
     private static $zone = null;
 
-    /*
+    /**
     Function: write
 
         Opens a zone for writing.
@@ -48,21 +49,23 @@ class Zone {
 
     Example:
 
-        > Zone::write('left-zone');
-    */
+        > <?php Zone::write('left-zone'); ?>
+        > This is <strong>the</strong> left-zone.
+        > <?php Zone::flush(); ?>
+     */
     public static function write($zone) {
-
+        
         self::$zone = $zone;
-
+        
         if (!isset(self::$zones[$zone])) {
             self::$zones[$zone] = array();
         }
-
+        
         array_push(self::$zones[$zone], null);
         return ob_start();
     }
 
-    /*
+    /**
     Function: flush
 
         Flushes previous write buffer and stores it's data,
@@ -85,19 +88,22 @@ class Zone {
 
     Example:
 
-        > Zone::flush();
-    */
-    public static function flush() {
+        > <?php Zone::write('left-zone'); ?>
+        > This is <strong>the</strong> left-zone.
+        > <?php Zone::flush(); ?>
 
+     */
+    public static function flush() {
+        
         if (self::$zone !== null) {
             array_pop(self::$zones[self::$zone]);
             array_push(self::$zones[self::$zone], ob_get_clean());
             self::$zone = null;
         }
-        
+    
     }
 
-    /*
+    /**
     Function: render
 
         Renders a zone.
@@ -123,17 +129,17 @@ class Zone {
         > <?php if (!Zone::render('left-zone')): ?>
         > Default content.
         > <?php endif; ?>
-    */
+     */
     public static function render($zone) {
-
+        
         if (isset(self::$zones[$zone]) && count(self::$zones[$zone]) > 0) {
-
+            
             while (($data = array_shift(self::$zones[$zone])) != null) {
                 echo $data;
             }
-
+            
             return true;
-
+        
         } else {
             return false;
         }

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: View
@@ -17,16 +17,21 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class View {
-
+    
     private static $view = null;
     private static $data = array();
-
+    
     public $title = null;
     public $body = null;
-
-    /*
+    
+    private static function reset() {
+        self::$view = null;
+        self::$data = array();
+    }
+    
+    /**
     Contruct: __contruct
 
         Instantiates a new view object.
@@ -35,13 +40,13 @@ class View {
 
         string $body  - Textual body representation.
         string $title - Textual title representation, optional and defaults to null.
-    */
+     */
     public function __construct($body, $title = null) {
         $this->body = $body;
         $this->title = $title;
     }
 
-    /*
+    /**
     Function: set
 
         Sets a view to be rendered or a view variable identified by key.
@@ -71,16 +76,16 @@ class View {
         > // And this is how to set a view that is rendered with render():
         >
         > View::set('views/display-user.php');
-    */
+     */
     public static function set($key, $value = null) {
         if ($value === null) {
-            self::$view = $key;            
+            self::$view = $key;
         } else {
             self::$data[$key] = $value;
         }
     }
 
-    /*
+    /**
     Function: get
 
         Gets a view to be rendered or a value identified by a key.
@@ -108,16 +113,16 @@ class View {
         > // If you need to get a variable identified by a key, use this syntax:
         >
         > $user = View::get('user');
-    */
+     */
     public static function get($key = null) {
         if ($key === null) {
             return self::$view;
         } else {
-            return (isset(self::$data[$key])) ? self::$data[$key] : null; 
+            return (isset(self::$data[$key])) ? self::$data[$key] : null;
         }
     }
 
-    /*
+    /**
     Function: has
 
         Checks wheter a key has a value.
@@ -150,7 +155,7 @@ class View {
         > if (!View::has('user')) {
         >     View::set('user', new User('John', 'Doe'));
         > }
-    */
+     */
     public static function has($key = null) {
         if ($key === null) {
             return (isset(self::$view));
@@ -159,7 +164,7 @@ class View {
         }
     }
 
-    /*
+    /**
     Function: render
 
         Renders the view.
@@ -169,39 +174,43 @@ class View {
         $view   - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
         $data   - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
 
+    Returns:
+
+        No value is returned.
+
     Examples:
         
         >  // Render a view with a variable
         >  View::render('views/view.php', array('variable' => $variable));
 
-    */
+     */
     public static function render($view = null, $data = null) {
-
+        
         if ($view === null) {
             $view = self::get();
         }
-
+        
         $layout = Layout::get();
-
+        
         if ($data !== null && is_array($data)) {
             $data = array_merge(self::$data, $data);
         } else {
             $data = self::$data;
         }
-
+        
         self::reset();
-
+        
         if ($view !== null) {
-
+            
             $ext = pathinfo($view);
             $ext = $ext['extension'];
-
+            
             $isphp = ($ext === 'php' || $ext === 'phtml') ? true : false;
-
+            
             extract($data);
-
+            
             if ($layout !== null) {
-
+                
                 if ($isphp) {
                     ob_start();
                     require $view;
@@ -209,43 +218,38 @@ class View {
                 } else {
                     $view = file_get_contents($view);
                 }
-
+                
                 $body = new Body();
-
-                if (preg_match('#<body\b([^>]*)>(.*?)</body>#si', $view, $bodymatches) !== 0)
-                {
+                $bodymatches = array();
+                
+                if (preg_match('#<body\b([^>]*)>(.*?)</body>#si', $view, $bodymatches) !== 0) {
+                    $attributematches = array();
                     $body[] = (isset($bodymatches[2])) ? $bodymatches[2] : '';
-
-                    if (preg_match_all(
-                        '#(\w+)="([^"].*?)"#s',
-                        $bodymatches[1],
-                        $attributematches,
-                        PREG_PATTERN_ORDER) !== 0) {
-
+                    
+                    if (preg_match_all('#(\w+)="([^"].*?)"#s', $bodymatches[1], $attributematches, PREG_PATTERN_ORDER) !== 0) {
+                        
                         $count = count($attributematches[0]);
-
-                        for($i = 0; $i < $count; $i++) {
-                            $body[$attributematches[1][$i]] = $attributematches[2][$i]; 
-                        }
-                    }
-
-                    if (preg_match_all(
-                        "#(\w+)='([^'].*?)'#s",
-                        $bodymatches[1],
-                        $attributematches,
-                        PREG_PATTERN_ORDER) !== 0) {
-
-                        $count = count($attributematches[0]);
-
+                        
                         for($i = 0; $i < $count; $i++) {
                             $body[$attributematches[1][$i]] = $attributematches[2][$i];
                         }
                     }
-
+                    
+                    if (preg_match_all("#(\\w+)='([^'].*?)'#s", $bodymatches[1], $attributematches, PREG_PATTERN_ORDER) !== 0) {
+                        
+                        $count = count($attributematches[0]);
+                        
+                        for($i = 0; $i < $count; $i++) {
+                            $body[$attributematches[1][$i]] = $attributematches[2][$i];
+                        }
+                    }
+                
                 } else {
                     $body[] = $view;
                 }
-
+                
+                $titlematches = array();
+                
                 if (preg_match('#<title\b[^>]*>(.*?)</title>#si', $view, $titlematches) !== 0) {
                     $view = new View($body, $titlematches[1]);
                 } else {
@@ -253,7 +257,7 @@ class View {
                 }
                 
                 Layout::decorate($view, $layout);
-                
+            
             } else {
                 if ($isphp) {
                     require $view;
@@ -262,16 +266,5 @@ class View {
                 }
             }
         }
-    }
-
-    /*
-    Function: reset
-
-        Resets the view.
-
-    */
-    private static function reset() {
-        self::$view = null;
-        self::$data = array();
     }
 }

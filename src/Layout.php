@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: Layout
@@ -17,26 +17,22 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class Layout {
 
-    /* =======================================================================
-     * Constructors
-     * ======================================================================= */
-
     private function __construct() {}
-
-    /* =======================================================================
-     * Properties
-     * ======================================================================= */
-
+    
     private static $layout = null;
     private static $data = array();
-
-    /* =======================================================================
-     * Methods
-     * ======================================================================= */
-
+    
+    private static function reset() {
+        self::$layout = null;
+        self::$data = array();
+    }
+    
+    /**
+    Function set
+     */
     public static function set($key, $value = null) {
         if ($value === null) {
             self::$layout = $key;
@@ -45,6 +41,9 @@ class Layout {
         }
     }
 
+    /**
+    Function get
+     */
     public static function get($key = null) {
         if ($key === null) {
             return self::$layout;
@@ -53,28 +52,29 @@ class Layout {
         }
     }
 
+    /**
+    Function has
+     */
     public static function has($key) {
         return (isset(self::$data[$key]));
     }
 
+    /**
+    Function decorate
+     */
     public static function decorate($view, $layout = null) {
-
+        
         if ($layout === null) {
             $layout = self::get();
         }
-
+        
         if ($layout !== null) {
             extract(array_merge(self::$data, array('view' => $view)));
             require $layout;
         } else if ($view->body !== null) {
             echo $view->body;
         }
-
+        
         self::reset();
-    }
-
-    private static function reset() {
-        self::$layout = null;
-        self::$data = array();
     }
 }

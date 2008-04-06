@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 $Id$
 
 Class: Web
@@ -17,12 +17,12 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
-*/
+ */
 class Web {
 
     private function __construct() {}
 
-    /*
+    /**
     Function: run
 
         Compares route against user supplied urls and executes appropriate
@@ -45,36 +45,42 @@ class Web {
         >     '/blog/posts' => 'BlogController->viewPosts',
         >     '/blog/posts/(\d+) => 'BlogController->viewPost'
         > ));
-    */
+     */
     public static function run($urls) {
-
+        
         $matches = array();
         $matchfound = false;
-
-        foreach ($urls as $pattern => $controller) {
-
-            $route = (isset($_GET['__route__'])) ? '/'. $_GET['__route__'] : '/';
-
-            $regex = '#^' . $pattern . '$#i';
-
-            if (preg_match($regex, $route, $matches) > 0) {
-
-                $matchfound = true;
-                break;
+        
+        if (is_array($urls)) {
+            
+            foreach ($urls as $pattern => $controller) {
+                
+                $route = (isset($_GET['__route__'])) ? '/' . $_GET['__route__'] : '/';
+                
+                $regex = '#^' . $pattern . '$#i';
+                
+                if (preg_match($regex, $route, $matches) > 0) {
+                    $matchfound = true;
+                    break;
+                }
             }
+        } else if (is_string($urls)) {
+            $matchfound = true;
+            $matches = array();
+            $controller = $urls;
         }
-
+        
         if ($matchfound) {
-
+            
             $arguments = null;
-
+            
             if (count($matches) > 1) {
                 $arguments = array_slice($matches, 1);
             }
-
+            
             $method = $_SERVER['REQUEST_METHOD'];
             $static = false;
-
+            
             if (strpos($controller, '::') !== false) {
                 $static = true;
                 $controller = explode('::', $controller, 2);
@@ -85,22 +91,22 @@ class Web {
                 $method = $controller[1];
                 $controller = $controller[0];
             }
-
+            
             if (!$static) {
                 $controller = new ReflectionClass($controller);
                 $controller = $controller->newInstance();
             }
-
+            
             $method = new ReflectionMethod($controller, $method);
-
+            
             if ($arguments !== null) {
                 $method->invokeArgs($controller, $arguments);
             } else {
                 $method->invoke($controller);
             }
-
-            return true;
             
+            return true;
+        
         } else {
             return false;
         }
