@@ -152,7 +152,7 @@ class Error {
             $j++;
         }
         
-        render($error);
+        self::render($error);
         die();
     }
 

@@ -62,16 +62,7 @@ class Browser {
             if (strpos($url, '/') === 0) {
                 $location .= $url;
             } else {
-                
-                $path = trim(dirname($_SERVER['SCRIPT_NAME']), '\,/');
-                
-                if (strlen($path) > 0) {
-                    $path = '/' . $path . '/';
-                } else {
-                    $path = '/';
-                }
-                
-                $location .= $path . $url;
+                $location .= BASEURL . $url;
             }
         }
         

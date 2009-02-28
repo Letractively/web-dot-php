@@ -1,50 +1,9 @@
 <?php
 class IndexController {
-     function GET() {
-     
-        if (Browser::isMobile()) {
-            View::set('message', 'Hello, Mobile World!');
-        } else {
-            View::set('message', 'Hello, World!');
-        }
-
-        $chart = new GoogleChart('200x125', 'lc', 'text');
-        $chartUrl = $chart->addData(array(10, 40, 1, 60))->encode();
-
-        $chart = new GoogleChart('200x225', 'bhs', 'extended');
-        $chartUrl2 = $chart
-            ->addData(array(10, 40, 1, 61))
-            ->addColor('FF00FF')
-            ->addData(array(50, 11, 40, 0))
-            ->addColor('00FF00')
-            ->setMaxValue('automatic')
-            ->encode();
-
-        $chart = new GoogleChart('200x225', 'bhs', 'extended');
-        $chartUrl3 = $chart
-            ->addData(array(10, 40, 1, 61))
-            ->addColor('FF00FF')
-            ->addData(array(50, 11, 40, 0))
-            ->addColor('00FF00')
-            ->setMaxValue('automatic')
-            ->encode();
-
-        $chart = new GoogleChart('200x225', 'lc', 'extended');
-        $chartUrl4 = $chart
-            ->addData(array(10, 40, 5))
-            ->addColor('FF00FF')
-            ->addData(array(40, 30, 0))
-            ->addColor('00FF00')
-            ->addData(array(15, 22, 60))
-            ->addColor('0000FF')
-            ->setMaxValue('automatic')
-            ->encode();
-
-        View::set('chart', $chartUrl);
-        View::set('chart2', $chartUrl2);
-        View::set('chart3', $chartUrl3);
-        View::set('chart4', $chartUrl4);
-
-        View::render('views/index.php', null, 'layouts/default.php');
-     }
+    public function index() {
+        $view = new View('views/index.phtml');
+        $view->header = 'Lorem Ipsum';
+        $view->body = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+        $view->render();
+    }
 }

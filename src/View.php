@@ -18,253 +18,185 @@ About: License
 
     This file is licensed under the MIT.
  */
-class View {
+class View implements Iterator {
+
+    private $_file;
+    private $_view;
+    private $_data;
+    private $_output;
+    private $_parsed;
+    private $_iterator;
     
-    private static $view = null;
-    private static $data = array();
-    
-    public $title = null;
-    public $body = null;
-    
-    private static function reset() {
-        self::$view = null;
-        self::$data = array();
-    }
-    
-    /**
-    Contruct: __contruct
-
-        Instantiates a new view object.
-
-    Parameters:
-
-        string $body  - Textual body representation.
-        string $title - Textual title representation, optional and defaults to null.
-     */
-    public function __construct($body, $title = null) {
-        $this->body = $body;
-        $this->title = $title;
+    public function __construct($file, $view = null) {
+        $this->_file = $file;
+        $this->_data = array();
+        $this->_output = '';
+        $this->_parsed = false;
+        $this->_view = $view;
     }
 
-    /**
-    Function: set
-
-        Sets a view to be rendered or a view variable identified by key.
-
-    Parameters:
-
-        $key   - If value is omitted,  $key is a view to be rendered, otherwise
-                 this is an identifier for a view variable defined by value.
-        $value - Value of a view variable, optional and defaults to null.
-
-    Returns:
-
-        No value is returned.
-
-    See also:
-
-        <get>,
-        <has>,
-        <render>
-
-    Examples:
-
-        > // This is how to set a view variable ($user):
-        >
-        > View::set('user', new User('John', 'Doe'));
-        >
-        > // And this is how to set a view that is rendered with render():
-        >
-        > View::set('views/display-user.php');
-     */
-    public static function set($key, $value = null) {
-        if ($value === null) {
-            self::$view = $key;
-        } else {
-            self::$data[$key] = $value;
-        }
+    public function rewind() {
+        $this->_iterator = $this;
     }
 
-    /**
-    Function: get
-
-        Gets a view to be rendered or a value identified by a key.
-
-    Parameters:
-
-        $key - Key of the value we're getting, optional and defaults to null.
-
-    Returns:
-
-        A view to be rendered or an associated value for a key, or null.
-
-    See also:
-
-        <get>,
-        <has>,
-        <render>
-
-    Examples:
-
-        > // This is how to get a view to be rendered:
-        >
-        > $view = View::get();
-        >
-        > // If you need to get a variable identified by a key, use this syntax:
-        >
-        > $user = View::get('user');
-     */
-    public static function get($key = null) {
-        if ($key === null) {
-            return self::$view;
-        } else {
-            return (isset(self::$data[$key])) ? self::$data[$key] : null;
-        }
+    public function current() {
+        return $this->_iterator;
     }
 
-    /**
-    Function: has
-
-        Checks wheter a key has a value.
-
-    Parameters:
-
-        $key - Key for a value we're trying to check, optional and defaults to null.
-
-    Returns:
-
-        true  - if a view is defined or a value identified with key exists.
-        false - if none of the above is true.
-
-    See also:
-
-        <get>,
-        <has>,
-        <render>
-
-    Examples:
-
-        > // Let's see if a view is defined:
-        >
-        > if (!View::has()) {
-        >     View::set('views/display-user.php');
-        > }
-        >
-        > // Let's see if a view variable is defined:
-        >
-        > if (!View::has('user')) {
-        >     View::set('user', new User('John', 'Doe'));
-        > }
-     */
-    public static function has($key = null) {
-        if ($key === null) {
-            return (isset(self::$view));
-        } else {
-            return (isset(self::$data[$key]));
-        }
+    public function key() {
+        return $this->_iterator->_file;
     }
 
-    /**
-    Function: render
+    public function next() {
+        $this->_iterator = $this->_iterator->_view;
+    }
 
-        Renders the view.
+    public function valid() {
+        return isset($this->_iterator);
+    }
 
-    Parameters:
-
-        $view   - Path to the view file to be rendered, eg. (views/filename.php), defaults to null.
-        $data   - Data to be passed to the actual view. Type Array, eg. array('key' => 'value'), defaults to null.
-
-    Returns:
-
-        No value is returned.
-
-    Examples:
-        
-        >  // Render a view with a variable
-        >  View::render('views/view.php', array('variable' => $variable));
-
-     */
-    public static function render($view = null, $data = null) {
-        
-        if ($view === null) {
-            $view = self::get();
+    public function title($separator = ' &lt; ') {
+        $titles = array();
+        foreach ($this as $view) {
+            if (!isset($view->title)) continue;
+            array_unshift($titles, $view->title);
         }
-        
-        $layout = Layout::get();
-        
-        if ($data !== null && is_array($data)) {
-            $data = array_merge(self::$data, $data);
-        } else {
-            $data = self::$data;
-        }
-        
-        self::reset();
-        
-        if ($view !== null) {
-            
-            $ext = pathinfo($view);
-            $ext = $ext['extension'];
-            
-            $isphp = ($ext === 'php' || $ext === 'phtml') ? true : false;
-            
-            extract($data);
-            
-            if ($layout !== null) {
-                
-                if ($isphp) {
-                    ob_start();
-                    require $view;
-                    $view = ob_get_clean();
-                } else {
-                    $view = file_get_contents($view);
-                }
-                
-                $body = new Body();
-                $bodymatches = array();
-                
-                if (preg_match('#<body\b([^>]*)>(.*?)</body>#si', $view, $bodymatches) !== 0) {
-                    $attributematches = array();
-                    $body[] = (isset($bodymatches[2])) ? $bodymatches[2] : '';
-                    
-                    if (preg_match_all('#(\w+)="([^"].*?)"#s', $bodymatches[1], $attributematches, PREG_PATTERN_ORDER) !== 0) {
-                        
-                        $count = count($attributematches[0]);
-                        
-                        for($i = 0; $i < $count; $i++) {
-                            $body[$attributematches[1][$i]] = $attributematches[2][$i];
-                        }
-                    }
-                    
-                    if (preg_match_all("#(\\w+)='([^'].*?)'#s", $bodymatches[1], $attributematches, PREG_PATTERN_ORDER) !== 0) {
-                        
-                        $count = count($attributematches[0]);
-                        
-                        for($i = 0; $i < $count; $i++) {
-                            $body[$attributematches[1][$i]] = $attributematches[2][$i];
-                        }
-                    }
-                
-                } else {
-                    $body[] = $view;
-                }
-                
-                $titlematches = array();
-                
-                if (preg_match('#<title\b[^>]*>(.*?)</title>#si', $view, $titlematches) !== 0) {
-                    $view = new View($body, $titlematches[1]);
-                } else {
-                    $view = new View($body);
-                }
-                
-                Layout::decorate($view, $layout);
-            
-            } else {
-                if ($isphp) {
-                    require $view;
-                } else {
-                    readfile($view);
-                }
+        echo implode($separator, $titles);
+    }
+
+    public function content() {
+        echo $this->_view;
+    }
+
+    public static function url($src) {
+        echo View::src($src);
+    }
+
+    public static function src($src) {
+        return ((parse_url($src, PHP_URL_SCHEME) == null) && (strpos($src, '/') !== 0)) ? substr($_SERVER['SCRIPT_NAME'], 0, -9) . $src : $src;
+    }
+
+    public static function javascript($src) {
+        printf("<script type=\"text/javascript\" src=\"%s\"></script>%s", View::src($src), PHP_EOL);
+    }
+
+    public function javascripts() {
+
+        $javascripts = array();
+
+        foreach ($this as $view) {
+
+            if (!isset($view->javascripts)) continue;
+
+            $js = $view->javascripts;
+
+            if (!is_array($js)) $js = array($js);
+
+            foreach ($js as $javascript) {
+                $url = $this->src($javascript);
+                if (in_array($url, $javascripts)) continue;
+                $javascripts[] = $url;
             }
         }
+
+        array_walk($javascripts, 'View::javascript');
+    }
+
+    public static function stylesheet($src) {
+        printf("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" />%s", View::src($src), PHP_EOL);
+    }
+
+    public function stylesheets() {
+
+        $stylesheets = array();
+
+        foreach ($this as $view) {
+
+            if (!isset($view->stylesheets)) continue;
+
+            $css = $view->stylesheets;
+
+            if (!is_array($css)) $css = array($css);
+
+            foreach ($css as $stylesheet) {
+                $url = $this->src($stylesheet);
+                if (in_array($url, $stylesheets)) continue;
+                $stylesheets[] = $url;
+            }
+        }
+
+        array_walk($stylesheets, 'View::stylesheet');
+    }
+
+    public function embeds($section = null) {
+
+        static $currentSection = null;
+
+        if ($section != null) {
+            foreach($this as $view) {
+                $hide = $view->hide;
+                if (!isset($hide)) continue;
+                $hidden = (is_array($hide)) ? in_array($section, $hide) : $section == $hide;
+                if ($hidden) return false;
+            }
+            $currentSection = $section;
+            return true;
+        }
+
+        if ($currentSection == null) return;
+
+        $embedded = array();
+        
+        foreach($this as $view) {
+            $embeds = $view->embeds;
+            if (!is_array($embeds) || !array_key_exists($currentSection, $embeds)) continue;
+            $file = $embeds[$currentSection];
+            if (in_array($file, $embedded)) continue;
+            $embedded[] = $file;
+            Web::run($file);
+        }
+
+        $currentSection = null;
+    }
+
+    public function __set($key, $value) {
+        $this->_data[$key] = $value;
+    }
+
+    public function __get($key) {
+        return (array_key_exists($key, $this->_data)) ? $this->_data[$key] : null;
+    }
+
+    public function __isset($key) {
+        return isset($this->_data[$key]);
+    }
+
+    public function __unset($key) {
+        unset($this->_data[$key]);
+    }
+
+    public function __toString() {
+        if ($this->_parsed) return $this->_output;
+        ob_start();
+        extract($this->_data);
+        require $this->_file;
+        $this->_parsed = true;
+        return $this->_output = ob_get_clean();
+    }
+
+    public function render() {
+        $output = $this->__toString();
+        if ($this->layout == null) {
+            echo $output;
+        } else {
+            $view = new View($this->layout, $this);
+            $view->render();
+        }
+    }
+
+    public function parse() {
+        ob_start();
+        $this->render();
+        return ob_get_clean();
     }
 }

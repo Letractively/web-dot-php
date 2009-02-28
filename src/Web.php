@@ -30,85 +30,57 @@ class Web {
 
     Parameters:
 
-        array $urls - Associative URL array containing acceptable routes.
+        mixed $urls - Associative URL array containing acceptable routes or
+                      a string that defines function, method or php file.
+
 
     Returns:
 
-        true  - if a route was found.
-        false - if a route was not found. 
+        mixed - whatever your function, method or php file returns.
 
     Example:
 
-        > Web::run(array(
-        >     '/' => 'IndexController',
-        >     '/home' => 'IndexController::GET',
-        >     '/blog/posts' => 'BlogController->viewPosts',
-        >     '/blog/posts/(\d+) => 'BlogController->viewPost'
-        > ));
+        > // Uses require to include 404.php (if exists):
+        > Web::run('404.php');
      */
-    public static function run($urls) {
-        
-        $matches = array();
-        $matchfound = false;
-        
-        if (is_array($urls)) {
-            
-            foreach ($urls as $pattern => $controller) {
-                
-                $route = (isset($_GET['__route__'])) ? '/' . $_GET['__route__'] : '/';
-                
-                $regex = '#^' . $pattern . '$#i';
-                
-                if (preg_match($regex, $route, $matches) > 0) {
-                    $matchfound = true;
-                    break;
-                }
-            }
-        } else if (is_string($urls)) {
-            $matchfound = true;
-            $matches = array();
-            $controller = $urls;
+    public static function run($route, $args = null) {
+
+        if (is_array($route) && $args == null) list($route, $args) = $route;
+
+        if (file_exists($route)) {
+            return require $route;
         }
-        
-        if ($matchfound) {
-            
-            $arguments = null;
-            
-            if (count($matches) > 1) {
-                $arguments = array_slice($matches, 1);
-            }
-            
-            $method = $_SERVER['REQUEST_METHOD'];
-            $static = false;
-            
-            if (strpos($controller, '::') !== false) {
-                $static = true;
-                $controller = explode('::', $controller, 2);
-                $method = $controller[1];
-                $controller = $controller[0];
-            } else if (strpos($controller, '->') !== false) {
-                $controller = explode('->', $controller, 2);
-                $method = $controller[1];
-                $controller = $controller[0];
-            }
-            
-            if (!$static) {
-                $controller = new ReflectionClass($controller);
-                $controller = $controller->newInstance();
-            }
-            
-            $method = new ReflectionMethod($controller, $method);
-            
-            if ($arguments !== null) {
-                $method->invokeArgs($controller, $arguments);
-            } else {
-                $method->invoke($controller);
-            }
-            
-            return true;
-        
-        } else {
-            return false;
+
+        if (strpos($route, '::') !== false) {
+            list($clazz, $method) = explode('::', $route, 2);
+            return Web::invokeMethod($clazz, $method, $args, true);
         }
+
+        if (strpos($route, '->') !== false) {
+            list($clazz, $method) = explode('->', $route, 2);
+            return Web::invokeMethod($clazz, $method, $args);
+        }
+
+        return Web::invokeFunction($route, $args);
+    }
+
+    public static function invokeMethod($clazz, $method, $args = array(), $static = false) {
+        $argscount = is_array($args) ? count($args) : 0;
+
+        if ($static) {
+            $rmethod = new ReflectionMethod($clazz, $method);
+            return ($argscount == 0) ? $rmethod->invoke(null) : $rmethod->invokeArgs(null, $args);
+        }
+
+        $obj = new $clazz;
+        if ($argscount == 0) return $obj->$method();
+        $rmethod = new ReflectionMethod($clazz, $method);
+        return $rmethod->invokeArgs($obj, $args);
+    }
+
+    public static function invokeFunction($func, $args = array()) {
+        if (is_array($args) && count($args) == 0) return $func();
+        $rfunc = new ReflectionFunction($func);
+        return $rfunc->invokeArgs($args);
     }
 }

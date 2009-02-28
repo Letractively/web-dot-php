@@ -1,10 +1,26 @@
-Format: 1.35
+Format: 1.4
 
 
 Title: web.php
 SubTitle: web.php is a modular mvc framework for php
 
 Footer: <a href="http://web-dot-php.googlecode.com/">web-dot-php.googlecode.com</a>
+
+# You can add a timestamp to your documentation like one of these:
+# Timestamp: Generated on month day, year
+# Timestamp: Updated mm/dd/yyyy
+# Timestamp: Last updated mon day
+#
+#   m     - One or two digit month.  January is "1"
+#   mm    - Always two digit month.  January is "01"
+#   mon   - Short month word.  January is "Jan"
+#   month - Long month word.  January is "January"
+#   d     - One or two digit day.  1 is "1"
+#   dd    - Always two digit day.  1 is "01"
+#   day   - Day with letter extension.  1 is "1st"
+#   yy    - Two digit year.  2006 is "06"
+#   yyyy  - Four digit year.  2006 is "2006"
+#   year  - Four digit year.  2006 is "2006"
 
 
 # --------------------------------------------------------------------------
@@ -26,36 +42,4 @@ Footer: <a href="http://web-dot-php.googlecode.com/">web-dot-php.googlecode.com<
 # 
 # --------------------------------------------------------------------------
 
-
-Group: Core Classes  {
-
-   File: Web  (Web.php)
-   File: Request  (Request.php)
-   File: Session  (Session.php)
-   File: Flash  (Flash.php)
-   File: Error  (Error.php)
-   File: Browser  (Browser.php)
-   }  # Group: Core Classes
-
-Group: Presentation Classes  {
-
-   File: View  (View.php)
-   File: Body  (Body.php)
-   File: Layout  (Layout.php)
-   File: Zone  (Zone.php)
-   }  # Group: Presentation Classes
-
-Group: Helper Classes  {
-
-   File: Helper  (Helper.php)
-   File: IncludeHelper  (IncludeHelper.php)
-   File: UrlHelper  (UrlHelper.php)
-   }  # Group: Helper Classes
-
-Group: Index  {
-
-   Index: Everything
-   Class Index: Classes
-   Function Index: Functions
-   }  # Group: Index
 
