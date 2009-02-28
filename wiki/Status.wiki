@@ -5,7 +5,7 @@
 
 == February 28th, 2009 ==
 
-Development of web.php has started again. I did a full rewrite of web.php. Now to base is done and it looks great. I dropped the helpers (and some other stuff), because they didn't seem to fit on web.php's philosophy.
+Development of web.php has started again. I did a full rewrite of web.php. Now the base is done and it looks great. I dropped the helpers (and some other stuff), because they didn't seem to fit on web.php's philosophy.
 
 == October 31st, 2007 ==
 
