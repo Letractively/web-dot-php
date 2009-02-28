@@ -77,7 +77,7 @@ class View implements Iterator {
     }
 
     public static function javascript($src) {
-        printf("<script type=\"text/javascript\" src=\"%s\"></script>%s", View::src($src), PHP_EOL);
+        printf('<script type="text/javascript" src="%s"></script>%s', View::src($src), PHP_EOL);
     }
 
     public function javascripts() {
@@ -103,7 +103,7 @@ class View implements Iterator {
     }
 
     public static function stylesheet($src) {
-        printf("<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" />%s", View::src($src), PHP_EOL);
+        printf('<link rel="stylesheet" href="%s" type="text/css" />%s', View::src($src), PHP_EOL);
     }
 
     public function stylesheets() {
