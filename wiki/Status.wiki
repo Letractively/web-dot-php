@@ -3,6 +3,10 @@
 
 = Development Status =
 
+== February 28th, 2009 ==
+
+Development of web.php has started again. I did a full rewrite of web.php. Now to base is done and it looks great. I dropped the helpers (and some other stuff), because they didn't seem to fit on web.php's philosophy.
+
 == October 31st, 2007 ==
 
 This week we finalized our initial design and corrected some bugs we found. Helper system is now in place (see Helper.php). We also developed our first helper class, IncludeHelper.php. Next we will spend some time to develop additional helper classes. After that we are going to look at how to build our elements system (elements are something like partial reusable views or view blocks). And yes, we should not forget to write better documentation.
