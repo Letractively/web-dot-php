@@ -18,7 +18,7 @@ About: License
 
     This file is licensed under the MIT.
  */
-class View implements Iterator {
+class View implements Iterator, ArrayAccess {
 
     private $_file;
     private $_view;
@@ -35,25 +35,15 @@ class View implements Iterator {
         $this->_view = $view;
     }
 
-    public function rewind() {
-        $this->_iterator = $this;
-    }
-
-    public function current() {
-        return $this->_iterator;
-    }
-
-    public function key() {
-        return $this->_iterator->_file;
-    }
-
-    public function next() {
-        $this->_iterator = $this->_iterator->_view;
-    }
-
-    public function valid() {
-        return isset($this->_iterator);
-    }
+    public function rewind() { $this->_iterator = $this; }
+    public function current() { return $this->_iterator; }
+    public function key() { return $this->_iterator->_file; }
+    public function next() { $this->_iterator = $this->_iterator->_view; }
+    public function valid() { return isset($this->_iterator); }
+    public function offsetSet($key, $value) { $this->_data[$key] = $value; }
+    public function offsetExists($key) { return isset($this->_data[$key]); }
+    public function offsetUnset($key) { unset($this->_data[$key]); }
+    public function offsetGet($key) { return isset($this->_data[$key]) ? $this->_data[$key] : null; }
 
     public function title($separator = ' &lt; ') {
         $titles = array();
