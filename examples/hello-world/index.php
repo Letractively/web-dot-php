@@ -35,7 +35,7 @@ require 'controllers/IndexController.php';
  * ======================================================================= */
 
 $router = new Router();
-$router->add('test', 'IndexController->index');
-$router->add('404.php');
+$router->add('/', 'IndexController->index');
+$router->add('IndexController->notfound');
 
 Web::run($router->route());
