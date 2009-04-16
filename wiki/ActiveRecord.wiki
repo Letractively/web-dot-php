@@ -6,7 +6,7 @@ web.php doesn't have an [http://en.wikipedia.org/wiki/Active_record active recor
 
 == Active Record Frameworks ==
 
-=== Doctrine (http://www.phpdoctrine.net/) ===
+=== Doctrine (http://www.doctrine-project.org/) ===
 
   [http://www.phpdoctrine.net/ Doctrine] is an ORM (object relational mapper) for PHP 5.2.x+ that sits on top of a powerful DBAL (database abstraction layer). One of its key features is the ability to optionally write database queries in an OO (object oriented) SQL-dialect called DQL inspired by Hibernates HQL. This provides developers with a powerful alternative to SQL that maintains a maximum of flexibility without requiring needless code duplication.
 
