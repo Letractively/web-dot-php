@@ -1,0 +1,14 @@
+<?php
+    $this->title = 'Hello Form';
+    $this->layout = 'views/layout.phtml';
+?>
+
+<form name="hello-form" action="<?php $this->url('post'); ?>" method="post">
+    <p>
+        <label for="email">Email:</label><br />
+        <input id="email" name="email" type="text" value="" />
+    </p>
+    <p>
+        <input name="button" type="submit" value="Submit" />
+    </p>
+</form>

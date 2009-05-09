@@ -20,10 +20,12 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
  * Include Required Files
  * ======================================================================= */
 
-require 'Router.php';
 require 'proposals/Error.php';
+require 'Router.php';
 require 'Web.php';
 require 'View.php';
+require 'Validate.php';
+require 'Form.php';
 
 /* =======================================================================
  * Enable Error Handling
@@ -46,6 +48,7 @@ require 'controllers/IndexController.php';
 
 $router = new Router();
 $router->add('/', 'IndexController->index');
+$router->add('post', 'IndexController->post');
 $router->add('IndexController->notfound');
 
 Web::run($router->route());

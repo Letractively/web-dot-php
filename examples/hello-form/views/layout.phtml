@@ -9,16 +9,9 @@
 <div id="content">
     <?php $this->view(); ?>
 </div>
+<?php $this->javascripts(); ?>
 <div>
 Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
 </div>
-
-<?php if ($this->embeds('footer')): ?>
-<br />
-<div>
-    Copyright 2009 web.php <?php $this->embeds(); ?>
-</div>
-<?php endif; ?>
-<?php $this->javascripts(); ?>
 </body>
 </html>

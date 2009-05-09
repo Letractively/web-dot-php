@@ -1,8 +1,11 @@
 <?php
     $this->title = 'View Title';
     $this->layout = 'views/category.phtml';
+    $this->embeds = array('footer' => 'pi');
 ?>
-<h1><?php echo $header; ?></h1>
+<?php $this->form->email(); ?>
+
+<h1><?php $this->header(); ?></h1>
 <p>
-    <?php echo $body; ?>
+    <?php $this->body(); ?>
 </p>
