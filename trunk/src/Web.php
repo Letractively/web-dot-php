@@ -51,21 +51,24 @@ class Web {
             return require $route;
         }
 
-        if (strpos($route, '::') !== false) {
-            list($clazz, $method) = explode('::', $route, 2);
-            return Web::invokeMethod($clazz, $method, $args, true);
-        }
-
         if (strpos($route, '->') !== false) {
             list($clazz, $method) = explode('->', $route, 2);
             return Web::invokeMethod($clazz, $method, $args);
+        }
+
+        if (strpos($route, '::') !== false) {
+            list($clazz, $method) = explode('::', $route, 2);
+            return Web::invokeMethod($clazz, $method, $args, true);
         }
 
         return Web::invokeFunction($route, $args);
     }
 
     public static function invokeMethod($clazz, $method, $args = array(), $static = false) {
-        $argscount = is_array($args) ? count($args) : 0;
+        
+        if (!is_array($args)) $args = array();
+
+        $argscount = count($args);
 
         if ($static) {
             $rmethod = new ReflectionMethod($clazz, $method);
@@ -79,7 +82,8 @@ class Web {
     }
 
     public static function invokeFunction($func, $args = array()) {
-        if (is_array($args) && count($args) == 0) return $func();
+        if (!is_array($args)) $args = array();
+        if (count($args) == 0) return $func();
         $rfunc = new ReflectionFunction($func);
         return $rfunc->invokeArgs($args);
     }

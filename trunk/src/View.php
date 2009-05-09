@@ -18,52 +18,79 @@ About: License
 
     This file is licensed under the MIT.
  */
-class View implements Iterator, ArrayAccess {
+class View extends ArrayIterator {
 
-    private $_file;
-    private $_view;
-    private $_data;
-    private $_output;
-    private $_parsed;
-    private $_iterator;
-    
     public function __construct($file, $view = null) {
-        $this->_file = $file;
-        $this->_data = array();
-        $this->_output = '';
-        $this->_parsed = false;
-        $this->_view = $view;
+        $this->file = $file;
+        $this->view = $view;
     }
 
-    public function rewind() { $this->_iterator = $this; }
-    public function current() { return $this->_iterator; }
-    public function key() { return $this->_iterator->_file; }
-    public function next() { $this->_iterator = $this->_iterator->_view; }
-    public function valid() { return isset($this->_iterator); }
-    public function offsetSet($key, $value) { $this->_data[$key] = $value; }
-    public function offsetExists($key) { return isset($this->_data[$key]); }
-    public function offsetUnset($key) { unset($this->_data[$key]); }
-    public function offsetGet($key) { return isset($this->_data[$key]) ? $this->_data[$key] : null; }
+    public function __set($name, $value) {
+        $this[$name] = $value;
+    }
+
+    public function __get($name) {
+        if (isset($this[$name])) {
+            return $this[$name];
+        }
+
+        $trace = debug_backtrace();
+        trigger_error('Undefined property "' . $name . '" in "' . $trace[0]['file'] . '" on line ' . $trace[0]['line'], E_USER_NOTICE);
+        return null;
+    }
+
+    public function __isset($name) {
+        return isset($this[$name]);
+    }
+
+    public function __unset($name) {
+        unset($this[$name]);
+    }
+
+    public function __call($name, $args) {
+        if (isset($this[$name])) {
+            echo $this[$name];
+            return;
+        }
+
+        $trace = debug_backtrace();
+        trigger_error('Undefined method "' . $name . '" in "' . $trace[0]['file'] . '" on line ' . $trace[0]['line'], E_USER_NOTICE);
+    }
+
+    public function __toString() {
+        if (!isset($this['output'])) {
+            ob_start();
+            require $this['file'];
+            $this['output'] = ob_get_clean();
+        }
+        return $this['output'];
+    }
+
+    public function render() {
+        $output = strval($this);
+        if (isset($this['layout'])) {
+            $view = new View($this['layout'], $this);
+            $view->render();
+        } else {
+            echo $output;
+        }
+    }
+
+    public function parse() {
+        ob_start();
+        $this->render();
+        return ob_get_clean();
+    }
 
     public function title($separator = ' &lt; ') {
         $titles = array();
-        foreach ($this as $view) {
-            if (!isset($view->title)) continue;
-            array_unshift($titles, $view->title);
-        }
+        $view = $this;
+        do {
+            if (isset($view['title'])) array_unshift($titles, $view['title']);
+            $view = $view->view;
+        } while($view != null);
+
         echo implode($separator, $titles);
-    }
-
-    public function content() {
-        echo $this->_view;
-    }
-
-    public static function url($src) {
-        echo View::src($src);
-    }
-
-    public static function src($src) {
-        return ((parse_url($src, PHP_URL_SCHEME) == null) && (strpos($src, '/') !== 0)) ? substr($_SERVER['SCRIPT_NAME'], 0, -9) . $src : $src;
     }
 
     public static function javascript($src) {
@@ -71,24 +98,20 @@ class View implements Iterator, ArrayAccess {
     }
 
     public function javascripts() {
-
         $javascripts = array();
-
-        foreach ($this as $view) {
-
-            if (!isset($view->javascripts)) continue;
-
-            $js = $view->javascripts;
-
-            if (!is_array($js)) $js = array($js);
-
-            foreach ($js as $javascript) {
-                $url = $this->src($javascript);
-                if (in_array($url, $javascripts)) continue;
-                $javascripts[] = $url;
+        $view = $this;
+        do {
+            if (isset($view['javascripts'])) {
+                $js = $view['javascripts'];
+                if (!is_array($js)) $js = array($js);
+                foreach ($js as $javascript) {
+                    $url = $this->src($javascript);
+                    if (in_array($url, $javascripts)) continue;
+                    $javascripts[] = $url;
+                }
             }
-        }
-
+            $view = $view->view;
+        } while($view != null);
         array_walk($javascripts, 'View::javascript');
     }
 
@@ -97,38 +120,35 @@ class View implements Iterator, ArrayAccess {
     }
 
     public function stylesheets() {
-
         $stylesheets = array();
-
-        foreach ($this as $view) {
-
-            if (!isset($view->stylesheets)) continue;
-
-            $css = $view->stylesheets;
-
-            if (!is_array($css)) $css = array($css);
-
-            foreach ($css as $stylesheet) {
-                $url = $this->src($stylesheet);
-                if (in_array($url, $stylesheets)) continue;
-                $stylesheets[] = $url;
+        $view = $this;
+        do {
+            if (isset($view['stylesheets'])) {
+                $css = $view['stylesheets'];
+                if (!is_array($css)) $css = array($css);
+                foreach ($css as $stylesheet) {
+                    $url = $this->src($stylesheet);
+                    if (in_array($url, $stylesheets)) continue;
+                    $stylesheets[] = $url;
+                }
             }
-        }
-
+            $view = $view->view;
+        } while($view != null);
         array_walk($stylesheets, 'View::stylesheet');
     }
 
     public function embeds($section = null) {
-
         static $currentSection = null;
-
         if ($section != null) {
-            foreach($this as $view) {
-                $hide = $view->hide;
-                if (!isset($hide)) continue;
-                $hidden = (is_array($hide)) ? in_array($section, $hide) : $section == $hide;
-                if ($hidden) return false;
-            }
+            $view = $this;
+            do {
+                if (isset($view['hide'])) {
+                    $hide = $view['hide'];
+                    $hidden = (is_array($hide)) ? in_array($section, $hide) : $section == $hide;
+                    if ($hidden) return false;
+                }
+                $view = $view->view;
+            } while($view != null);
             $currentSection = $section;
             return true;
         }
@@ -136,57 +156,28 @@ class View implements Iterator, ArrayAccess {
         if ($currentSection == null) return;
 
         $embedded = array();
-        
-        foreach($this as $view) {
-            $embeds = $view->embeds;
-            if (!is_array($embeds) || !array_key_exists($currentSection, $embeds)) continue;
-            $file = $embeds[$currentSection];
-            if (in_array($file, $embedded)) continue;
-            $embedded[] = $file;
-            Web::run($file);
-        }
-
+        $view = $this;
+        do {
+            if (isset($view['embeds']) && isset($view['embeds'][$currentSection])) {
+                $file = $view['embeds'][$currentSection];
+                if (!in_array($file, $embedded)) {
+                    $embedded[] = $file;
+                    ob_start();
+                    $retval = Web::run($file);
+                    $output = ob_get_clean();
+                    echo (isset($output[1])) ? $output : $retval;
+                }
+            }
+            $view = $view->view;
+        } while($view != null);
         $currentSection = null;
     }
 
-    public function __set($key, $value) {
-        $this->_data[$key] = $value;
+    public static function url($src) {
+        echo View::src($src);
     }
 
-    public function __get($key) {
-        return (array_key_exists($key, $this->_data)) ? $this->_data[$key] : null;
-    }
-
-    public function __isset($key) {
-        return isset($this->_data[$key]);
-    }
-
-    public function __unset($key) {
-        unset($this->_data[$key]);
-    }
-
-    public function __toString() {
-        if ($this->_parsed) return $this->_output;
-        ob_start();
-        extract($this->_data);
-        require $this->_file;
-        $this->_parsed = true;
-        return $this->_output = ob_get_clean();
-    }
-
-    public function render() {
-        $output = $this->__toString();
-        if ($this->layout == null) {
-            echo $output;
-        } else {
-            $view = new View($this->layout, $this);
-            $view->render();
-        }
-    }
-
-    public function parse() {
-        ob_start();
-        $this->render();
-        return ob_get_clean();
+    public static function src($src) {
+        return ((parse_url($src, PHP_URL_SCHEME) == null) && (strpos($src, '/') !== 0)) ? substr($_SERVER['SCRIPT_NAME'], 0, -9) . $src : $src;
     }
 }
