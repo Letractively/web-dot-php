@@ -3,7 +3,7 @@
 
 = Requirements =
 
-PHP 5.x.x or later.
+PHP 5.3.x or later.
 
 = Dependencies =
 
