@@ -25,66 +25,52 @@ class Web {
     /**
     Function: run
 
-        Compares route against user supplied urls and executes appropriate
-        controller method.
+        Dynamically executes a controller.
 
     Parameters:
 
-        mixed $urls - Associative URL array containing acceptable routes or
-                      a string that defines function, method or php file.
-
+        mixed $route - The controller to execute or include. It can be
+                       a function, an instance method, a static method,
+                       an anonymous method, or a file.
 
     Returns:
 
         mixed - whatever your function, method or php file returns.
 
     Example:
-
+        > // Executes a function:
+        > Web::run('ExecutableFunction');
+        > // Executes an instance method:
+        > Web::run('Controller->execute');
+        > // Executes a static method:
+        > Web::run('Controller::execute');
+        > // Executes an anonymous method:
+        > Web::run(function() { echo 'Hello from a closure.'});
         > // Uses require to include 404.php (if exists):
         > Web::run('404.php');
+        > // Executes an instance method with parameters:
+        > Web::run(array('Controller->execute', array('arg0', 'arg1'));
      */
-    public static function run($route, $args = null) {
+    public static function run($route) {
 
-        if (is_array($route) && $args == null) list($route, $args) = $route;
+        $ctrl = $route;
+        $args = array();
 
-        if (file_exists($route)) {
-            return require $route;
+        if (is_array($route)) {
+            if (isset($route[0])) $ctrl = $route[0];
+            if (isset($route[1])) $args = $route[1];
         }
 
-        if (strpos($route, '->') !== false) {
-            list($clazz, $method) = explode('->', $route, 2);
-            return Web::invokeMethod($clazz, $method, $args);
+        if (is_string($ctrl)) {
+            if (file_exists($ctrl)) return require $ctrl;
+            if (strpos($ctrl, '->') !== false) {
+                list($clazz, $method) = explode('->', $ctrl, 2);
+                $ctrl = array(new $clazz, $method);
+            }
         }
 
-        if (strpos($route, '::') !== false) {
-            list($clazz, $method) = explode('::', $route, 2);
-            return Web::invokeMethod($clazz, $method, $args, true);
-        }
+        if (is_callable($ctrl)) return call_user_func_array($ctrl, (is_array($args)) ? $args : array($args));
 
-        return Web::invokeFunction($route, $args);
-    }
-
-    public static function invokeMethod($clazz, $method, $args = array(), $static = false) {
-        
-        if (!is_array($args)) $args = array();
-
-        $argscount = count($args);
-
-        if ($static) {
-            $rmethod = new ReflectionMethod($clazz, $method);
-            return ($argscount == 0) ? $rmethod->invoke(null) : $rmethod->invokeArgs(null, $args);
-        }
-
-        $obj = new $clazz;
-        if ($argscount == 0) return $obj->$method();
-        $rmethod = new ReflectionMethod($clazz, $method);
-        return $rmethod->invokeArgs($obj, $args);
-    }
-
-    public static function invokeFunction($func, $args = array()) {
-        if (!is_array($args)) $args = array();
-        if (count($args) == 0) return $func();
-        $rfunc = new ReflectionFunction($func);
-        return $rfunc->invokeArgs($args);
+        throw new InvalidArgumentException('Invalid route was supplied.' . print_r($route, true)  . '.', -10000);
     }
 }
