@@ -71,6 +71,6 @@ class Web {
 
         if (is_callable($ctrl)) return call_user_func_array($ctrl, (is_array($args)) ? $args : array($args));
 
-        throw new InvalidArgumentException('Invalid route was supplied.' . print_r($route, true)  . '.', -10000);
+        throw new InvalidArgumentException('Invalid route was supplied.', -10000);
     }
 }
