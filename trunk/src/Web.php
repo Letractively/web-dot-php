@@ -58,7 +58,7 @@ class Web {
 
         if (is_array($route)) {
             if (isset($route[0])) $ctrl = $route[0];
-            if (isset($route[1])) $args = $route[1];
+            if (isset($route[1])) $args = is_array($route[1]) ? $route[1] : array($route[1]);
         }
 
         if (is_string($ctrl)) {
@@ -69,8 +69,8 @@ class Web {
             }
         }
 
-        if (is_callable($ctrl)) return call_user_func_array($ctrl, (is_array($args)) ? $args : array($args));
+        if (is_callable($ctrl)) return call_user_func_array($ctrl, $args);
 
-        throw new InvalidArgumentException('Invalid route, "' . print_r($route, true) . '", was supplied.', 404);
+        trigger_error('Invalid route.', E_USER_WARNING);
     }
 }

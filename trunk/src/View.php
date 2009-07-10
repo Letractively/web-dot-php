@@ -18,166 +18,73 @@ About: License
 
     This file is licensed under the MIT.
  */
-class View extends ArrayIterator {
+class View {
 
-    public function __construct($file, $view = null) {
-        $this->file = $file;
-        $this->view = $view;
-    }
+    private $_file;
 
-    public function __set($name, $value) {
-        $this[$name] = $value;
-    }
-
-    public function __get($name) {
-        if (isset($this[$name])) {
-            return $this[$name];
-        }
-
-        $trace = debug_backtrace();
-        trigger_error('Undefined property "' . $name . '" in "' . $trace[0]['file'] . '" on line ' . $trace[0]['line'], E_USER_NOTICE);
-        return null;
-    }
-
-    public function __isset($name) {
-        return isset($this[$name]);
-    }
-
-    public function __unset($name) {
-        unset($this[$name]);
+    public function __construct($file) {
+        $this->_file = $file;
+        $this->blocks = new Blocks();
     }
 
     public function __call($name, $args) {
-        if (isset($this[$name])) {
-            echo $this[$name];
-            return;
-        }
-
-        $trace = debug_backtrace();
-        trigger_error('Undefined method "' . $name . '" in "' . $trace[0]['file'] . '" on line ' . $trace[0]['line'], E_USER_NOTICE);
+        if (isset($this->$name)) return print $this->$name;
+        trigger_error('Undefined method "' . $name . '".');
     }
 
     public function __toString() {
-        if (!isset($this['output'])) {
-            ob_start();
-            require $this['file'];
-            $this['output'] = ob_get_clean();
-        }
-        return $this['output'];
-    }
-
-    public function render() {
-        $output = strval($this);
-        if (isset($this['layout'])) {
-            $view = new View($this['layout'], $this);
-            $view->render();
-        } else {
-            echo $output;
-        }
-    }
-
-    public function parse() {
         ob_start();
-        $this->render();
+        require $this->_file;
+
+        while (isset($this->layout)) {
+            $this->view = ob_get_clean();
+            ob_start();
+            $this->_file = $this->layout;
+            unset($this->layout);
+            require $this->_file;
+        }
+
         return ob_get_clean();
     }
 
-    public function title($separator = ' &lt; ') {
-        $titles = array();
-        $view = $this;
-        do {
-            if (isset($view['title'])) array_unshift($titles, $view['title']);
-            $view = $view->view;
-        } while($view != null);
+    public function render() { echo strval($this); }
+    public function partial($route) { Web::run($route); }
+    public static function url($src) { echo View::src($src); }
+    public static function src($src) { return ((parse_url($src, PHP_URL_SCHEME) == null) && (strpos($src, '/') !== 0)) ? substr($_SERVER['SCRIPT_NAME'], 0, -9) . $src : $src; }
+}
 
-        echo implode($separator, $titles);
+class Blocks {
+    public function __call($name, $args) {
+        if (isset($this->$name)) return print $this->$name;
+        trigger_error('Undefined method "' . $name . '".');
     }
-
-    public static function javascript($src) {
-        printf('<script type="text/javascript" src="%s"></script>%s', View::src($src), PHP_EOL);
+    public function __get($name) {
+        if (!isset($this->$name)) $this->$name = new Block();
+        return $this->$name;
     }
+}
 
-    public function javascripts() {
-        $javascripts = array();
-        $view = $this;
-        do {
-            if (isset($view['javascripts'])) {
-                $js = $view['javascripts'];
-                if (!is_array($js)) $js = array($js);
-                foreach ($js as $javascript) {
-                    $url = $this->src($javascript);
-                    if (in_array($url, $javascripts)) continue;
-                    $javascripts[] = $url;
-                }
-            }
-            $view = $view->view;
-        } while($view != null);
-        array_walk($javascripts, 'View::javascript');
-    }
-
-    public static function stylesheet($src) {
-        printf('<link rel="stylesheet" href="%s" type="text/css" />%s', View::src($src), PHP_EOL);
-    }
-
-    public function stylesheets() {
-        $stylesheets = array();
-        $view = $this;
-        do {
-            if (isset($view['stylesheets'])) {
-                $css = $view['stylesheets'];
-                if (!is_array($css)) $css = array($css);
-                foreach ($css as $stylesheet) {
-                    $url = $this->src($stylesheet);
-                    if (in_array($url, $stylesheets)) continue;
-                    $stylesheets[] = $url;
-                }
-            }
-            $view = $view->view;
-        } while($view != null);
-        array_walk($stylesheets, 'View::stylesheet');
-    }
-
-    public function embeds($section = null) {
-        static $currentSection = null;
-        if ($section != null) {
-            $view = $this;
-            do {
-                if (isset($view['hide'])) {
-                    $hide = $view['hide'];
-                    $hidden = (is_array($hide)) ? in_array($section, $hide) : $section == $hide;
-                    if ($hidden) return false;
-                }
-                $view = $view->view;
-            } while($view != null);
-            $currentSection = $section;
-            return true;
+class Block implements ArrayAccess, Countable {
+    private $_output, $_mode, $_offset;
+    public function __construct() { $this->_output = array(); $this->_mode = -1; }
+    public function offsetSet($offset, $value) { $this->_output[$offset] = $value; }
+    public function offsetExists($offset) { return isset($this->_output[$offset]); }
+    public function offsetUnset($offset) { unset($this->_output[$offset]); }
+    public function offsetGet($offset) { return isset($this->_output[$offset]) ? $this->_output[$offset] : null; }
+    public function count() { count($this->_output); }
+    public function start() { $this->_mode = 0; ob_start(); }
+    public function append() { $this->_mode = 1; ob_start(); }
+    public function prepend() { $this->_mode = 2; ob_start(); }
+    public function insert($offset) { $this->_mode = 3; $this->_offset = $offset; ob_start(); }
+    public function flush() {
+        if ($this->_mode == -1) trigger_error('Flush-method can only be called after calling start, append, prepend, or insert.', E_USER_WARNING);
+        switch ($this->_mode) {
+            case 0: $this->_output = array(ob_get_clean()); break;
+            case 1: $this->_output[] = ob_get_clean(); break;
+            case 2: array_unshift($this->_output, ob_get_clean()); break;
+            case 3: array_splice($this->_output, $this->_offset, 0, ob_get_clean()); break;
         }
-
-        if ($currentSection == null) return;
-
-        $embedded = array();
-        $view = $this;
-        do {
-            if (isset($view['embeds']) && isset($view['embeds'][$currentSection])) {
-                $file = $view['embeds'][$currentSection];
-                if (!in_array($file, $embedded)) {
-                    $embedded[] = $file;
-                    ob_start();
-                    $retval = Web::run($file);
-                    $output = ob_get_clean();
-                    echo (isset($output[1])) ? $output : $retval;
-                }
-            }
-            $view = $view->view;
-        } while($view != null);
-        $currentSection = null;
+        $this->_mode = -1;
     }
-
-    public static function url($src) {
-        echo View::src($src);
-    }
-
-    public static function src($src) {
-        return ((parse_url($src, PHP_URL_SCHEME) == null) && (strpos($src, '/') !== 0)) ? substr($_SERVER['SCRIPT_NAME'], 0, -9) . $src : $src;
-    }
+    public function __toString() { return implode($this->_output); }
 }
