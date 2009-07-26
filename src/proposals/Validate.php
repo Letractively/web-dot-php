@@ -93,14 +93,8 @@ class Validate {
     Function: int
      */
     public static function int($value) {
-
         $value = self::normalizeNumber($value);
-
-        if (strval(intval($value)) != $value) {
-            return false;
-        }
-
-        return true;
+        return (strval(intval($value)) == $value);
     }
 
     /**

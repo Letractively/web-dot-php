@@ -51,7 +51,7 @@ class Web {
         > // Executes an instance method with parameters:
         > Web::run(array('Controller->execute', array('arg0', 'arg1'));
      */
-    public static function run($route) {
+    static function run($route) {
 
         $ctrl = $route;
         $args = array();
