@@ -1,18 +1,18 @@
 <?php
 class Router implements ArrayAccess, Countable {
 
-    public function __construct($routes = null) {
+    function __construct($routes = null) {
         $this->routes = array();
         if (isset($routes)) $this->add($routes);
     }
 
-    public function offsetSet($offset, $value) { $this->routes[$offset] = $value; }
-    public function offsetExists($offset) { return isset($this->routes[$offset]); }
-    public function offsetUnset($offset) { unset($this->routes[$offset]); }
-    public function offsetGet($offset) { return isset($this->routes[$offset]) ? $this->routes[$offset] : null; }
-    public function count() { count($this->routes); }
+    function offsetSet($offset, $value) { $this->routes[$offset] = $value; }
+    function offsetExists($offset) { return isset($this->routes[$offset]); }
+    function offsetUnset($offset) { unset($this->routes[$offset]); }
+    function offsetGet($offset) { return isset($this->routes[$offset]) ? $this->routes[$offset] : null; }
+    function count() { count($this->routes); }
 
-    public function add($pattern, $route = null) {
+    function add($pattern, $route = null) {
         if (is_array($pattern)) {
             $this->routes += $pattern;
         } else {
@@ -20,7 +20,7 @@ class Router implements ArrayAccess, Countable {
         }
     }
 
-    public function route() {
+    function route() {
         $url = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($_SERVER['SCRIPT_NAME'], 0, -9))), '/');
         foreach ($this->routes as $pattern => $route) {
             if (!isset($route)) return array($pattern);
