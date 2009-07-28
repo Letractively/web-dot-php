@@ -64,7 +64,8 @@ class Redis {
         switch ($type) {
             case '-':
                 $data = fgets($this->socket);
-                return trigger_error(substr($data, 0, strlen($data) - 2), E_USER_ERROR);
+                $start = strpos($data, 'ERR ') === 0 ? 4 : 0;
+                return trigger_error(substr($data, $start, strlen($data) - $start - 2), E_USER_ERROR);
             case '+':
                 $data = fgets($this->socket);
                 return substr($data, 0, strlen($data) - 2);
