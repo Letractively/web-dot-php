@@ -33,14 +33,7 @@ class Redis {
             if ($i == 0) return;
             $command = substr($command, $i);
         } while ($command);
-
-        if ($disconnect) {
-            fclose($this->socket);
-            unset($this->socket);
-            return;
-        }
-
-        return $this->read();
+        return $disconnect ? $this->disconnect() : $this->read();
     }
 
     private function read() {
@@ -65,6 +58,11 @@ class Redis {
                 while (--$size > -1) $data[] = $this->read();
                 return $data;
         }
+    }
+
+    private function disconnect() {
+        fclose($this->socket);
+        unset($this->socket);
     }
 }
 
