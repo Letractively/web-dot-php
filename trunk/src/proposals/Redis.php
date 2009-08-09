@@ -107,7 +107,7 @@ class Redis {
         if (!isset($this->socket)) $this->socket = fsockopen($this->host, $this->port);
         do {
             $i = fwrite($this->socket, $command);
-            if ($i == 0) break;
+            if ($i == 0) return;
             $command = substr($command, $i);
         } while ($command);
     }
@@ -118,31 +118,21 @@ class Redis {
         $data = fgets($this->socket);
 
         switch ($type) {
-            case '-':
-                return trigger_error(substr($data, 4), E_USER_WARNING);
-            case '+':
-                return substr($data, 0, strlen($data) - 2);
+            case '-': return trigger_error(substr($data, 4), E_USER_WARNING);
+            case '+': return substr($data, 0, -2);
+            case ':': return (int) $data;
             case '$':
                 $size = (int) $data;
-                switch ($size) {
-                    case -1: $data = null; break;
-                    case  0: $data = ''; break;
-                    default: $data = fread($this->socket, $size);
-                }
+                if ($size == -1) return null;
+                if ($size == 0) return '';
+                $data = fread($this->socket, $size);
                 fread($this->socket, 2);
                 return $data;
             case '*':
                 $size = (int) $data;
-                switch ($size) {
-                    case -1: return null;
-                    case  0: return array();
-                    default:
-                        $data = array();
-                        do { $data[] = $this->read(); } while (--$size > 0);
-                        return $data;
-                }
-            case ':':
-                return (int) $data;
+                $data = $size == -1 ? null : array();
+                while (--$size > -1) $data[] = $this->read();
+                return $data;
         }
     }
 }
