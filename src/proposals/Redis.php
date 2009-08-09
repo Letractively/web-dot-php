@@ -30,7 +30,7 @@ class Redis {
         if (!isset($this->socket)) $this->socket = fsockopen($this->host, $this->port);
         do {
             $i = fwrite($this->socket, $command);
-            if ($i == 0) return;
+            if ($i == 0) break;
             $command = substr($command, $i);
         } while ($command);
         return $disconnect ? $this->disconnect() : $this->read();
