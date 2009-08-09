@@ -6,110 +6,41 @@ class Redis {
         $this->port = $port;
     }
 
-    function _echo($data) {
-        $this->write(sprintf("ECHO %u\r\n%s\r\n", strlen($data), $data));
-        return $this->read();
-    }
+    function _echo($data) { return $this->write(sprintf("ECHO %u\r\n%s\r\n", strlen($data), $data)); }
+    function ping() { return $this->write("PING\r\n"); }
+    function auth($password) { return $this->write(sprintf("AUTH %s\r\n", $password)); }
+    function type($key) { return $this->write(sprintf("TYPE %s\r\n", $key)); }
+    function set($key, $value) { return (bool) $this->write(sprintf("SET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function setnx($key, $value) { return (bool) $this->write(sprintf("SETNX %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function get($key) { return $this->write(sprintf("GET %s\r\n", $key)); }
+    function getset($key, $value) { return $this->write(sprintf("GETSET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function del($key) { return (bool) $this->write(sprintf("DEL %s\r\n", $key)); }
+    function incr($key) { return $this->write(sprintf("INCR %s\r\n", $key)); }
+    function incrby($key, $increment = 1) { return $this->write(sprintf("INCRBY %s %d\r\n", $key, $increment)); }
+    function decr($key) { return $this->write(sprintf("DECR %s\r\n", $key)); }
+    function decrby($key, $increment = 1) { return $this->write(sprintf("DECRBY %s %d\r\n", $key, $increment)); }
+    function exists($key) { return (bool) $this->write(sprintf("EXISTS %s\r\n", $key)); }
+    function llen($key) { return $this->write(sprintf("LLEN %s\r\n", $key)); }
+    function lpush($key, $value) { return $this->write(sprintf("LPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function lrange($key, $start = 0, $end = -1) { return $this->write(sprintf("LRANGE %s %u %d\r\n", $key, $start, $end)); }
+    function quit() { return $this->write("QUIT\r\n", true); }
+    function shutdown() { return $this->write("SHUTDOWN\r\n", true); }
 
-    function ping() {
-        $this->write("PING\r\n");
-        return $this->read();
-    }
-
-    function auth($password) {
-        $this->write(sprintf("AUTH %s\r\n", $password));
-        return $this->read();
-    }
-
-    function type($key) {
-        $this->write(sprintf("TYPE %s\r\n", $key));
-        return $this->read();
-    }
-
-    function set($key, $value) {
-        $this->write(sprintf("SET %s %u\r\n%s\r\n", $key, strlen($value), $value));
-        return (bool) $this->read();
-    }
-
-    function setnx($key, $value) {
-        $this->write(sprintf("SETNX %s %u\r\n%s\r\n", $key, strlen($value), $value));
-        return (bool) $this->read();
-    }
-
-    function get($key) {
-        $this->write(sprintf("GET %s\r\n", $key));
-        return $this->read();
-    }
-
-    function getset($key, $value) {
-        $this->write(sprintf("GETSET %s %u\r\n%s\r\n", $key, strlen($value), $value));
-        return $this->read();
-    }
-
-    function del($key) {
-        $this->write(sprintf("DEL %s\r\n", $key));
-        return (bool) $this->read();
-    }
-
-    function incr($key) {
-        $this->write(sprintf("INCR %s\r\n", $key));
-        return $this->read();
-    }
-
-    function incrby($key, $increment = 1) {
-        $this->write(sprintf("INCRBY %s %d\r\n", $key, $increment));
-        return $this->read();
-    }
-
-    function decr($key) {
-        $this->write(sprintf("DECR %s\r\n", $key));
-        return $this->read();
-    }
-
-    function decrby($key, $increment = 1) {
-        $this->write(sprintf("DECRBY %s %d\r\n", $key, $increment));
-        return $this->read();
-    }
-
-    function exists($key) {
-        $this->write(sprintf("EXISTS %s\r\n", $key));
-        return (bool) $this->read();
-    }
-
-    function llen($key) {
-        $this->write(sprintf("LLEN %s\r\n", $key));
-        return $this->read();
-    }
-
-    function lpush($key, $value) {
-        $this->write(sprintf("LPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value));
-        return $this->read();
-    }
-
-    function lrange($key, $start = 0, $end = -1) {
-        $this->write(sprintf("LRANGE %s %u %d\r\n", $key, $start, $end));
-        return $this->read();
-    }
-
-    function quit() {
-        $this->write("QUIT\r\n");
-        fclose($this->socket);
-        unset($this->socket);
-    }
-
-    function shutdown() {
-        $this->write("SHUTDOWN\r\n");
-        fclose($this->socket);
-        unset($this->socket);
-    }
-
-    private function write($command) {
+    private function write($command, $disconnect = false) {
         if (!isset($this->socket)) $this->socket = fsockopen($this->host, $this->port);
         do {
             $i = fwrite($this->socket, $command);
             if ($i == 0) return;
             $command = substr($command, $i);
         } while ($command);
+
+        if ($disconnect) {
+            fclose($this->socket);
+            unset($this->socket);
+            return;
+        }
+
+        return $this->read();
     }
 
     private function read() {
