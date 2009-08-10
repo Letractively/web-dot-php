@@ -10,47 +10,50 @@ class Redis {
     function ping() { return $this->write("PING\r\n"); }
     function auth($password) { return $this->write(sprintf("AUTH %s\r\n", $password)); }
     function type($key) { return $this->write(sprintf("TYPE %s\r\n", $key)); }
-    function set($key, $value) { return (bool) $this->write(sprintf("SET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
-    function setnx($key, $value) { return (bool) $this->write(sprintf("SETNX %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function set($key, $value) { return $this->write(sprintf("SET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function setnx($key, $value) { return $this->write(sprintf("SETNX %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
     function get($key) { return $this->write(sprintf("GET %s\r\n", $key)); }
     function getset($key, $value) { return $this->write(sprintf("GETSET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
-    function del($key) { return (bool) $this->write(sprintf("DEL %s\r\n", $key)); }
+    function mget() { return $this->write(sprintf("MGET %s\r\n", implode(' ', func_get_args()))); }
+    function del() { return $this->write(sprintf("DEL %s\r\n", implode(' ', func_get_args()))); }
     function incr($key) { return $this->write(sprintf("INCR %s\r\n", $key)); }
     function incrby($key, $increment = 1) { return $this->write(sprintf("INCRBY %s %d\r\n", $key, $increment)); }
     function decr($key) { return $this->write(sprintf("DECR %s\r\n", $key)); }
     function decrby($key, $increment = 1) { return $this->write(sprintf("DECRBY %s %d\r\n", $key, $increment)); }
-    function exists($key) { return (bool) $this->write(sprintf("EXISTS %s\r\n", $key)); }
+    function exists($key) { return $this->write(sprintf("EXISTS %s\r\n", $key)); }
     function llen($key) { return $this->write(sprintf("LLEN %s\r\n", $key)); }
     function lpush($key, $value) { return $this->write(sprintf("LPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function rpush($key, $value) { return $this->write(sprintf("RPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
+    function lpop($key) { return $this->write(sprintf("LPOP %s\r\n", $key)); }
+    function rpop($key) { return $this->write(sprintf("RPOP %s\r\n", $key)); }
     function lrange($key, $start = 0, $end = -1) { return $this->write(sprintf("LRANGE %s %u %d\r\n", $key, $start, $end)); }
+    function save() { return $this->write("SAVE\r\n"); }
+    function bgsave() { return $this->write("BGSAVE\r\n"); }
+    function lastsave() { return $this->write("LASTSAVE\r\n"); }
     function quit() { return $this->write("QUIT\r\n", true); }
     function shutdown() { return $this->write("SHUTDOWN\r\n", true); }
 
     private function write($command, $disconnect = false) {
         if (!isset($this->socket)) $this->socket = fsockopen($this->host, $this->port);
-        do {
-            $i = fwrite($this->socket, $command);
-            if ($i == 0) break;
-            $command = substr($command, $i);
-        } while ($command);
+        fwrite($this->socket, $command);
         return $disconnect ? $this->disconnect() : $this->read();
     }
 
     private function read() {
 
         $type = fgetc($this->socket);
-        $data = fgets($this->socket);
+        $data = substr(fgets($this->socket), 0, -2);
 
         switch ($type) {
             case '-': return trigger_error(substr($data, 4), E_USER_WARNING);
-            case '+': return substr($data, 0, -2);
+            case '+': return $data;
             case ':': return (int) $data;
             case '$':
                 $size = (int) $data;
+                if ($size > 0) $data = fread($this->socket, $size);
+                fread($this->socket, 2);
                 if ($size == -1) return null;
                 if ($size == 0) return '';
-                $data = fread($this->socket, $size);
-                fread($this->socket, 2);
                 return $data;
             case '*':
                 $size = (int) $data;
@@ -102,8 +105,18 @@ echo 'LLEN key: ', var_dump($r->llen('key')), '<br />', PHP_EOL;
 echo 'LPUSH key 456: ', var_dump($r->lpush('key', '456')), '<br />', PHP_EOL;
 echo 'LLEN key: ', var_dump($r->llen('key')), '<br />', PHP_EOL;
 echo 'LRANGE key: ', var_dump($r->lrange('key')), '<br />', PHP_EOL;
-
-
+echo 'SET a 123: ', var_dump($r->set('a', '123')), '<br />', PHP_EOL;
+echo 'SET b 456: ', var_dump($r->set('b', '456')), '<br />', PHP_EOL;
+echo 'SET c 789: ', var_dump($r->set('c', '789')), '<br />', PHP_EOL;
+echo 'SET key: ', var_dump($r->set('key', '')), '<br />', PHP_EOL;
+echo 'MGET a b c key: ', var_dump($r->mget('a', 'b', 'c', 'key')), '<br />', PHP_EOL;
+echo 'DEL a b c key: ', var_dump($r->del('a', 'b', 'c', 'key')), '<br />', PHP_EOL;
+echo 'EXISTS key: ', var_dump($r->exists('key')), '<br />', PHP_EOL;
+echo 'LASTSAVE: ', var_dump($r->lastsave()), '<br />', PHP_EOL;
+echo 'SAVE: ', var_dump($r->save()), '<br />', PHP_EOL;
+echo 'LASTSAVE: ', var_dump($r->lastsave()), '<br />', PHP_EOL;
+echo 'BGSAVE: ', var_dump($r->bgsave()), '<br />', PHP_EOL;
+echo 'LASTSAVE: ', var_dump($r->lastsave()), '<br />', PHP_EOL;
 $r->quit();
 
 //echo 'SHUTDOWN: ', $r->shutdown(), '<br />', PHP_EOL;
