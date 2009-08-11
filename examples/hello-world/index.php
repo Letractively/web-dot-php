@@ -21,9 +21,9 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
  * ======================================================================= */
 
 require 'Router.php';
-require 'proposals/Error.php';
 require 'Web.php';
 require 'View.php';
+require 'Form.php';
 
 /* =======================================================================
  * Enable Error Handling
@@ -31,8 +31,8 @@ require 'View.php';
 
 error_reporting(E_ALL | E_STRICT);
 
-set_error_handler('Error::handleError');
-set_exception_handler('Error::handleException');
+//set_error_handler('Error::handleError');
+//set_exception_handler('Error::handleException');
 
 /* =======================================================================
  * Include Controller Files (you can also use spl_autoload)
@@ -46,6 +46,7 @@ require 'controllers/IndexController.php';
 
 $router = new Router();
 $router->add('/', 'IndexController->index');
-$router->add('IndexController->notfound');
+$router->add(array('/d' => 'IndexController->isndex'));
 
+//print_r($router->routes); die;
 Web::run($router->route());
