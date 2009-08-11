@@ -20,10 +20,10 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
  * Include Required Files
  * ======================================================================= */
 
-require 'Router.php';
 require 'Web.php';
 require 'View.php';
 require 'Form.php';
+require 'controllers/IndexController.php';
 
 /* =======================================================================
  * Enable Error Handling
@@ -31,22 +31,27 @@ require 'Form.php';
 
 error_reporting(E_ALL | E_STRICT);
 
-//set_error_handler('Error::handleError');
-//set_exception_handler('Error::handleException');
-
-/* =======================================================================
- * Include Controller Files (you can also use spl_autoload)
- * ======================================================================= */
-
-require 'controllers/IndexController.php';
-
 /* =======================================================================
  * Dispatch Request
  * ======================================================================= */
 
-$router = new Router();
-$router->add('/', 'IndexController->index');
-$router->add(array('/d' => 'IndexController->isndex'));
+get('footer.html');
 
-//print_r($router->routes); die;
-Web::run($router->route());
+get('/:action/:param', function ($action, $param) {
+    
+    $form = new Form();
+    $form->email->filters = array('email', '/^aapo/');
+    $form->email = 'aapo.laakkonen@gmail.com';
+
+    $view = new View('views/index.phtml');
+    $view->header = 'Lorem Ipsum ' . $action . ' ' . $param;
+    $view->body = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    $view->form = $form;
+
+    echo $view;
+});
+
+route('IndexController->notfound');
+//run();
+
+//web\run('404.php');

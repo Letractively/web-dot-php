@@ -18,59 +18,27 @@ About: License
 
     This file is licensed under the MIT.
  */
-class Web {
-
-    private function __construct() {}
-
-    /**
-    Function: run
-
-        Dynamically executes a controller.
-
-    Parameters:
-
-        mixed $route - The controller to execute or include. It can be
-                       a function, an instance method, a static method,
-                       an anonymous method, or a file.
-
-    Returns:
-
-        mixed - whatever your function, method or php file returns.
-
-    Example:
-        > // Executes a function:
-        > Web::run('ExecutableFunction');
-        > // Executes an instance method:
-        > Web::run('Controller->execute');
-        > // Executes a static method:
-        > Web::run('Controller::execute');
-        > // Executes an anonymous method:
-        > Web::run(function() { echo 'Hello from a closure.'});
-        > // Uses require to include 404.php (if exists):
-        > Web::run('404.php');
-        > // Executes an instance method with parameters:
-        > Web::run(array('Controller->execute', array('arg0', 'arg1'));
-     */
-    static function run($route) {
-
-        $ctrl = $route;
-        $args = array();
-
-        if (is_array($route)) {
-            if (isset($route[0])) $ctrl = $route[0];
-            if (isset($route[1])) $args = is_array($route[1]) ? $route[1] : array($route[1]);
+function get($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'GET') ? route($path, $func) : false; }
+function post($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'POST') ? route($path, $func) : false; }
+function put($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'PUT') ? route($path, $func) : false; }
+function delete($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'DELETE') ? route($path, $func) : false; }
+function route($path, $func = null) {
+    static $matched = false;
+    if ($matched) return false;
+    if ($matched = $func == null) return run($path);
+    $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($_SERVER['SCRIPT_NAME'], 0, -9))), '/');
+    $pattern = '#^' . preg_replace('/:(\w+)/', '(\w+)', trim($path, '/')) . '#i';
+    return ($matched = (bool) preg_match($pattern, $subject, $matches)) ? run($func,  array_slice($matches, 1)) : false;
+}
+function run($func, $args = array()) {
+    $ctrl = $func;
+    if (is_string($ctrl)) {
+        if (file_exists($ctrl)) return require $ctrl;
+        if (strpos($ctrl, '->') !== false) {
+            list($clazz, $method) = explode('->', $ctrl, 2);
+            $ctrl = array(new $clazz, $method);
         }
-
-        if (is_string($ctrl)) {
-            if (file_exists($ctrl)) return require $ctrl;
-            if (strpos($ctrl, '->') !== false) {
-                list($clazz, $method) = explode('->', $ctrl, 2);
-                $ctrl = array(new $clazz, $method);
-            }
-        }
-
-        if (is_callable($ctrl)) return call_user_func_array($ctrl, $args);
-
-        trigger_error('Invalid route.', E_USER_WARNING);
     }
+    if (is_callable($ctrl)) return call_user_func_array($ctrl, $args);
+    trigger_error('Invalid route \'' . $func .  '\'.', E_USER_WARNING);
 }

@@ -1,4 +1,6 @@
 <?php
+namespace webphp;
+
 class Redis {
 
     function __construct($host = 'tcp://127.0.0.1', $port = '6379') {
