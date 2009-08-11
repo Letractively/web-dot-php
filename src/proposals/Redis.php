@@ -6,8 +6,8 @@ class Redis {
         $this->port = $port;
     }
 
-    function _echo($data) { return $this->write(sprintf("ECHO %u\r\n%s\r\n", strlen($data), $data)); }
     function ping() { return $this->write("PING\r\n"); }
+    function echoes($data) { return $this->write(sprintf("ECHO %u\r\n%s\r\n", strlen($data), $data)); }
     function auth($password) { return $this->write(sprintf("AUTH %s\r\n", $password)); }
     function type($key) { return $this->write(sprintf("TYPE %s\r\n", $key)); }
     function set($key, $value) { return $this->write(sprintf("SET %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
@@ -30,6 +30,8 @@ class Redis {
     function save() { return $this->write("SAVE\r\n"); }
     function bgsave() { return $this->write("BGSAVE\r\n"); }
     function lastsave() { return $this->write("LASTSAVE\r\n"); }
+    function flushdb() { return $this->write("FLUSHDB\r\n"); }
+    function flushall() { return $this->write("FLUSHALL\r\n"); }
     function quit() { return $this->write("QUIT\r\n", true); }
     function shutdown() { return $this->write("SHUTDOWN\r\n", true); }
 
@@ -78,8 +80,8 @@ echo 'PING: ', var_dump($r->ping()), '<br />', PHP_EOL;
 echo 'QUIT: ', var_dump($r->quit()), '<br />', PHP_EOL;
 echo 'AUTH foobared: ', var_dump($r->auth('foobared')), '<br />', PHP_EOL;
 echo 'PING: ', var_dump($r->ping()), '<br />', PHP_EOL;
-echo 'ECHO test: ', var_dump($r->_echo('test')), '<br />', PHP_EOL;
-echo 'ECHO: ', var_dump($r->_echo('')), '<br />', PHP_EOL;
+echo 'ECHO test: ', var_dump($r->echoes('test')), '<br />', PHP_EOL;
+echo 'ECHO: ', var_dump($r->echoes('')), '<br />', PHP_EOL;
 echo 'DEL key: ', var_dump($r->del('key')), '<br />', PHP_EOL;
 echo 'EXISTS key: ', var_dump($r->exists('key')), '<br />', PHP_EOL;
 echo 'SET key 123: ', var_dump($r->set('key', '123')), '<br />', PHP_EOL;
@@ -117,10 +119,11 @@ echo 'SAVE: ', var_dump($r->save()), '<br />', PHP_EOL;
 echo 'LASTSAVE: ', var_dump($r->lastsave()), '<br />', PHP_EOL;
 echo 'BGSAVE: ', var_dump($r->bgsave()), '<br />', PHP_EOL;
 echo 'LASTSAVE: ', var_dump($r->lastsave()), '<br />', PHP_EOL;
+echo 'FLUSHDB: ', var_dump($r->flushdb()), '<br />', PHP_EOL;
+echo 'FLUSHALL: ', var_dump($r->flushall()), '<br />', PHP_EOL;
 $r->quit();
 
 //echo 'SHUTDOWN: ', $r->shutdown(), '<br />', PHP_EOL;
-
 
 echo microtime(true) - $starttime;
 
