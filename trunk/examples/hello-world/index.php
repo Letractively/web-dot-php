@@ -23,7 +23,6 @@ set_include_path('..' . DIRECTORY_SEPARATOR .
 require 'Web.php';
 require 'View.php';
 require 'Form.php';
-require 'controllers/IndexController.php';
 
 /* =======================================================================
  * Enable Error Handling
