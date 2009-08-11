@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Layout Title</title>
+</head>
+<body>
+<div id="content">
+    <?php echo $view; ?>
+</div>
+<div>
+Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
+</div>
+
+<?php if (isset($blocks->test)): ?>
+    <p><?php $blocks->test(); ?></p>
+<?php endif; ?>
+
+<?php foreach($blocks->test as $a): ?>
+    <h3><?php echo $a ?></h3>
+<?php endforeach; ?>
+
+</body>
+</html>

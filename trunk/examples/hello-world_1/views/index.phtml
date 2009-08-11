@@ -1,0 +1,24 @@
+<?php $layout = 'views/category.phtml'; ?>
+<h1><?php echo $header; ?></h1><me
+<p>
+    <?php echo $body; ?>
+</p>
+
+<?php $blocks->test->start(); ?>
+This is a block!
+<?php $blocks->test->flush(); ?>
+<h1>kala: <?php $form->kala(); ?></h1>
+<?php $form->kala('default value'); ?>
+<?php var_dump($form->validate()); ?>
+
+<?php $blocks->test->append(); ?>
+Appended
+<?php $blocks->test->flush(); ?>
+
+<?php $blocks->test->prepend(); ?>
+Prepended
+<?php $blocks->test->flush(); ?>
+
+<?php $blocks->test->insert(1); ?>
+After Prepend
+<?php $blocks->test->flush(); ?>
