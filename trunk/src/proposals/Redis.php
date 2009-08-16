@@ -25,7 +25,7 @@ class Redis {
     function incr($key) { return $this->write(sprintf("INCR %s\r\n", $key)); }
     function incrby($key, $increment = 1) { return $this->write(sprintf("INCRBY %s %d\r\n", $key, $increment)); }
     function decr($key) { return $this->write(sprintf("DECR %s\r\n", $key)); }
-    function decrby($key, $increment = 1) { return $this->write(sprintf("DECRBY %s %d\r\n", $key, $increment)); }
+    function decrby($key, $decrement = 1) { return $this->write(sprintf("DECRBY %s %d\r\n", $key, $decrement)); }
     function exists($key) { return $this->write(sprintf("EXISTS %s\r\n", $key)); }
     function del() { return $this->write(sprintf("DEL %s\r\n", implode(' ', func_get_args()))); }
     function type($key) { return $this->write(sprintf("TYPE %s\r\n", $key)); }
@@ -51,8 +51,20 @@ class Redis {
     function lpop($key) { return $this->write(sprintf("LPOP %s\r\n", $key)); }
     function rpop($key) { return $this->write(sprintf("RPOP %s\r\n", $key)); }
 
-    // Commands operating on sets *
-
+    // Commands operating on sets
+    function sadd($key, $member) { return $this->write(sprintf("SADD %s %u\r\n%s\r\n", $key, strlen($member), $member)); }
+    function srem($key, $member) { return $this->write(sprintf("SREM %s %u\r\n%s\r\n", $key, strlen($member), $member)); }
+    function spop($key) { return $this->write(sprintf("SPOP %s\r\n", $key)); }
+    function smove($srkey, $dstkey, $member) { return $this->write(sprintf("SMOVE %s %s %u\r\n%s\r\n", $srckey, $dstkey, $strlen($member), $member)); }
+    function scard($key) { return $this->write(sprintf("SCARD %s\r\n", $key)); }
+    function sismember($key, $member) { return $this->write(sprintf("SISMEMBER %s %u\r\n%s\r\n", $key, strlen($member), $member)); }
+    function sinter() { return $this->write(sprintf("SINTER %s\r\n", implode(' ', func_get_args()))); }
+    function sinterstore() { return $this->write(sprintf("SINTERSTORE %s\r\n", implode(' ', func_get_args()))); }
+    function sunion() { return $this->write(sprintf("SUNION %s\r\n", implode(' ', func_get_args()))); }
+    function sunionstore() { return $this->write(sprintf("SUNIONSTORE %s\r\n", implode(' ', func_get_args()))); }
+    function sdiff() { return $this->write(sprintf("SDIFF %s\r\n", implode(' ', func_get_args()))); }
+    function sdiffstore() { return $this->write(sprintf("SDIFFSTORE %s\r\n", implode(' ', func_get_args()))); }
+    function smembers($key) { return $this->write(sprintf("SMEMBERS %s\r\n", $key)); }
 
     // Multiple databases handling commands
     function select($dbindex = 0) { return $this->write(sprintf("SELECT %u\r\n", $dbindex)); }
@@ -107,6 +119,29 @@ class Redis {
     private function disconnect() {
         fclose($this->socket);
         unset($this->socket);
+    }
+}
+
+class RedisSortCommand {
+
+    function __construct($key) {
+        $this->key = $key;
+    }
+
+    function by($pattern) {
+        $this->by = $pattern;
+        return $this;
+    }
+
+    function limit($start, $end) {
+        $this->start = $start;
+        $this->end = $end;
+        return $this;
+    }
+
+    function get($pattern) {
+        $this->get = $pattern;
+        return $this;
     }
 }
 
