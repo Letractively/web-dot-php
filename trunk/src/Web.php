@@ -44,66 +44,66 @@ function run($func, $args = array()) {
     trigger_error("Invalid route '" . $func .  "'.", E_USER_WARNING);
     return false;
 }
-function status($statuscode) {
+function status($code) {
     if (headers_sent()) return false;
-    switch ($statuscode) {
-        case 100: $statusmsg = 'Continue'; break;
-        case 200: $statusmsg = 'OK'; break;
-        case 201: $statusmsg = 'Created'; break;
-        case 101: $statusmsg = 'Switching Protocols'; break;
-        case 200: $statusmsg = 'OK'; break;
-        case 201: $statusmsg = 'Created'; break;
-        case 202: $statusmsg = 'Accepted'; break;
-        case 203: $statusmsg = 'Non-Authoritative Information'; break;
-        case 204: $statusmsg = 'No Content'; break;
-        case 205: $statusmsg = 'Reset Content'; break;
-        case 206: $statusmsg = 'Partial Content'; break;
-        case 300: $statusmsg = 'Multiple Choices'; break;
-        case 301: $statusmsg = 'Moved Permanently'; break;
-        case 302: $statusmsg = 'Found'; break;
-        case 303: $statusmsg = 'See Other'; break;
-        case 304: $statusmsg = 'Not Modified'; break;
-        case 305: $statusmsg = 'Use Proxy'; break;
-        case 306: $statusmsg = '(Unused)'; break;
-        case 307: $statusmsg = 'Temporary Redirect'; break;
-        case 400: $statusmsg = 'Bad Request'; break;
-        case 401: $statusmsg = 'Unauthorized'; break;
-        case 402: $statusmsg = 'Payment Required'; break;
-        case 403: $statusmsg = 'Forbidden'; break;
-        case 404: $statusmsg = 'Not Found'; break;
-        case 405: $statusmsg = 'Method Not Allowed'; break;
-        case 406: $statusmsg = 'Not Acceptable'; break;
-        case 407: $statusmsg = 'Proxy Authentication Required'; break;
-        case 408: $statusmsg = 'Request Timeout'; break;
-        case 409: $statusmsg = 'Conflict'; break;
-        case 410: $statusmsg = 'Gone'; break;
-        case 411: $statusmsg = 'Length Required'; break;
-        case 412: $statusmsg = 'Precondition Failed'; break;
-        case 413: $statusmsg = 'Request Entity Too Large'; break;
-        case 414: $statusmsg = 'Request-URI Too Long'; break;
-        case 415: $statusmsg = 'Unsupported Media Type'; break;
-        case 416: $statusmsg = 'Requested Range Not Satisfiable'; break;
-        case 417: $statusmsg = 'Expectation Failed'; break;
-        case 500: $statusmsg = 'Internal Server Error'; break;
-        case 501: $statusmsg = 'Not Implemented'; break;
-        case 502: $statusmsg = 'Bad Gateway'; break;
-        case 503: $statusmsg = 'Service Unavailable'; break;
-        case 504: $statusmsg = 'Gateway Timeout'; break;
-        case 505: $statusmsg = 'HTTP Version Not Supported'; break;
-        default: $statusmsg = '';
+    switch ($code) {
+        case 100: $msg = 'Continue'; break;
+        case 200: $msg = 'OK'; break;
+        case 201: $msg = 'Created'; break;
+        case 101: $msg = 'Switching Protocols'; break;
+        case 200: $msg = 'OK'; break;
+        case 201: $msg = 'Created'; break;
+        case 202: $msg = 'Accepted'; break;
+        case 203: $msg = 'Non-Authoritative Information'; break;
+        case 204: $msg = 'No Content'; break;
+        case 205: $msg = 'Reset Content'; break;
+        case 206: $msg = 'Partial Content'; break;
+        case 300: $msg = 'Multiple Choices'; break;
+        case 301: $msg = 'Moved Permanently'; break;
+        case 302: $msg = 'Found'; break;
+        case 303: $msg = 'See Other'; break;
+        case 304: $msg = 'Not Modified'; break;
+        case 305: $msg = 'Use Proxy'; break;
+        case 306: $msg = '(Unused)'; break;
+        case 307: $msg = 'Temporary Redirect'; break;
+        case 400: $msg = 'Bad Request'; break;
+        case 401: $msg = 'Unauthorized'; break;
+        case 402: $msg = 'Payment Required'; break;
+        case 403: $msg = 'Forbidden'; break;
+        case 404: $msg = 'Not Found'; break;
+        case 405: $msg = 'Method Not Allowed'; break;
+        case 406: $msg = 'Not Acceptable'; break;
+        case 407: $msg = 'Proxy Authentication Required'; break;
+        case 408: $msg = 'Request Timeout'; break;
+        case 409: $msg = 'Conflict'; break;
+        case 410: $msg = 'Gone'; break;
+        case 411: $msg = 'Length Required'; break;
+        case 412: $msg = 'Precondition Failed'; break;
+        case 413: $msg = 'Request Entity Too Large'; break;
+        case 414: $msg = 'Request-URI Too Long'; break;
+        case 415: $msg = 'Unsupported Media Type'; break;
+        case 416: $msg = 'Requested Range Not Satisfiable'; break;
+        case 417: $msg = 'Expectation Failed'; break;
+        case 500: $msg = 'Internal Server Error'; break;
+        case 501: $msg = 'Not Implemented'; break;
+        case 502: $msg = 'Bad Gateway'; break;
+        case 503: $msg = 'Service Unavailable'; break;
+        case 504: $msg = 'Gateway Timeout'; break;
+        case 505: $msg = 'HTTP Version Not Supported'; break;
+        default: $msg = '';
     }
-    header(trim(sprintf('%s %u &s', $_SERVER['SERVER_PROTOCOL'], $statuscode, $statusmsg)));
+    header(trim(sprintf('%s %u &s', $_SERVER['SERVER_PROTOCOL'], $code, $msg)));
     return true;
 }
-function redirect($url = null, $statuscode = 302) {
+function redirect($url = null, $code = 302) {
     if (headers_sent()) return false;
     while (ob_get_level()) @ob_end_clean();
-    switch ($statuscode) {
+    switch ($code) {
         case 301:
         case 303:
         case 305:
         case 307:
-            status($statuscode);
+            status($code);
         default:
             header('Location: ' . url($url));
     }
