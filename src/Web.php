@@ -42,8 +42,10 @@ function run($func, $args = array()) {
     }
     if (is_callable($ctrl)) return call_user_func_array($ctrl, $args);
     trigger_error("Invalid route '" . $func .  "'.", E_USER_WARNING);
+    return false;
 }
 function status($statuscode) {
+    if (headers_sent()) return false;
     switch ($statuscode) {
         case 100: $statusmsg = 'Continue'; break;
         case 200: $statusmsg = 'OK'; break;
@@ -91,11 +93,21 @@ function status($statuscode) {
         default: $statusmsg = '';
     }
     header(trim(sprintf('%s %u &s', $_SERVER['SERVER_PROTOCOL'], $statuscode, $statusmsg)));
+    return true;
 }
 function redirect($url = null, $statuscode = 302) {
+    if (headers_sent()) return false;
     while (ob_get_level()) @ob_end_clean();
-    if ($statuscode != 302) status($statuscode);
-    header('Location: ' . url($url));
+    switch ($statuscode) {
+        case 301:
+        case 303:
+        case 305:
+        case 307:
+            status($statuscode);
+        default:
+            header('Location: ' . url($url));
+    }
+    return true;
 }
 function url($url = null) {
     if ($url != null) extract(parse_url($url));
