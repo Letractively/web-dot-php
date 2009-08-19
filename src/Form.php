@@ -1,44 +1,54 @@
 <?php
-class Form {
+class Form extends ArrayObject {
 
-    private $fields;
-
-    function __construct() {
-        $this->fields = array();
-    }
-
-    function validate() {
-       foreach ($this->fields as $field) if (!$field->validate()) return false;
-       return true;
-    }
-
-    function __call($name, $args) {
-        echo strlen($this->$name) ? $this->$name : (isset($args[0]) ? $args[0] : '');
+    private $filters;
+    private $value;
+    
+    function __construct($args = null) {
+        if ($args == null) return;
+        foreach ($args as $name => $value) {
+            if (is_array($value) && !isset($value[0][0])) {
+                $this[$name] = new Form($value);
+            } else {
+                $this[$name] = new Form;
+                $this[$name]->value = $value;
+            }
+        }
     }
 
     function __set($name, $value) {
-        $this->$name->value = $value;
+        if ($name == 'filters') {
+            $this->filters =  is_string($value)? explode(',', $value) : (array) $value;
+            return;
+        }
+        if (!isset($this[$name])) $this[$name] = new Form;
+        $this[$name]['value'] = $value;
     }
 
-    function __get($name) {
-        if (!isset($this->fields[$name])) $this->fields[$name] = new FormField($name);
-        return $this->fields[$name];
+    function &__get($name) {
+        if (!isset($this[$name])) $this[$name] = new Form;
+        $field = $this[$name];
+        return $field;
     }
-}
 
-class FormField {
-    function __construct($name, $value = '') {
-        $this->name = $name;
-        $this->value = $value;
-        $this->filters = array();
+    function __call($name, $args) {
+        if (!isset($args[0])) return print $this->value ?: '';
+        return print $this->value ?: $args[0];
+    }
+
+    function __toString() {
+        return $this->value ?: '';
     }
 
     function validate() {
+
+        if ($this->filters == null) return true;
 
         $validates = true;
 
         foreach ($this->filters as $filter) {
-            switch ($filter) {
+
+            switch (trim($filter)) {
                 // filters
                 case 'trim':  $this->value = trim($this->value); break;
                 case 'ltrim': $this->value = ltrim($this->value); break;
@@ -66,9 +76,5 @@ class FormField {
         }
 
         return true;
-    }
-
-    function __toString() {
-        return $this->value;
     }
 }
