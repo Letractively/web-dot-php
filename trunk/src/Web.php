@@ -28,7 +28,7 @@ function route($path, $func = null) {
     $matched = $func == null;
     if ($matched) return run($path);
     $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($_SERVER['SCRIPT_NAME'], 0, -9))), '/');
-    $pattern = '#^' . preg_replace('/:(\w+)/', '(\w+)', trim($path, '/')) . '#i';
+    $pattern = '#^' . preg_replace('/:([\w-]+)/', '(?<$1>\w+)', trim($path, '/')) . '#i';
     return ($matched = (bool) preg_match($pattern, $subject, $matches)) ? run($func,  array_slice($matches, 1)) : false;
 }
 function run($func, $args = array()) {
