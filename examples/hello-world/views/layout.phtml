@@ -11,14 +11,5 @@
 <div>
 Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
 </div>
-
-<?php if (isset($blocks->test)): ?>
-    <p><?php $blocks->test(); ?></p>
-<?php endif; ?>
-
-<?php foreach($blocks->test as $a): ?>
-    <h3><?php echo $a ?></h3>
-<?php endforeach; ?>
-
 </body>
 </html>
