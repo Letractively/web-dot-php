@@ -1,6 +1,4 @@
 <?php
-namespace webphp;
-
 class Redis {
 
     function __construct($host = 'tcp://127.0.0.1', $port = '6379') {
@@ -39,7 +37,7 @@ class Redis {
     function expire($key, $timeout = 0) { return $this->write(sprintf("EXPIRE %s %u\r\n", $key, $timeout)); }
     function ttl($key) { return $this->write(sprintf("TTL %s\r\n", $key)); }
 
-    // Commands operating on lists *
+    // Commands operating on lists
     function rpush($key, $value) { return $this->write(sprintf("RPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
     function lpush($key, $value) { return $this->write(sprintf("LPUSH %s %u\r\n%s\r\n", $key, strlen($value), $value)); }
     function llen($key) { return $this->write(sprintf("LLEN %s\r\n", $key)); }
@@ -47,7 +45,7 @@ class Redis {
     function ltrim($key, $start = 0, $end = -1) { return $this->write(sprintf("LTRIM %s %d %d\r\n", $key, $start, $end)); }
     function lindex($key, $index = 0) { return $this->write(sprintf("LINDEX %s %d\r\n", $key, $index)); }
     function lset($key, $index, $value) { return $this->write(sprintf("LSET %s %d %u\r\n%s\r\n", $key, $index, strlen($value), $value)); }
-
+    function lrem($key, $count = 0, $value = null) { return $this->write(sprintf('LREN %s %d', $key, $count) . isset($value) ? sprintf(" %u\r\n%s\r\n", strlen($value), $value) : "\r\n"); }
     function lpop($key) { return $this->write(sprintf("LPOP %s\r\n", $key)); }
     function rpop($key) { return $this->write(sprintf("RPOP %s\r\n", $key)); }
 
@@ -72,7 +70,8 @@ class Redis {
     function flushdb() { return $this->write("FLUSHDB\r\n"); }
     function flushall() { return $this->write("FLUSHALL\r\n"); }
 
-    // Sorting *
+    // Sorting
+    function sort($key) { return new RedisSortCommand($this, $key); }
 
     // Persistence control commands
     function save() { return $this->write("SAVE\r\n"); }
@@ -81,6 +80,7 @@ class Redis {
     function shutdown() { return $this->write("SHUTDOWN\r\n", true); }
 
     // Remote server control commands *
+    function info() { return $this->write("INFO\r\n"); }
 
     private function write($command, $disconnect = false) {
         if (!isset($this->socket)) $this->socket = fsockopen($this->host, $this->port);
@@ -90,6 +90,7 @@ class Redis {
 
     private function read() {
 
+        // Alternative method (one less round trips):
         //$data = fgets($this->socket);
         //$type = substr($data, 0, 1);
         //$data = substr($data, 1, -2);
@@ -124,7 +125,8 @@ class Redis {
 
 class RedisSortCommand {
 
-    function __construct($key) {
+    function __construct($redis, $key) {
+        $this->redis = $redis;
         $this->key = $key;
     }
 
@@ -143,11 +145,40 @@ class RedisSortCommand {
         $this->get = $pattern;
         return $this;
     }
+
+    function alpha() {
+        $this->alpha = true;
+        return $this;
+    }
+
+    function asc() {
+        $this->order = 'ASC';
+        return $this;
+    }
+
+    function desc() {
+        $this->order = 'DESC';
+        return $this;
+    }
+
+    function query() {
+        return $this->redis->write(strval($this));
+    }
+
+    function __toString() {
+        $cmd = 'SORT ' . $key;
+        if (isset($this->by)) $cmd .= ' BY ' . $this->by;
+        if (isset($this->start) && isset($this->end)) $cmd .= ' LIMIT ' . $this->start . ' ' . $this->end;
+        if (isset($this->get)) $cmd .= ' GET ' . $this->get;
+        if (isset($this->alpha)) $cmd .= ' ALPHA';
+        if (isset($this->order)) $cmd .= ' ' . $this->order;
+    }
 }
 
 $starttime = microtime(true);
 
 $r = new Redis;
+
 echo 'AUTH wrongpass: ', var_dump($r->auth('wrongpass')), '<br />', PHP_EOL;
 echo 'AUTH foobared: ', var_dump($r->auth('foobared')), '<br />', PHP_EOL;
 echo 'PING: ', var_dump($r->ping()), '<br />', PHP_EOL;
