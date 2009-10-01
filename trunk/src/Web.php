@@ -36,11 +36,11 @@ function route($path, $func = null) {
         $params = array_slice($params, 1);
     } else {
         $path = preg_quote(strtr(trim($path, '/'), ':*', '%@'), ';');
-        $pattern = ';^' . preg_replace(array('/%([^\/]+)/', '/#([^\/]+)/'), array('(?<$1>[^\/]+)', '(?<$1>\d+)'), str_replace('@', '[^\/]*', $path)) . '$;i';
+        $pattern = ';^' . preg_replace(array('/%([^\/]+)/', '/#([^\/]+)/'), array('(?<$1>[^\/]+)', '(?<$1>\d+)'), str_replace('@', '[^\/]+', $path)) . '$;i';
         $matched = (bool) preg_match($pattern, $subject, $params);
         if (!$matched) return false;
         $params = array_slice($params, 1);
-        $pattern = ';^' . preg_replace(array('/%[^\/]+/', '/#[^\/]+/'), array('[^\/]+', '\d+'), str_replace('@', '([^\/]*)', $path)) . '$;i';
+        $pattern = ';^' . preg_replace(array('/%[^\/]+/', '/#[^\/]+/'), array('[^\/]+', '\d+'), str_replace('@', '([^\/]+)', $path)) . '$;i';
         if ((bool) preg_match($pattern, $subject, $splats)) $params['splat'] = array_slice($splats, 1);
     }
     return run($func, $params);
