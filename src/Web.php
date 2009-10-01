@@ -20,18 +20,32 @@ About: License
  */
 function get($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'GET') ? route($path, $func) : false; }
 function post($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'POST') ? route($path, $func) : false; }
-function put($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'PUT') ? route($path, $func) : false; }
-function delete($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'DELETE') ? route($path, $func) : false; }
+function put($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'PUT' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'PUT') == 0)) ? route($path, $func) : false; }
+function delete($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'DELETE' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'DELETE') == 0)) ? route($path, $func) : false; }
 function route($path, $func = null) {
     static $matched = false;
     if ($matched) return false;
     $matched = $func == null;
     if ($matched) return run($path);
     $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($_SERVER['SCRIPT_NAME'], 0, -9))), '/');
-    $pattern = '#^' . preg_replace('/:([\w-]+)/', '(?<$1>[\w-]+)', trim($path, '/')) . '#i';
-    return ($matched = (bool) preg_match($pattern, $subject, $matches)) ? run($func,  array_slice($matches, 1)) : false;
+    $params = array();
+    if (stripos($path, 'r') === 0) {
+        $pattern = substr($path, 1);
+        $matched = (bool) preg_match($pattern, $subject, $params);
+        if (!$matched) return false;
+        $params = array_slice($params, 1);
+    } else {
+        $path = preg_quote(strtr(trim($path, '/'), ':*', '%@'), ';');
+        $pattern = ';^' . preg_replace(array('/%([^\/]+)/', '/#([^\/]+)/'), array('(?<$1>[^\/]+)', '(?<$1>\d+)'), str_replace('@', '[^\/]*', $path)) . '$;i';
+        $matched = (bool) preg_match($pattern, $subject, $params);
+        if (!$matched) return false;
+        $params = array_slice($params, 1);
+        $pattern = ';^' . preg_replace(array('/%[^\/]+/', '/#[^\/]+/'), array('[^\/]+', '\d+'), str_replace('@', '([^\/]*)', $path)) . '$;i';
+        if ((bool) preg_match($pattern, $subject, $splats)) $params['splat'] = array_slice($splats, 1);
+    }
+    return run($func, $params);
 }
-function run($func, $args = array()) {
+function run($func, $params = array()) {
     $ctrl = $func;
     if (is_string($ctrl)) {
         if (file_exists($ctrl)) return require $ctrl;
@@ -40,7 +54,9 @@ function run($func, $args = array()) {
             $ctrl = array(new $clazz, $method);
         }
     }
-    if (is_callable($ctrl)) return call_user_func_array($ctrl, $args);
+    if (is_callable($ctrl)) {
+        return $ctrl($params);
+    }
     trigger_error("Invalid function or method '" . $func .  "'.", E_USER_WARNING);
     return false;
 }

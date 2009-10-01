@@ -20,11 +20,11 @@ About: License
  */
 class View {
 
-    public function __construct($file) {
+    function __construct($file) {
         $this->file = $file;
     }
 
-    public function __toString() {
+    function __toString() {
         extract((array)$this);
         $blocks = new Blocks();
         do {
