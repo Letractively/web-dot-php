@@ -174,7 +174,7 @@ class RedisSortCommand {
         if (isset($this->order)) $cmd .= ' ' . $this->order;
     }
 }
-
+/*
 $starttime = microtime(true);
 
 $r = new Redis;
@@ -231,4 +231,4 @@ $r->quit();
 //echo 'SHUTDOWN: ', $r->shutdown(), '<br />', PHP_EOL;
 
 echo microtime(true) - $starttime;
-
+*/
