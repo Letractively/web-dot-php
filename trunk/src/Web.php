@@ -239,7 +239,7 @@ class Form extends ArrayObject {
                 case 'url':   $validates = filter_var($this->value, FILTER_VALIDATE_URL); break;
                 default:
                     // regex validator
-                    if ((strpos($filter, '/')) === 0 || (strpos($filter, '#') === 0)) {
+                    if ((strpos($filter, '/')) === 0) {
                         $validates = preg_match($filter, $this->value);
                     }
                     break;
