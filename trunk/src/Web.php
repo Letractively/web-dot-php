@@ -29,19 +29,14 @@ function route($path, $func = null) {
     if ($matched) return run($path);
     $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($_SERVER['SCRIPT_NAME'], 0, -9))), '/');
     $params = array();
-    if (stripos($path, 'r') === 0) {
+    if (stripos($path, 'r/') === 0) {
         $pattern = substr($path, 1);
         $matched = (bool) preg_match($pattern, $subject, $params);
         if (!$matched) return false;
-        $params = array_slice($params, 1);
     } else {
-        $path = preg_quote(strtr(trim($path, '/'), ':*', '%@'), ';');
-        $pattern = ';^' . preg_replace(array('/%([^\/]+)/', '/#([^\/]+)/'), array('(?<$1>[^\/]+)', '(?<$1>\d+)'), str_replace('@', '[^\/]+', $path)) . '$;i';
+        $pattern = '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
         $matched = (bool) preg_match($pattern, $subject, $params);
         if (!$matched) return false;
-        $params = array_slice($params, 1);
-        $pattern = ';^' . preg_replace(array('/%[^\/]+/', '/#[^\/]+/'), array('[^\/]+', '\d+'), str_replace('@', '([^\/]+)', $path)) . '$;i';
-        if ((bool) preg_match($pattern, $subject, $splats)) $params['splat'] = array_slice($splats, 1);
     }
     return run($func, $params);
 }
@@ -141,4 +136,116 @@ function url($url = null) {
     if (isset($query)) $url .= '?' . $query;
     if (isset($fragment)) $url .= '#' . $fragment;
     return $url;
+}
+class View {
+    function __construct($file) {
+        $this->file = $file;
+    }
+    function __toString() {
+        extract((array)$this);
+        $blocks = new Blocks;
+        do {
+            ob_start();
+            require $file;
+            if (!isset($layout)) return ob_get_clean();
+            $view = ob_get_clean();
+            $file = $layout;
+            unset($layout);
+        } while (true);
+    }
+}
+class Blocks {
+    function __call($name, $args) {
+        echo isset($this->$name) ? $this->$name : '';
+    }
+    function __get($name) {
+        if (!isset($this->$name)) $this->$name = new Block();
+        return $this->$name;
+    }
+}
+class Block implements IteratorAggregate, Countable {
+    function __construct() { $this->output = array(); $this->mode = -1; }
+    function getIterator() { return new ArrayIterator($this->output); }
+    function count() { return count($this->output); }
+    function start() { $this->mode = 0; ob_start(); }
+    function append() { $this->mode = 1; ob_start(); }
+    function prepend() { $this->mode = 2; ob_start(); }
+    function insert($offset) { $this->mode = 3; $this->offset = $offset; ob_start(); }
+    function flush() {
+        if ($this->mode == -1) trigger_error('Flush-method can only be called after calling start, append, prepend, or insert.', E_USER_WARNING);
+        switch ($this->mode) {
+            case 0: $this->output = array(ob_get_clean()); break;
+            case 1: $this->output[] = ob_get_clean(); break;
+            case 2: array_unshift($this->output, ob_get_clean()); break;
+            case 3: array_splice($this->output, $this->offset, 0, ob_get_clean()); break;
+        }
+        $this->mode = -1;
+    }
+    function __toString() { return implode($this->output); }
+}
+class Form extends ArrayObject {
+    private $filters;
+    private $value;
+    function __construct($args = null) {
+        if ($args == null) return;
+        foreach ($args as $name => $value) {
+            if (is_array($value) && !isset($value[0][0])) {
+                $this[$name] = new Form($value);
+            } else {
+                $this[$name] = new Form;
+                $this[$name]->value = $value;
+            }
+        }
+    }
+    function __set($name, $value) {
+        if ($name == 'filters') {
+            $this->filters =  is_string($value)? explode(',', $value) : (array) $value;
+            return;
+        }
+        if (!isset($this[$name])) $this[$name] = new Form;
+        $this[$name]['value'] = $value;
+    }
+    function __get($name) {
+        if (!isset($this[$name])) $this[$name] = new Form;
+        $field = $this[$name];
+        return $field;
+    }
+    function __call($name, $args) {
+        if (!isset($args[0])) return print $this->value ?: '';
+        return print $this->value ?: $args[0];
+    }
+    function __toString() {
+        return $this->value ?: '';
+    }
+    function validate() {
+        if ($this->filters == null) return true;
+        $validates = true;
+        foreach ($this->filters as $filter) {
+            switch (trim($filter)) {
+                // filters
+                case 'trim':  $this->value = trim($this->value); break;
+                case 'ltrim': $this->value = ltrim($this->value); break;
+                case 'rtrim':
+                case 'chop':  $this->value = rtrim($this->value); break;
+                // validators
+                case 'req':   $validates = strlen($this->value) > 0; break;
+                case 'bool':  $validates = filter_var($this->value, FILTER_VALIDATE_BOOLEAN); break;
+                case 'int':   $validates = filter_var($this->value, FILTER_VALIDATE_INT); break;
+                case 'float': $validates = filter_var($this->value, FILTER_VALIDATE_FLOAT); break;
+                case 'ip':    $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
+                case 'ipv4':  $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
+                case 'ipv6':  $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
+                case 'email': $validates = filter_var($this->value, FILTER_VALIDATE_EMAIL); break;
+                case 'url':   $validates = filter_var($this->value, FILTER_VALIDATE_URL); break;
+                default:
+                    // regex validator
+                    if ((strpos($filter, '/')) === 0 || (strpos($filter, '#') === 0)) {
+                        $validates = preg_match($filter, $this->value);
+                    }
+                    break;
+            }
+            if (!$validates) return false;
+        }
+        return true;
+    }
 }
