@@ -1,35 +1,5 @@
 <?php $layout = 'views/category.phtml'; ?>
-<h1><?php echo $header; ?></h1><me
+<h1><?php echo $header; ?></h1>
 <p>
     <?php echo $body; ?>
 </p>
-<div>
-    <form method="post">
-        <label for="fname">First Name:</label><br />
-        <input id="fname" name="person[fname]" value="<?php $form->person->fname('Aapo'); ?>" /><br />
-        <label for="lname">Last Name:</label><br />
-        <input id="lname" name="person[lname]" value="Laakkonen" /><br />
-        <label for="fnumbers">Favourite Numbers:</label><br />
-        <select id="fnumbers" name="person[numbers][]" multiple="multiple">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select><br />
-        <label for="x">X:</label><br />
-        <input id="x" name="person[x]" value="x" /><br />
-        <label for="y">Y:</label><br />
-        <input id="y" name="person[y][][z][]" value="y" /><br />
-        <label for="z">Z:</label><br />
-        <input id="z" name="person[y][][z][]" value="z" /><br />
-        <label for="xyz1">XYZ 1:</label><br />
-        <input id="xyz1" name="person[x][y][z][]" value="x" /><br />
-        <label for="xyz2">XYZ 2:</label><br />
-        <input id="xyz2" name="person[x][y][z][]" value="y" /><br />
-        <label for="xyz3">XYZ 3:</label><br />
-        <input id="xyz3" name="person[x][y][z][]" value="z" /><br />
-
-        <input type="submit" />
-    </form>
-</div>
