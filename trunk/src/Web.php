@@ -2,10 +2,6 @@
 /**
 $Id$
 
-Class: Web
-
-    Manages controllers' execution.
-
 About: Version
 
     $Revision$
@@ -229,14 +225,14 @@ class Form extends ArrayObject {
                 case 'chop':  $this->value = rtrim($this->value); break;
                 // validators
                 case 'req':   $validates = strlen($this->value) > 0; break;
-                case 'bool':  $validates = filter_var($this->value, FILTER_VALIDATE_BOOLEAN); break;
-                case 'int':   $validates = filter_var($this->value, FILTER_VALIDATE_INT); break;
-                case 'float': $validates = filter_var($this->value, FILTER_VALIDATE_FLOAT); break;
-                case 'ip':    $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
-                case 'ipv4':  $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
-                case 'ipv6':  $validates = filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
-                case 'email': $validates = filter_var($this->value, FILTER_VALIDATE_EMAIL); break;
-                case 'url':   $validates = filter_var($this->value, FILTER_VALIDATE_URL); break;
+                case 'bool':  $validates = false !== filter_var($this->value, FILTER_VALIDATE_BOOLEAN); break;
+                case 'int':   $validates = false !== filter_var($this->value, FILTER_VALIDATE_INT); break;
+                case 'float': $validates = false !== filter_var($this->value, FILTER_VALIDATE_FLOAT); break;
+                case 'ip':    $validates = false !== filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
+                case 'ipv4':  $validates = false !== filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
+                case 'ipv6':  $validates = false !== filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
+                case 'email': $validates = false !== filter_var($this->value, FILTER_VALIDATE_EMAIL); break;
+                case 'url':   $validates = false !== filter_var($this->value, FILTER_VALIDATE_URL); break;
                 default:
                     // regex validator
                     if ((strpos($filter, '/')) === 0) {
