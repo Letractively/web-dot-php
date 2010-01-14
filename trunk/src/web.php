@@ -13,7 +13,7 @@ About: Author
 About: License
 
     This file is licensed under the MIT.
- */
+*/
 function get($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'GET') ? route($path, $func) : false; }
 function post($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'POST') ? route($path, $func) : false; }
 function put($path, $func = null) { return ($_SERVER['REQUEST_METHOD'] == 'PUT' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'PUT') == 0)) ? route($path, $func) : false; }
@@ -48,73 +48,12 @@ function run($func, $params = array()) {
     if (is_callable($ctrl)) {
         return $ctrl($params);
     }
-    trigger_error("Invalid function or method '" . $func .  "'.", E_USER_WARNING);
-    return false;
-}
-function status($code) {
-    if (headers_sent()) return false;
-    switch ($code) {
-        case 100: $msg = 'Continue'; break;
-        case 200: $msg = 'OK'; break;
-        case 201: $msg = 'Created'; break;
-        case 101: $msg = 'Switching Protocols'; break;
-        case 200: $msg = 'OK'; break;
-        case 201: $msg = 'Created'; break;
-        case 202: $msg = 'Accepted'; break;
-        case 203: $msg = 'Non-Authoritative Information'; break;
-        case 204: $msg = 'No Content'; break;
-        case 205: $msg = 'Reset Content'; break;
-        case 206: $msg = 'Partial Content'; break;
-        case 300: $msg = 'Multiple Choices'; break;
-        case 301: $msg = 'Moved Permanently'; break;
-        case 302: $msg = 'Found'; break;
-        case 303: $msg = 'See Other'; break;
-        case 304: $msg = 'Not Modified'; break;
-        case 305: $msg = 'Use Proxy'; break;
-        case 306: $msg = '(Unused)'; break;
-        case 307: $msg = 'Temporary Redirect'; break;
-        case 400: $msg = 'Bad Request'; break;
-        case 401: $msg = 'Unauthorized'; break;
-        case 402: $msg = 'Payment Required'; break;
-        case 403: $msg = 'Forbidden'; break;
-        case 404: $msg = 'Not Found'; break;
-        case 405: $msg = 'Method Not Allowed'; break;
-        case 406: $msg = 'Not Acceptable'; break;
-        case 407: $msg = 'Proxy Authentication Required'; break;
-        case 408: $msg = 'Request Timeout'; break;
-        case 409: $msg = 'Conflict'; break;
-        case 410: $msg = 'Gone'; break;
-        case 411: $msg = 'Length Required'; break;
-        case 412: $msg = 'Precondition Failed'; break;
-        case 413: $msg = 'Request Entity Too Large'; break;
-        case 414: $msg = 'Request-URI Too Long'; break;
-        case 415: $msg = 'Unsupported Media Type'; break;
-        case 416: $msg = 'Requested Range Not Satisfiable'; break;
-        case 417: $msg = 'Expectation Failed'; break;
-        case 500: $msg = 'Internal Server Error'; break;
-        case 501: $msg = 'Not Implemented'; break;
-        case 502: $msg = 'Bad Gateway'; break;
-        case 503: $msg = 'Service Unavailable'; break;
-        case 504: $msg = 'Gateway Timeout'; break;
-        case 505: $msg = 'HTTP Version Not Supported'; break;
-        default: $msg = '';
-    }
-    header(trim(sprintf('%s %u &s', $_SERVER['SERVER_PROTOCOL'], $code, $msg)));
-    return true;
+    trigger_error("Invalid function or method $func.", E_USER_WARNING);
 }
 function redirect($url = null, $code = 302) {
-    if (headers_sent()) return false;
-    while (ob_get_level()) @ob_end_clean();
-    switch ($code) {
-        case 301:
-        case 303:
-        case 305:
-        case 307:
-            status($code);
-        default:
-            header('Location: ' . url($url));
-    }
-    return true;
+    if (headers_sent($file, $line)) return trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
+    if ($code == 301) header($_SERVER['SERVER_PROTOCOL'] ?: 'HTTP/1.0' . ' 301 Moved Permanently');
+    header('Location: ' . url($url));
 }
 function url($url = null) {
     if ($url != null) extract(parse_url($url));
@@ -132,6 +71,25 @@ function url($url = null) {
     if (isset($query)) $url .= '?' . $query;
     if (isset($fragment)) $url .= '#' . $fragment;
     return $url;
+}
+function session_ensure($regenerate = false) {
+    static $started;
+    if ($started) return;
+    if (headers_sent($file, $line) && (!defined('SID') || $regenerate)) return trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
+    if (!defined('SID')) session_start();
+    if (isset($_SESSION['web.php:session'])) {
+        if ($_SESSION['web.php:session'] !== crc32($_SERVER['HTTP_USER_AGENT'])) {
+            return trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
+        }
+    } else {
+        $_SESSION['web.php:session'] = crc32($_SERVER['HTTP_USER_AGENT']);
+    }
+    if ($regenerate) session_regenerate_id(true);
+}
+function flash($name, $value, $hops = 1) {
+    session_ensure();
+    $_SESSION[$name] = $value;
+    $_SESSION["web.php:flash:$name"] = $hops;
 }
 class view {
     function __construct($file) {
@@ -155,7 +113,7 @@ class blocks {
         echo isset($this->$name) ? $this->$name : '';
     }
     function __get($name) {
-        if (!isset($this->$name)) $this->$name = new Block();
+        if (!isset($this->$name)) $this->$name = new block;
         return $this->$name;
     }
 }
@@ -245,3 +203,15 @@ class form extends ArrayObject {
         return true;
     }
 }
+register_shutdown_function(function() {
+    if (!defined('SID')) return;
+    $keys = array_keys($_SESSION);
+    foreach($keys as $key) {
+        if (strpos($key, 'web.php:flash:') === 0) {
+            if ($_SESSION[$key] === 0)
+                unset($_SESSION[$key], $_SESSION[substr($key, 14)]);
+            else
+                $_SESSION[$key]--;
+        }
+    }
+});
