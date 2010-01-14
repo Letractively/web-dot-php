@@ -23,57 +23,6 @@ class Browser {
     private function __construct() {}
 
     /**
-    Function: redirect
-
-        Makes a bit more sophisticated header("Location: url");
-
-    Parameters:
-
-        string $url          - The redirect location, it can be an absolute url, server relative url or application relative url.
-        boolean $permanently - Specifies whether the redirect is permanent (301) or temporary. Defaults to false.
-
-    Examples:
-
-        > // permanent absolute url redirect
-        > Browser::redirect('http://www.example.com', true);
-        > // nonpermanent server relative url redirect
-        > Browser::redirect('/');
-        > // nonpermanent application relative url redirect
-        > Browser::redirect('posts');
-     */
-    public static function redirect($url = null, $permanently = false) {
-        
-        while (ob_get_level())
-            @ob_end_clean();
-        
-        $location = ($url === null) ? '' : $url;
-        $urlarray = parse_url($url);
-        
-        if (!isset($urlarray['scheme'])) {
-            
-            $location = 'http://';
-            
-            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-                $location = 'https://';
-            }
-            
-            $location .= preg_replace('/[^a-z0-9-:._]/i', '', $_SERVER['HTTP_HOST']);
-            
-            if (strpos($url, '/') === 0) {
-                $location .= $url;
-            } else {
-                $location .= BASEURL . $url;
-            }
-        }
-        
-        if ($permanently) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 301 Moved Permanently');
-        }
-        
-        header('Location: ' . $location);
-    }
-
-    /**
     Function: isMobile
 
         Tells whether HTTP request is made with a mobile browser
