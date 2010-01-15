@@ -9,6 +9,10 @@
     <?php echo $view; ?>
 </div>
 <div>
+    <?php block('footer'); ?>
+</div>
+<br />
+<div>
 Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
 </div>
 </body>
