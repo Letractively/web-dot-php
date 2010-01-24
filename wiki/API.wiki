@@ -1,0 +1,54 @@
+#summary web.php API Documentation.
+
+=web.php API Documentation=
+
+Add your content here.
+
+==Functions==
+
+===post===
+
+post - Route a HTTP POST-request to a controller
+
+====Description====
+
+mixed *post* ( mixed _$path_ `[`, mixed _$func_ `]` )
+
+====Parameters====
+
+_path_
+
+  A route on which request URL path is compared. If _$func_ is omitted _$path_ acts as a default controller.
+
+_func_
+
+  A function to execute when request URL path is matched to _$path_.
+  
+====Return Values====
+
+Retuns the return value of the executed function.
+
+====Examples====
+
+=====Example #1 Using post function to route to a home page=====
+
+{{{
+// Route using anonymous function
+post('/', function() { echo 'Hello, World!' });
+
+// Route using static method
+post('/', 'Controller::index');
+
+// Route using instance method
+post('/', 'Controller->index');
+}}}
+
+====Notes====
+
+*Note:* If a match is found, further calling this function doesn't do anything.
+
+====See Also====
+
+[get tt] Route a HTTP GET-request to a controller
+[put gg] Route a HTTP PUT-request to a controller
+[delete ss] Route a HTTP PUT-request to a controller
