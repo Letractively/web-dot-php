@@ -1,8 +1,8 @@
-#summary web.php API Documentation.
+#summary web.php api Documentation.
 
 =web.php API Documentation=
 
-Add your content here.
+This is web.php api documentation.
 
 ==Functions==
 
@@ -12,17 +12,19 @@ post - Route a HTTP POST-request to a controller
 
 ====Description====
 
-mixed *post* ( mixed _$path_ `[`, mixed _$func_ `]` )
+||mixed *post* ( mixed _$path_ `[`, mixed _$func_ `]` )||
+
+Routes HTTP POST request to a callable _$func_ if request URL path matches to _$path_. For each request this function can only execute one matched function.
 
 ====Parameters====
 
 _path_
 
-  A route on which request URL path is compared. If _$func_ is omitted _$path_ acts as a default controller.
+  ||A route on which request URL path is compared. If _$func_ is omitted _$path_ acts as a default controller.||
 
 _func_
 
-  A function to execute when request URL path is matched to _$path_.
+  ||A function to execute when request URL path is matched to _$path_.||
   
 ====Return Values====
 
@@ -33,15 +35,16 @@ Retuns the return value of the executed function.
 =====Example #1 Using post function to route to a home page=====
 
 {{{
-// Route using anonymous function
+// Route using an anonymous function
 post('/', function() { echo 'Hello, World!' });
 
-// Route using static method
+// Route using a static method
 post('/', 'Controller::index');
 
-// Route using instance method
+// Route using an instance method
 post('/', 'Controller->index');
 }}}
+
 
 ====Notes====
 
@@ -49,6 +52,7 @@ post('/', 'Controller->index');
 
 ====See Also====
 
-[get tt] Route a HTTP GET-request to a controller
-[put gg] Route a HTTP PUT-request to a controller
-[delete ss] Route a HTTP PUT-request to a controller
+  * [get()] - Route a HTTP GET-request to a controller.
+  * [put()] - Route a HTTP PUT-request to a controller.
+  * [delete()] - Route a HTTP DELETE-request to a controller
+  * [route()] - Route a any request to a controller
