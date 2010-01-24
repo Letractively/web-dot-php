@@ -1,8 +1,8 @@
-#summary web.php api Documentation.
+#summary web.php api documentation.
 
 =web.php API Documentation=
 
-This is web.php api documentation.
+This is web.php API documentation.
 
 ==Functions==
 
