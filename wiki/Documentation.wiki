@@ -8,7 +8,7 @@
   * [Requirements Requirements]
   * [Download Downloading web.php]
   * [Introduction Introduction to web.php]
-  * [API Documentation]
+  * [API API Documentation]
 
 == Support ==
 
