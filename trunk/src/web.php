@@ -97,9 +97,7 @@ function redirect($url = null, $code = 301) {
     }
     die;
 }
-function session_ensure($regenerate = false) {
-    static $started;
-    if ($started) return;
+function session($regenerate = false, $delete = false) {
     if (headers_sent($file, $line) && (!defined('SID') || $regenerate)) {
         trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
         return;
@@ -113,10 +111,10 @@ function session_ensure($regenerate = false) {
     } else {
         $_SESSION['web.php:session'] = crc32($_SERVER['HTTP_USER_AGENT']);
     }
-    if ($regenerate) session_regenerate_id(true);
+    if ($regenerate) session_regenerate_id($delete);
 }
 function flash($name, $value, $hops = 1) {
-    session_ensure();
+    session();
     $_SESSION[$name] = $value;
     if (!isset($_SESSION['web.php:flash'])) {
         $_SESSION['web.php:flash'] = array($name => $hops);
