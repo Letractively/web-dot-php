@@ -122,15 +122,15 @@ function flash($name, $value, $hops = 1) {
         $_SESSION['web.php:flash'][$name] = $hops;
     }
 }
-function slug($title, $replace = null, $delimiter = '-') {
-	if ($replace !== null) {
-            $title = strtr($title, $replace, str_repeat(' ', strlen($title)));
-	}
-	$title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
-	$title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
-	$title = strtolower(trim($title, '/_|+ -'));
-	$title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
-	return $title;
+function slug($title, $delimiter = '-') {
+    $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
+    $title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
+    $title = strtolower(trim($title, '/_|+ -'));
+    $title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
+    return $title;
+}
+function title() {
+    echo htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
 }
 function block(&$block = false) {
     if ($block === false) {
