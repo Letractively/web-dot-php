@@ -89,16 +89,6 @@ function url($url, $abs = false) {
     $url = implode('/', $url);
     return ($abs) ? WEB_URL_ROOT . $url : '/' . $url;
 }
-function slug($title, $replace = null, $delimiter = '-') {
-	if ($replace !== null) {
-            $title = strtr($title, $replace, str_repeat(' ', strlen($title)));
-	}
-	$title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
-	$title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
-	$title = strtolower(trim($title, '/_|+ -'));
-	$title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
-	return $title;
-}
 function redirect($url = null, $code = 301) {
     if (headers_sent($file, $line)) {
         trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
@@ -133,6 +123,16 @@ function flash($name, $value, $hops = 1) {
     } else {
         $_SESSION['web.php:flash'][$name] = $hops;
     }
+}
+function slug($title, $replace = null, $delimiter = '-') {
+	if ($replace !== null) {
+            $title = strtr($title, $replace, str_repeat(' ', strlen($title)));
+	}
+	$title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
+	$title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
+	$title = strtolower(trim($title, '/_|+ -'));
+	$title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
+	return $title;
 }
 function block(&$block = false) {
     if ($block === false) {
