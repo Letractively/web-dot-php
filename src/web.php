@@ -41,21 +41,16 @@ function put($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'PUT' |
 function delete($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'DELETE' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'DELETE') === 0) ? route($path, $func) : false; }
 function route($path, $func = null) {
     static $matched = false;
-    if ($matched) return false;
+    if ($matched) return;
     $matched = $func == null;
     if ($matched) return run($path);
     $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)), '/');
     $params = array();
-    if (stripos($path, 'r/') === 0) {
-        $pattern = substr($path, 1);
-        $matched = (bool) preg_match($pattern, $subject, $params);
-        if (!$matched) return false;
-    } else {
-        $pattern = '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
-        $matched = (bool) preg_match($pattern, $subject, $params);
-        if (!$matched) return false;
-    }
-    return run($func, $params);
+    $pattern = (stripos($path, 'r/') === 0) ? substr($path, 1) : '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
+    $matched = (bool) preg_match($pattern, $subject, $params);
+    if (!$matched) return;
+    run($func, $params);
+    exit;
 }
 function run($func, $params = array()) {
     $ctrl = $func;
@@ -67,7 +62,7 @@ function run($func, $params = array()) {
         }
     }
     if (is_callable($ctrl)) return $ctrl($params);
-    trigger_error("Invalid function or method $func.", E_USER_WARNING);
+    trigger_error("Invalid file or function: $func.", E_USER_WARNING);
 }
 function url($url, $abs = false) {
     if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
@@ -95,7 +90,7 @@ function redirect($url = null, $code = 301) {
     } else {
         header('Location: ' . url($url, true), true, $code);
     }
-    die;
+    exit;
 }
 function session($regenerate = false, $delete = false) {
     if (headers_sent($file, $line) && (!defined('SID') || $regenerate)) {
