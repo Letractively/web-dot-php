@@ -64,8 +64,7 @@ namespace {
                 $ctrl = array(new $clazz, $method);
             }
         }
-        if (is_callable($ctrl)) return $ctrl($params);
-        trigger_error("Invalid file or function: $func.", E_USER_WARNING);
+        return call_user_func_array($ctrl, $params);
     }
     function url($url, $abs = false) {
         if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
@@ -88,18 +87,10 @@ namespace {
         return ($abs) ? WEB_URL_ROOT . $url : '/' . $url;
     }
     function redirect($url = null, $code = 301) {
-        if (headers_sent($file, $line)) {
-            trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
-        } else {
-            header('Location: ' . url($url, true), true, $code);
-        }
+        header('Location: ' . url($url, true), true, $code);
         exit;
     }
     function session($regenerate = false, $delete = false) {
-        if (headers_sent($file, $line) && (!defined('SID') || $regenerate)) {
-            trigger_error("Headers already sent in $file on line $line.", E_USER_ERROR);
-            return;
-        }
         if (!defined('SID')) session_start();
         if (isset($_SESSION['web.php:session'])) {
             if ($_SESSION['web.php:session'] !== crc32($_SERVER['HTTP_USER_AGENT'])) {
@@ -153,7 +144,6 @@ namespace {
             } while (true);
         }
     }
-
     web\init();
 }
 
