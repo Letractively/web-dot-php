@@ -1,6 +1,6 @@
 <?php
-namespace {
-    function openid_discover($url) {
+namespace openid {
+    function discover($url) {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/xrds+xml'));
@@ -8,7 +8,7 @@ namespace {
         curl_close($ch);
         return simplexml_load_string($resp);
     }
-    function openid_authenticate($url, array $params = array()) {
+    function authenticate($url, array $params = array()) {
         $defaults = array(
             'openid.mode' => 'checkid_setup',
             'openid.ns' => 'http://specs.openid.net/auth/2.0',
@@ -21,7 +21,7 @@ namespace {
         $url .= http_build_query($params);
         redirect($url);
     }
-    function openid_check() {
+    function check() {
         $url = $_GET['openid_op_endpoint'];
         $data = str_replace('openid.mode=id_res', 'openid.mode=check_authentication', $_SERVER['QUERY_STRING']);
         $ch = curl_init($url);
