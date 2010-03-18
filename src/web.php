@@ -55,7 +55,7 @@ namespace {
         run($func, $params);
         exit;
     }
-    function run($func, $params = array()) {
+    function run($func, array $params = array()) {
         $ctrl = $func;
         if (is_string($ctrl)) {
             if (file_exists($ctrl)) return require $ctrl;
@@ -90,17 +90,18 @@ namespace {
         header('Location: ' . url($url, true), true, $code);
         exit;
     }
-    function session($regenerate = false, $delete = false) {
+    function session() {
+        static $called = false;
+        if ($called) return;
+        $called = true;
         if (!defined('SID')) session_start();
-        if (isset($_SESSION['web.php:session'])) {
-            if ($_SESSION['web.php:session'] !== crc32($_SERVER['HTTP_USER_AGENT'])) {
-                trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
-                return;
-            }
-        } else {
+        if (!isset($_SESSION['web.php:session'])) {
             $_SESSION['web.php:session'] = crc32($_SERVER['HTTP_USER_AGENT']);
+            return;
         }
-        if ($regenerate) session_regenerate_id($delete);
+        if ($_SESSION['web.php:session'] !== crc32($_SERVER['HTTP_USER_AGENT'])) {
+            trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
+        }
     }
     function flash($name, $value, $hops = 1) {
         session();
