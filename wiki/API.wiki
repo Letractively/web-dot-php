@@ -14,8 +14,6 @@ post - Route a HTTP POST-request to a controller
 
 ||mixed *post* ( mixed _$path_ `[`, mixed _$func_ `]` )||
 
-Routes HTTP POST request to a callable _$func_ if request URL path matches to _$path_. For each request this function can only execute one matched function.
-
 ====Parameters====
 
 _path_
@@ -28,31 +26,30 @@ _func_
   
 ====Return Values====
 
-Retuns the return value of the executed function.
 
 ====Examples====
 
 =====Example #1 Using post function to route to a home page=====
 
 {{{
-// Route using an anonymous function
+// Add a POST route using an anonymous function
 post('/', function() { echo 'Hello, World!' });
 
-// Route using a static method
+// Add a POST route using a static method
 post('/', 'Controller::index');
 
-// Route using an instance method
+// Add a POST route using an instance method
 post('/', 'Controller->index');
 }}}
 
 
 ====Notes====
 
-*Note:* If a match is found, further calling this function doesn't do anything.
+*Note:* 
 
 ====See Also====
 
-  * [get()] - Route a HTTP GET-request to a controller.
-  * [put()] - Route a HTTP PUT-request to a controller.
-  * [delete()] - Route a HTTP DELETE-request to a controller
-  * [route()] - Route a any request to a controller
+  * [get()] - Add a HTTP GET-request route to routes.
+  * [put()] - Add a HTTP PUT-request route to routes.
+  * [delete()] - Add a HTTP DELETE-request route to routes.
+  * [route()] - Add a any request route to routes.
