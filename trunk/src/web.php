@@ -15,7 +15,6 @@ About: License
     This file is licensed under the MIT.
 */
 namespace web {
-
     function init() {
         $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
         $base = substr($base, 0, strrpos($base, '/')) . '/';
@@ -35,26 +34,45 @@ namespace web {
             if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
             $flash =& $_SESSION['web.php:flash'];
             foreach($flash as $key => $hops) {
-                if ($hops === 0) unset($_SESSION[$key], $flash[$key]); else $flash[$key]--;
+                if ($hops === 0) {
+                    unset($_SESSION[$key], $flash[$key]);
+                } else {
+                    $flash[$key]--;
+                }
             }
-            if (count($flash) === 0) unset($flash);
+            if (count($flash) === 0) {
+                unset($flash);
+            }
         });
     }
 }
 namespace {
-    function get($path, $func = null) { return route($path, $func, 'GET'); }
-    function post($path, $func = null) { return route($path, $func, 'POST'); }
-    function put($path, $func = null) { return route($path, $func, 'PUT'); }
-    function delete($path, $func = null) { return route($path, $func, 'DELETE'); }
+    function get($path, $func = null) { route($path, $func, 'GET'); }
+    function post($path, $func = null) { route($path, $func, 'POST'); }
+    function put($path, $func = null) { route($path, $func, 'PUT'); }
+    function delete($path, $func = null) { route($path, $func, 'DELETE'); }
     function route($path = null, $func = null, $method = null) {
         static $routes = array();
-        if ($path !== null) {
-            $pattern = (stripos($path, 'r/') === 0) ? substr($path, 1) : '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
-            $routes[] = array($pattern, $func, $method);
+        if ($path === null) return $routes;
+        if (stripos($path, 'r/') === 0) {
+            $pattern = substr($path, 1);
+        } else {
+            $pattern = '/^';
+            $pattern .= preg_replace(
+                array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'),
+                array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'),
+                preg_quote(trim($path, '/'), '/'));
+            $pattern .= '$/i';
         }
-        return $routes;
+        $routes[] = array($pattern, $func, $method);
     }
-    function dispatch($url = WEB_URL_EXEC, $method = WEB_METHOD, $forwarded = false) {
+    function forward($url, $method = null) {
+        return dispatch(trim($url, '/'), $method, true);
+    }
+    function dispatch(
+            $url = WEB_URL_EXEC,
+            $method = WEB_METHOD,
+            $forwarded = false) {
         $routes = route();
         foreach($routes as $route) {
             list($pattern, $func, $type) = $route;
@@ -65,9 +83,6 @@ namespace {
             $matched = (bool) preg_match($pattern, $url, $params);
             if ($matched) return run($func, $params);
         }
-    }
-    function forward($url, $method = null) {
-        return dispatch(trim($url, '/'), null, true);
     }
     function run($func, array $params = array()) {
         $ctrl = $func;
@@ -109,11 +124,10 @@ namespace {
         if ($called) return;
         $called = true;
         if (!defined('SID')) session_start();
+        $session = crc32($_SERVER['HTTP_USER_AGENT']);
         if (!isset($_SESSION['web.php:session'])) {
-            $_SESSION['web.php:session'] = crc32($_SERVER['HTTP_USER_AGENT']);
-            return;
-        }
-        if ($_SESSION['web.php:session'] !== crc32($_SERVER['HTTP_USER_AGENT'])) {
+            $_SESSION['web.php:session'] = $session;
+        } elseif ($_SESSION['web.php:session'] !== $session) {
             trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
         }
     }
@@ -134,13 +148,16 @@ namespace {
         return $title;
     }
     function title() {
-        echo htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
+        echo htmlspecialchars(
+                implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
     }
     function block(&$block = false) {
         if ($block === false) {
             ob_end_clean();
         } else {
-            ob_start(function($buffer) use (&$block) { return $block = $buffer; });
+            ob_start(function($buffer) use (&$block) {
+                return $block = $buffer;
+            });
         }
     }
     class view {
