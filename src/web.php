@@ -15,10 +15,12 @@ About: License
     This file is licensed under the MIT.
 */
 namespace web {
+
     function init() {
         $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
         $base = substr($base, 0, strrpos($base, '/')) . '/';
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $exec = trim(substr($path, strlen($base)), '/');
         $path = substr($path, 0, strrpos($path, '/')) . '/';
         $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
         $full .= $_SERVER['HTTP_HOST'];
@@ -27,6 +29,8 @@ namespace web {
         define('WEB_URL_ROOT', $full . '/');
         define('WEB_URL_PATH', $path);
         define('WEB_URL_BASE', $base);
+        define('WEB_URL_EXEC', $exec);
+        define('WEB_METHOD', isset($_POST['_method']) ? $_POST['_method'] : $_SERVER['REQUEST_METHOD']);
         register_shutdown_function(function() {
             if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
             $flash =& $_SESSION['web.php:flash'];
@@ -38,22 +42,32 @@ namespace web {
     }
 }
 namespace {
-    function get($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'GET' ? route($path, $func) : false; }
-    function post($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'POST' ? route($path, $func) : false; }
-    function put($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'PUT' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'PUT') === 0) ? route($path, $func) : false; }
-    function delete($path, $func = null) { return $_SERVER['REQUEST_METHOD'] == 'DELETE' || (isset($_POST['_method']) && strcasecmp($_POST['_method'], 'DELETE') === 0) ? route($path, $func) : false; }
-    function route($path, $func = null) {
-        static $matched = false;
-        if ($matched) return;
-        $matched = $func == null;
-        if ($matched) return run($path);
-        $subject = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)), '/');
-        $params = array();
-        $pattern = (stripos($path, 'r/') === 0) ? substr($path, 1) : '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
-        $matched = (bool) preg_match($pattern, $subject, $params);
-        if (!$matched) return;
-        run($func, $params);
-        exit;
+    function get($path, $func = null) { return route($path, $func, 'GET'); }
+    function post($path, $func = null) { return route($path, $func, 'POST'); }
+    function put($path, $func = null) { return route($path, $func, 'PUT'); }
+    function delete($path, $func = null) { return route($path, $func, 'DELETE'); }
+    function route($path = null, $func = null, $method = null) {
+        static $routes = array();
+        if ($path !== null) {
+            $pattern = (stripos($path, 'r/') === 0) ? substr($path, 1) : '/^' . preg_replace(array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'), array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'), preg_quote(trim($path, '/'), '/')) . '$/i';
+            $routes[] = array($pattern, $func, $method);
+        }
+        return $routes;
+    }
+    function dispatch($url = WEB_URL_EXEC, $method = WEB_METHOD, $forwarded = false) {
+        $routes = route();
+        foreach($routes as $route) {
+            list($pattern, $func, $type) = $route;
+            if ($method !== null && $method !== $type) continue;
+            if ($func === null && $forwarded) continue;
+            if ($func === null) return run($pattern);
+            $params = array();
+            $matched = (bool) preg_match($pattern, $url, $params);
+            if ($matched) return run($func, $params);
+        }
+    }
+    function forward($url, $method = null) {
+        return dispatch(trim($url, '/'), null, true);
     }
     function run($func, array $params = array()) {
         $ctrl = $func;
