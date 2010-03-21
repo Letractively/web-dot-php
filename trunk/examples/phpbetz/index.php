@@ -26,11 +26,28 @@ error_reporting(E_ALL | E_STRICT);
  * Dispatch Request
  * ======================================================================= */
 require 'web.php';
+require 'proposals/web.openid.php';
 
-post('/login', function ($params) {
-    session(true, false);
+get('/', function() {
+    $view = new view('views/index.phtml');
+    echo $view;
 });
 
-post('/logout', function ($params) {
-    session(true, true);
+post('/login', function() {
+    $xrds = openid\discover('https://www.google.com/accounts/o8/id');
+    openid\authenticate($xrds->XRD->Service->URI, array(
+        'openid.return_to' => url('~/login/check', true),
+        'openid.ns.ax' => 'http://openid.net/srv/ax/1.0',
+        'openid.ax.mode' => 'fetch_request',
+        'openid.ax.required' => 'email',
+        'openid.ax.type.email' => 'http://axschema.org/contact/email'
+    ));
 });
+
+get('/login/check', function() {
+    if (openid\check($_GET['openid_op_endpoint'])) {
+        echo 'You have been logged in!';
+    }
+});
+
+dispatch();
