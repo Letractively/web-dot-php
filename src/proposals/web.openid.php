@@ -9,20 +9,19 @@ namespace openid {
         return simplexml_load_string($resp);
     }
     function authenticate($url, array $params = array()) {
-        $defaults = array(
+        $needed = array(
             'openid.mode' => 'checkid_setup',
             'openid.ns' => 'http://specs.openid.net/auth/2.0',
             'openid.claimed_id' => 'http://specs.openid.net/auth/2.0/identifier_select',
             'openid.identity' => 'http://specs.openid.net/auth/2.0/identifier_select'
         );
-        $params = array_merge($defaults, $params);
+        $params = array_merge($params, $needed);
         $qs = parse_url($url, PHP_URL_QUERY);
         $url .= isset($qs) ? '&' : '?';
         $url .= http_build_query($params);
         redirect($url);
     }
-    function check() {
-        $url = $_GET['openid_op_endpoint'];
+    function check($url) {
         $data = str_replace('openid.mode=id_res', 'openid.mode=check_authentication', $_SERVER['QUERY_STRING']);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, true);
