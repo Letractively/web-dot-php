@@ -17,8 +17,8 @@ About: License
 namespace web {
     function init() {
         $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
-        $base = substr($base, 0, strrpos($base, '/')) . '/';
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $base = substr($base, 0, strrpos($base, '/')) . '/';
         $exec = trim(substr($path, strlen($base)), '/');
         $path = substr($path, 0, strrpos($path, '/')) . '/';
         $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
@@ -54,17 +54,16 @@ namespace {
     function route($path = null, $func = null, $method = null) {
         static $routes = array();
         if ($path === null) return $routes;
-        if (stripos($path, 'r/') === 0) {
-            $pattern = substr($path, 1);
-        } else {
-            $pattern = '/^';
-            $pattern .= preg_replace(
-                array('/@([a-z_\d+-]+)/', '/#([a-z_\d+-]+)/'),
-                array('(?<$1>[a-z_\d+-]+)', '(?<$1>\d+)'),
-                preg_quote(trim($path, '/'), '/'));
-            $pattern .= '$/i';
-        }
+        $subject = preg_quote(trim($path, '/'), '/');
+        $subject = str_replace('\:', ':', $subject);
+        $subject = str_replace('\|', '|', $subject);
+        $subject = str_replace('\*', '(.+)', $subject);
+        $pattern = sprintf('/^%s$/i', preg_replace(
+            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
+            array('([\w-]+)', '(\d+)', '($1)'),
+            $subject));
         $routes[] = array($pattern, $func, $method);
+        unset($subject, $pattern);
     }
     function forward($url, $method = null) {
         return dispatch(trim($url, '/'), $method, true);
@@ -81,7 +80,7 @@ namespace {
             if ($func === null) return run($pattern);
             $params = array();
             $matched = (bool) preg_match($pattern, $url, $params);
-            if ($matched) return run($func, $params);
+            if ($matched) return run($func, array_slice($params, 1));
         }
     }
     function run($func, array $params = array()) {
