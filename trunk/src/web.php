@@ -99,18 +99,17 @@ namespace {
         if ($exit) exit;
     }
     function run($func, array $params = array()) {
-        $ctrl = $func;
-        if (is_string($ctrl)) {
-            if (file_exists($ctrl)) {
+        if (is_string($func)) {
+            if (file_exists($func)) {
                 extract($params);
-                return require $ctrl;
+                return require $func;
             }
-            if (strpos($ctrl, '->') !== false) {
-                list($clazz, $method) = explode('->', $ctrl, 2);
-                $ctrl = array(new $clazz, $method);
+            if (strpos($func, '->') !== false) {
+                list($clazz, $method) = explode('->', $func, 2);
+                $func = array(new $clazz, $method);
             }
         }
-        return call_user_func_array($ctrl, $params);
+        return call_user_func_array($func, $params);
     }
     function url($url, $abs = false) {
         if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
