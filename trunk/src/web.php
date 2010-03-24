@@ -17,19 +17,16 @@ About: License
 namespace web {
     function init() {
         $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $base = substr($base, 0, strrpos($base, '/')) . '/';
-        $exec = trim(substr($path, strlen($base)), '/');
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $path = substr($path, 0, strrpos($path, '/')) . '/';
         $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
         $full .= $_SERVER['HTTP_HOST'];
         $port = $_SERVER['SERVER_PORT'];
-        if (($full[4] === 's' &&  $port !== '443') || $port !== '80') $full .= ":$port";
+        if (($full[4] === 's' && $port !== '443') || $port !== '80') $full .= ":$port";
         define('WEB_URL_ROOT', $full . '/');
         define('WEB_URL_PATH', $path);
         define('WEB_URL_BASE', $base);
-        define('WEB_URL_EXEC', $exec);
-        define('WEB_METHOD', isset($_POST['_method']) ? $_POST['_method'] : $_SERVER['REQUEST_METHOD']);
         register_shutdown_function(function() {
             if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
             $flash =& $_SESSION['web.php:flash'];
@@ -45,16 +42,45 @@ namespace web {
             }
         });
     }
+    function routes(array $route = null) {
+        static $routes = array();
+        if ($route == null) return $routes;
+        $routes[] = $route;
+    }
+    function dispatch($url = null, $exit = false, $pass = false) {
+        static $i = 0, $route;
+        if ($url != null) $route = trim($url, '/');
+        $routes = routes();
+        $count = count($routes);
+        for ($i = $pass ? $i + 1 : 0; $i < $count; $i++) {
+            list($pattern, $func) = $routes[$i];
+            $params = array();
+            $matched = (bool) preg_match($pattern, $route, $params);
+            if ($matched) return run($func, array_slice($params, 1));
+        }
+        if ($exit) exit;
+    }
+    init();
 }
 namespace {
-    function get($path, $func = null) { route($path, $func, 'GET'); }
-    function post($path, $func = null) { route($path, $func, 'POST'); }
-    function put($path, $func = null) { route($path, $func, 'PUT'); }
-    function delete($path, $func = null) { route($path, $func, 'DELETE'); }
-    function route($path = null, $func = null, $method = null) {
-        static $routes = array();
-        if ($path === null) return $routes;
-        $subject = preg_quote(trim($path, '/'), '/');
+    function get($path, $func) {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') route($path, $func);
+    }
+    function post($path, $func) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') route($path, $func);
+    }
+    function put($path, $func) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method'])) return;
+        if (strcasecmp($_POST['_method'], 'PUT') === 0) route($path, $func);
+    }
+    function delete($path, $func) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method'])) return;
+        if (strcasecmp($_POST['_method'], 'DELETE') === 0) route($path, $func);
+    }
+    function route($route, $func) {
+        assert('$route !== null');
+        assert('$func !== null');
+        $subject = preg_quote(trim($route, '/'), '/');
         $subject = str_replace('\:', ':', $subject);
         $subject = str_replace('\|', '|', $subject);
         $subject = str_replace('\*', '(.+)', $subject);
@@ -62,31 +88,28 @@ namespace {
             array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
             array('([\w-]+)', '(\d+)', '($1)'),
             $subject));
-        $routes[] = array($pattern, $func, $method);
-        unset($subject, $pattern);
+        web\routes(array($pattern, $func));
     }
-    function forward($url, $method = null) {
-        return dispatch(trim($url, '/'), $method, true);
+    function dispatch() {
+        web\dispatch(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)));
     }
-    function dispatch(
-            $url = WEB_URL_EXEC,
-            $method = WEB_METHOD,
-            $forwarded = false) {
-        $routes = route();
-        foreach($routes as $route) {
-            list($pattern, $func, $type) = $route;
-            if ($method !== null && $method !== $type) continue;
-            if ($func === null && $forwarded) continue;
-            if ($func === null) return run($pattern);
-            $params = array();
-            $matched = (bool) preg_match($pattern, $url, $params);
-            if ($matched) return run($func, array_slice($params, 1));
-        }
+    function pass($url = null, $exit = true) {
+        web\dispatch($url, $exit, true);
+    }
+    function forward($url, $exit = true) {
+        web\dispatch($url, $exit);
+    }
+    function redirect($url, $code = 301, $exit = true) {
+        header('Location: ' . url($url, true), true, $code);
+        if ($exit) exit;
     }
     function run($func, array $params = array()) {
         $ctrl = $func;
         if (is_string($ctrl)) {
-            if (file_exists($ctrl)) return require $ctrl;
+            if (file_exists($ctrl)) {
+                extract($params);
+                return require $ctrl;
+            }
             if (strpos($ctrl, '->') !== false) {
                 list($clazz, $method) = explode('->', $ctrl, 2);
                 $ctrl = array(new $clazz, $method);
@@ -113,10 +136,6 @@ namespace {
         }
         $url = implode('/', $url);
         return ($abs) ? WEB_URL_ROOT . $url : '/' . $url;
-    }
-    function redirect($url = null, $code = 301) {
-        header('Location: ' . url($url, true), true, $code);
-        exit;
     }
     function session() {
         static $called = false;
@@ -175,6 +194,5 @@ namespace {
             } while (true);
         }
     }
-    web\init();
 }
 
