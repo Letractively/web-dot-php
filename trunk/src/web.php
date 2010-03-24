@@ -31,15 +31,10 @@ namespace web {
             if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
             $flash =& $_SESSION['web.php:flash'];
             foreach($flash as $key => $hops) {
-                if ($hops === 0) {
-                    unset($_SESSION[$key], $flash[$key]);
-                } else {
-                    $flash[$key]--;
-                }
+                if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
+                else $flash[$key]--;
             }
-            if (count($flash) === 0) {
-                unset($flash);
-            }
+            if (count($flash) === 0) unset($flash);
         });
     }
     function routes(array $route = null) {
@@ -119,11 +114,8 @@ namespace {
     }
     function url($url, $abs = false) {
         if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
-        if (strpos($url, '~/') === 0) {
-            $url = WEB_URL_BASE . substr($url, 2);
-        } elseif (strpos($url, '/') !== 0) {
-            $url = WEB_URL_PATH . $url;
-        }
+        if (strpos($url, '~/') === 0) $url = WEB_URL_BASE . substr($url, 2);
+        elseif (strpos($url, '/') !== 0) $url = WEB_URL_PATH . $url;
         $parts = explode('/', $url);
         $url = array();
         for ($i=0; $i < count($parts); $i++) {
@@ -143,20 +135,18 @@ namespace {
         $called = true;
         if (!defined('SID')) session_start();
         $session = crc32($_SERVER['HTTP_USER_AGENT']);
-        if (!isset($_SESSION['web.php:session'])) {
+        if (!isset($_SESSION['web.php:session']))
             $_SESSION['web.php:session'] = $session;
-        } elseif ($_SESSION['web.php:session'] !== $session) {
+        elseif ($_SESSION['web.php:session'] !== $session)
             trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
-        }
     }
     function flash($name, $value, $hops = 1) {
         session();
         $_SESSION[$name] = $value;
-        if (!isset($_SESSION['web.php:flash'])) {
+        if (!isset($_SESSION['web.php:flash']))
             $_SESSION['web.php:flash'] = array($name => $hops);
-        } else {
+        else
             $_SESSION['web.php:flash'][$name] = $hops;
-        }
     }
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
@@ -166,33 +156,24 @@ namespace {
         return $title;
     }
     function title() {
-        echo htmlspecialchars(
-                implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
+        echo htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
     }
     function block(&$block = false) {
-        if ($block === false) {
-            ob_end_clean();
-        } else {
-            ob_start(function($buffer) use (&$block) {
-                return $block = $buffer;
-            });
-        }
+        if ($block === false) ob_end_clean();
+        else ob_start(function($buffer) use (&$block) { return $block = $buffer; });
     }
     class view {
-        function __construct($file) {
-            $this->file = $file;
-        }
+        function __construct($file) { $this->file = $file; }
         function __toString() {
             extract((array)$this);
-            do {
-                ob_start();
-                require $file;
-                if (!isset($layout)) return ob_get_clean();
-                $view = ob_get_clean();
-                $file = $layout;
-                unset($layout);
-            } while (true);
+            start:
+            ob_start();
+            require $file;
+            if (!isset($layout)) return ob_get_clean();
+            $view = ob_get_clean();
+            $file = $layout;
+            unset($layout);
+            goto start;
         }
     }
 }
-
