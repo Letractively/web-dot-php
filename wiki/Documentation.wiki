@@ -1,7 +1,7 @@
 #summary web.php documentation.
 #labels Featured
 
-=== Getting Started ===
+==== Getting Started ====
 
   * [Requirements Requirements]
   * [Download Downloading web.php]
