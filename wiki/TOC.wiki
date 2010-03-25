@@ -1,6 +1,7 @@
 #summary web.php manual content
 
 === Content ===
+----
 
   * *Getting Started*
   * [Requirements Requirements]
