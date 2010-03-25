@@ -1,4 +1,5 @@
-#summary web.php statement on active record.
+#summary web.php statement on active record
+#sidebar TOC
 
 = Active Record =
 
