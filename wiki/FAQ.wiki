@@ -1,4 +1,4 @@
-#summary web.php frequently asked questions.
+#summary web.php frequently asked questions
 #labels Featured
 #sidebar TOC
 
