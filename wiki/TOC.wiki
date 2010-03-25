@@ -4,3 +4,8 @@
  * [Requirements Requirements]
  * [API API documentation]
    * [API#Functions Functions]
+     * [API#get get()]
+     * [API#post post()]
+     * [API#put put()]
+     * [API#delete delete()]
+     * [API#route route()]
