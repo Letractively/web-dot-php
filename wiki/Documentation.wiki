@@ -1,5 +1,6 @@
-#summary web.php documentation.
+#summary web.php documentation
 #labels Featured
+#sidebar TOC
 
 ==== Getting Started ====
 
