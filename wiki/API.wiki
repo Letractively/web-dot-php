@@ -1,5 +1,5 @@
 #summary web.php api documentation.
-#sidebar TOC
+#sidebar Documentation
 
 This is web.php API documentation.
 
