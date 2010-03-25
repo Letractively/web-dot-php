@@ -1,5 +1,6 @@
-#summary web.php development status.
+#summary web.php development status
 #labels Featured
+#sidebar TOC
 
 = Development Status =
 
