@@ -5,13 +5,13 @@
   * [Download Downloading web.php]
   * [Introduction Introduction to web.php]
   * [API API documentation]
-    * [API#Functions Functions]
-      * [API#get get]
-      * [API#post post]
-      * [API#put put]
-      * [API#delete delete]
-      * [API#route route]
-    * [API#Classes Classes]
+    * *Functions*
+    * [API#get get]
+    * [API#post post]
+    * [API#put put]
+    * [API#delete delete]
+    * [API#route route]
+    * *Classes*
   * *Support*
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
