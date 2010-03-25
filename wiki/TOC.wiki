@@ -1,8 +1,15 @@
 #summary web.php manual content
   * *Getting Started*
   * [Requirements Requirements]
+  * [Features Features]
   * [Download Downloading web.php]
   * [Introduction Introduction to web.php]
+    * [Introduction#Routing Routing]
+    * [Introduction#Views Views]
+      * [Introduction#Creating_a_View Creating a View]
+      * [Introduction#Layouts Layouts]
+      * [Introduction#Blocks Blocks]
+    * [Introduction#Forms Forms]
   * [API API documentation]
     * *Functions*
       * [API#get get]
@@ -18,8 +25,8 @@
       * [API#url url]
       * [API#session session]
       * [API#flash flash]
-      * [API#flash slug]
-      * [API#flash block]
+      * [API#slug slug]
+      * [API#block block]
     * *Classes*
       * [API#view view]
       * [API#form form]
