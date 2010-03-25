@@ -1,5 +1,6 @@
-#summary web.php requirements and dependencies.
+#summary web.php requirements and dependencies
 #labels Featured
+#sidebar TOC
 
 = Requirements =
 
