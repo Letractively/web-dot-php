@@ -23,6 +23,7 @@
     * *Classes*
       * [API#view view]
       * [API#form form]
+  * 
   * *Support*
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
