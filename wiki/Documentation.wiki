@@ -1,8 +1,6 @@
 #summary web.php documentation.
 #labels Featured
 
-= web.php documentation =
-
 == Getting Started ==
 
   * [Requirements Requirements]
