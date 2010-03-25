@@ -8,25 +8,22 @@ This is web.php API documentation.
 
 ===post===
 
-post - Route a HTTP POST-request to a controller
+post - Add a HTTP POST-request route to routes array with specific path and the controller function
 
 ====Description====
 
-||mixed *post* ( mixed _$path_ `[`, mixed _$func_ `]` )||
+||void *post* ( string _$path_, mixed _$func_ )||
 
 ====Parameters====
 
 _path_
 
-  ||A route on which request URL path is compared. If _$func_ is omitted _$path_ acts as a default controller.||
+  ||A route on which request URL path is compared.||
 
 _func_
 
   ||A function to execute when request URL path is matched to _$path_.||
   
-====Return Values====
-
-
 ====Examples====
 
 =====Example #1 Using post function to route to a home page=====
@@ -42,14 +39,13 @@ post('/', 'Controller::index');
 post('/', 'Controller->index');
 }}}
 
-
 ====Notes====
 
-*Note:* 
+*Note:* This function is only used to collect the routes and the functions. By itself it does nothing, but the information collected is used with [dispatch()] and [forward()].
 
 ====See Also====
 
-  * [get()] - Add a HTTP GET-request route to routes.
-  * [put()] - Add a HTTP PUT-request route to routes.
-  * [delete()] - Add a HTTP DELETE-request route to routes.
-  * [route()] - Add a any request route to routes.
+  * [get()] - Add a HTTP POST request route to routes array with specific path and the controller function.
+  * [put()] - Add a HTTP PUT request route to routes array with specific path and the controller function.
+  * [delete()] - Add a HTTP DELETE request route to routes array with specific path and the controller function.
+  * [route()] - Add a any HTTP request route to routes array with specific path and the controller function.
