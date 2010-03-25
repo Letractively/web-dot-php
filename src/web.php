@@ -76,9 +76,7 @@ namespace {
         assert('$route !== null');
         assert('$func !== null');
         $subject = preg_quote(trim($route, '/'), '/');
-        $subject = str_replace('\:', ':', $subject);
-        $subject = str_replace('\|', '|', $subject);
-        $subject = str_replace('\*', '(.+)', $subject);
+        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
         $pattern = sprintf('/^%s$/i', preg_replace(
             array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
             array('([\w-]+)', '(\d+)', '($1)'),
