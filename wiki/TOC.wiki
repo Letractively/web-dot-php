@@ -12,7 +12,7 @@
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
   * [IRC IRC Channel]
-  * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or a Feature Request]
+  * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report]
   * [Alternatives Alternative Web Frameworks]
   * [ActiveRecord Active Record Implementations]
   * [Status Development Status]
