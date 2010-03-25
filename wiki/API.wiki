@@ -91,7 +91,7 @@ post('/', 'Controller->index');
 
 ===See Also===
 
-  * [get()] - Add a HTTP GET request route to routes array with specific path and the controller function.
-  * [put()] - Add a HTTP PUT request route to routes array with specific path and the controller function.
-  * [delete()] - Add a HTTP DELETE request route to routes array with specific path and the controller function.
-  * [route()] - Add a any HTTP request route to routes array with specific path and the controller function.
+  * [get()#get] - Add a HTTP GET request route to routes array with specific path and the controller function.
+  * [put()#put] - Add a HTTP PUT request route to routes array with specific path and the controller function.
+  * [delete()#delete] - Add a HTTP DELETE request route to routes array with specific path and the controller function.
+  * [route()#route] - Add a any HTTP request route to routes array with specific path and the controller function.
