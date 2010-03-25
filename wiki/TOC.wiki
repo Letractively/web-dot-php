@@ -23,8 +23,8 @@
     * *Classes*
       * [API#view view]
       * [API#form form]
-  * <br />
   * *Support*
+  * ----
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
   * [IRC IRC Channel]
