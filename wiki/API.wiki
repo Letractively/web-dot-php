@@ -1,5 +1,5 @@
 #summary web.php api documentation.
-#sidebar API
+#sidebar TableOfContents
 
 =web.php API Documentation=
 
