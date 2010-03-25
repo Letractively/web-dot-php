@@ -1,4 +1,5 @@
-#summary web.php irc channel.
+#summary web.php irc channel
+#sidebar TOC
 
 = IRC Channel on freenode network =
 
