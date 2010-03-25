@@ -4,17 +4,17 @@
 
 This is web.php API documentation.
 
-==Functions==
+=Functions=
 
-===post===
+==get==
 
-post - Add a HTTP POST-request route to routes array with specific path and the controller function
+get - Add a HTTP GET request route to routes array with specific path and the controller function
 
-====Description====
+===Description===
 
-||void *post* ( string _$path_, mixed _$func_ )||
+||void *get* ( string _$path_, mixed _$func_ )||
 
-====Parameters====
+===Parameters===
 
 _path_
 
@@ -24,9 +24,53 @@ _func_
 
   ||A function to execute when request URL path is matched to _$path_.||
   
-====Examples====
+===Examples===
 
-=====Example #1 Using post function to route to a home page=====
+====Example #1 Using get function to add routes====
+
+{{{
+// Add a GET route using an anonymous function
+get('/hello/:name', function($name) { echo "Hello, $name!" });
+
+// Add a GET route using a static method
+get('/', 'Controller::index');
+
+// Add a GET route using an instance method
+get('/', 'Controller->index');
+}}}
+
+===Notes===
+
+*Note:* This function is only used to collect the routes and the functions. By itself it does nothing, but the information collected is used with [dispatch()] and [forward()].
+
+===See Also===
+
+  * [post()] - Add a HTTP POST request route to routes array with specific path and the controller function.
+  * [put()] - Add a HTTP PUT request route to routes array with specific path and the controller function.
+  * [delete()] - Add a HTTP DELETE request route to routes array with specific path and the controller function.
+  * [route()] - Add a any HTTP request route to routes array with specific path and the controller function.
+
+==post==
+
+post - Add a HTTP POST request route to routes array with specific path and the controller function
+
+===Description===
+
+||void *post* ( string _$path_, mixed _$func_ )||
+
+===Parameters===
+
+_path_
+
+  ||A route on which request URL path is compared.||
+
+_func_
+
+  ||A function to execute when request URL path is matched to _$path_.||
+
+===Examples===
+
+====Example #1 Using post function to add routes====
 
 {{{
 // Add a POST route using an anonymous function
@@ -39,13 +83,13 @@ post('/', 'Controller::index');
 post('/', 'Controller->index');
 }}}
 
-====Notes====
+===Notes===
 
 *Note:* This function is only used to collect the routes and the functions. By itself it does nothing, but the information collected is used with [dispatch()] and [forward()].
 
-====See Also====
+===See Also===
 
-  * [get()] - Add a HTTP POST request route to routes array with specific path and the controller function.
+  * [get()] - Add a HTTP GET request route to routes array with specific path and the controller function.
   * [put()] - Add a HTTP PUT request route to routes array with specific path and the controller function.
   * [delete()] - Add a HTTP DELETE request route to routes array with specific path and the controller function.
   * [route()] - Add a any HTTP request route to routes array with specific path and the controller function.
