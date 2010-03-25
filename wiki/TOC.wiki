@@ -1,6 +1,6 @@
 #summary web.php manual content
 ----
-  * Getting Started
+  * *Getting Started*
 ----
   * [Requirements Requirements]
   * [Download Downloading web.php]
@@ -21,7 +21,7 @@
   * [IRC IRC Channel]
   * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report]
 ----
-  * =See Also=
+  * *See Also*
 ----
   * [Alternatives Alternative Web Frameworks]
   * [ActiveRecord Active Record Implementations]
