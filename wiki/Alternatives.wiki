@@ -1,4 +1,5 @@
-#summary web.php recommended alternative frameworks.
+#summary web.php recommended alternative frameworks
+#sidebar TOC
 
 = Alternative Frameworks =
 
