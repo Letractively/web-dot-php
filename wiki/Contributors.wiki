@@ -1,5 +1,6 @@
-#summary web.php contributors.
+#summary web.php contributors
 #labels Featured
+#sidebar TOC
 
 = Contributors =
 
