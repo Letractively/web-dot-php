@@ -8,3 +8,4 @@
       * [API#put put]
       * [API#delete delete]
       * [API#route route]
+    * [API#Classes Classes]
