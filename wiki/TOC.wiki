@@ -11,7 +11,7 @@
     * [API#Classes Classes]
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
-  * [IRC IRC Channel #web-dot-php on freenode Network]
+  * [IRC IRC Channel]
   * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or a Feature Request]
   * [Alternatives Alternative Web Frameworks]
   * [ActiveRecord Active Record Implementations]
