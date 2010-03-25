@@ -14,14 +14,14 @@
     * [API#route route]
     * *Classes*
 ----
-  * *Support*
+  * Support
 ----
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
   * [IRC IRC Channel]
   * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report]
 ----
-  * *See Also*
+  * See Also
 ----
   * [Alternatives Alternative Web Frameworks]
   * [ActiveRecord Active Record Implementations]
