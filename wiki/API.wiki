@@ -1,9 +1,7 @@
 #summary web.php api documentation.
 #sidebar TOC
 
-This is web.php API documentation.
-
-<wiki:toc max_depth="2" />
+*This is web.php API documentation.*
 
 =Functions=
 
