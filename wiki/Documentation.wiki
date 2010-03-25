@@ -3,25 +3,25 @@
 
 ==== Getting Started ====
 
-  * [Requirements Requirements]
-  * [Download Downloading web.php]
-  * [Introduction Introduction to web.php]
-  * [API API Documentation]
+ * [Requirements Requirements]
+ * [Download Downloading web.php]
+ * [Introduction Introduction to web.php]
+ * [API API Documentation]
 
-=== Support ===
+==== Support ====
 
-  * [FAQ Frequently Asked Questions]
-  * [http://groups.google.com/group/web-dot-php Discussion Group]
-  * [IRC IRC Channel #web-dot-php on freenode Network]
-  * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or a Feature Request]
+ * [FAQ Frequently Asked Questions]
+ * [http://groups.google.com/group/web-dot-php Discussion Group]
+ * [IRC IRC Channel #web-dot-php on freenode Network]
+ * [http://code.google.com/p/web-dot-php/issues/entry Submit a Bug Report or a Feature Request]
 
-=== See Also ===
+==== See Also ====
 
-  * [Alternatives Alternative Web Frameworks]
-  * [ActiveRecord Active Record Implementations]
+ * [Alternatives Alternative Web Frameworks]
+ * [ActiveRecord Active Record Implementations]
 
-=== About web.php ===
+==== About web.php ====
 
-  * [Status Development Status]
-  * [Contributors]
-  * [http://www.opensource.org/licenses/mit-license.php License]
+ * [Status Development Status]
+ * [Contributors]
+ * [http://www.opensource.org/licenses/mit-license.php License]
