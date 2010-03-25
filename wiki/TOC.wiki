@@ -1,6 +1,6 @@
 #summary web.php manual content
 ----
-  #Getting Started*
+  # Getting Started*
 ----
   * [Requirements Requirements]
   * [Download Downloading web.php]
