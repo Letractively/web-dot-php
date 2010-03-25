@@ -12,7 +12,6 @@
     * [API#delete delete]
     * [API#route route]
     * *Classes*
-----
   * *Support*
 ----
   * [FAQ Frequently Asked Questions]
