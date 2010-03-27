@@ -36,6 +36,9 @@ get('/', 'Controller::index');
 
 // Add a GET route using an instance method
 get('/', 'Controller->index');
+
+// Add a GET route using a file
+get('/', 'controller.php');
 }}}
 
 ===Notes===
