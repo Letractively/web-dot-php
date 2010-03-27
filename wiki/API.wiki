@@ -78,7 +78,9 @@ _func_
 
 {{{
 // Add a POST route using an anonymous function
-post('/', function() { echo 'Hello, World!' });
+post('/', function() {
+  echo 'Hello, World!'
+});
 
 // Add a POST route using a static method
 post('/', 'Controller::index');
