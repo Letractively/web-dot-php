@@ -37,10 +37,42 @@ namespace web {
             if (count($flash) === 0) unset($flash);
         });
     }
-    function routes(array $route = null) {
+    function routes($route = null, $func = null) {
         static $routes = array();
         if ($route == null) return $routes;
-        $routes[] = $route;
+        $subject = preg_quote(trim($route, '/'), '/');
+        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
+        $pattern = sprintf('/^%s$/i', preg_replace(
+            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
+            array('([\w-]+)', '(\d+)', '($1)'),
+            $subject));
+        $routes[] = array($pattern, $func, $route);
+    }
+    function params($route = null, $url = null) {
+        static $params = array();
+        if ($route == null) return $params;
+        $subject = preg_quote(trim($url, '/'), '/');
+        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '.+'), $subject);
+        $pattern = sprintf('/^%s$/i', preg_replace(
+            array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
+            array('(?<$1>[\w-]+)', '(?<$1>\d+)', '$1'),
+            $subject));
+        if ((bool) preg_match($pattern, $route, $params)) {
+            $params = array_slice($params, 1);
+        }
+    }
+    function splats($route = null, $url = null) {
+        static $splats = array();
+        if ($route == null) return $splats;
+        $subject = preg_quote(trim($url, '/'), '/');
+        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
+        $pattern = sprintf('/^%s$/i', preg_replace(
+            array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
+            array('[\w-]+', '\d+', '($1)'),
+            $subject));
+        if ((bool) preg_match($pattern, $route, $splats)) {
+            $splats = array_slice($splats, 1);
+        }
     }
     function dispatch($url = null, $exit = false, $pass = false) {
         static $i = 0, $route;
@@ -48,10 +80,14 @@ namespace web {
         $routes = routes();
         $count = count($routes);
         for ($i = $pass ? $i + 1 : 0; $i < $count; $i++) {
-            list($pattern, $func) = $routes[$i];
+            list($pattern, $func, $url) = $routes[$i];
             $params = array();
             $matched = (bool) preg_match($pattern, $route, $params);
-            if ($matched) return run($func, array_slice($params, 1));
+            if ($matched) {
+                splats($route, $url);
+                params($route, $url);
+                return run($func, array_slice($params, 1));
+            }
         }
         if ($exit) exit;
     }
@@ -73,15 +109,7 @@ namespace {
         if (strcasecmp($_POST['_method'], 'DELETE') === 0) route($path, $func);
     }
     function route($route, $func) {
-        assert('$route !== null');
-        assert('$func !== null');
-        $subject = preg_quote(trim($route, '/'), '/');
-        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
-        $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
-            array('([\w-]+)', '(\d+)', '($1)'),
-            $subject));
-        web\routes(array($pattern, $func));
+        web\routes($route, $func);
     }
     function dispatch() {
         web\dispatch(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)));
@@ -95,6 +123,14 @@ namespace {
     function redirect($url, $code = 301, $exit = true) {
         header('Location: ' . url($url, true), true, $code);
         if ($exit) exit;
+    }
+    function splat($position) {
+        $splats = web\splats();
+        return $splats[$position];
+    }
+    function param($name) {
+        $params = web\params();
+        return $params[$name];
     }
     function run($func, array $params = array()) {
         if (is_string($func)) {
@@ -153,7 +189,7 @@ namespace {
         return $title;
     }
     function title() {
-        echo htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
     }
     function block(&$block = false) {
         if ($block === false) ob_end_clean();
