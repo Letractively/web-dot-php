@@ -11,7 +11,7 @@
       * [Introduction#Blocks Blocks]
     * [Introduction#Forms Forms]
   * [API API documentation]
-    * *[API#Functionst Functions]*
+    * [API#Functions Functions]
       * [API#get get]
       * [API#post post]
       * [API#put put]
@@ -27,7 +27,7 @@
       * [API#flash flash]
       * [API#slug slug]
       * [API#block block]
-    * *Classes*
+    * [API#Classes Classes]
       * [API#view view]
       * [API#form form]
   * *Support*
