@@ -27,7 +27,7 @@
       * [API#flash flash]
       * [API#slug slug]
       * [API#block block]
-    * [API#Classes Classes]
+    * Classes
       * [API#view view]
       * [API#form form]
   * *Support*
