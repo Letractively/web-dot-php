@@ -11,7 +11,7 @@
       * [Introduction#Blocks Blocks]
     * [Introduction#Forms Forms]
   * [API API documentation]
-    * [API#get *Functions*]
+    * *[API#Functionst Functions]*
       * [API#get get]
       * [API#post post]
       * [API#put put]
