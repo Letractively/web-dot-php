@@ -67,7 +67,7 @@ namespace web {
         $subject = preg_quote(trim($url, '/'), '/');
         $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
+            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
             array('[\w-]+', '\d+', '($1)'),
             $subject));
         if ((bool) preg_match($pattern, $path, $splats)) {
