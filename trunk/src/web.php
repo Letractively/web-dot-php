@@ -37,55 +37,49 @@ namespace web {
             if (count($flash) === 0) unset($flash);
         });
     }
-    function routes($route = null, $func = null) {
+    function routes($path = null, $func = null) {
         static $routes = array();
-        if ($route == null) return $routes;
-        $subject = preg_quote(trim($route, '/'), '/');
-        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
+        if ($path == null) return $routes;
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
-            array('([\w-]+)', '(\d+)', '($1)'),
-            $subject));
-        $routes[] = array($pattern, $func, $route);
+            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
+            array(':', '|', '(.+)', '([\w-]+)', '(\d+)', '($1)'),
+            preg_quote(trim($path, '/'), '/')));
+        $routes[] = array($pattern, $func, $path);
     }
     function params($path = null, $url = null) {
         static $params = array();
-        if ($path == null) return $params;
-        $subject = preg_quote(trim($url, '/'), '/');
-        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '.+'), $subject);
+        if ($path == null && $url == null) return $params;
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
-            array('(?<$1>[\w-]+)', '(?<$1>\d+)', '$1'),
-            $subject));
-        if ((bool) preg_match($pattern, $path, $params)) {
+            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
+            array(':', '|', '.+', '(?<$1>[\w-]+)', '(?<$1>\d+)', '$1'),
+            preg_quote(trim($path, '/'), '/')));
+        if ((bool) preg_match($pattern, $url, $params)) {
             $params = array_slice($params, 1);
         }
     }
     function splats($path = null, $url = null) {
         static $splats = array();
         if ($path == null && $url == null) return $splats;
-        $subject = preg_quote(trim($url, '/'), '/');
-        $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
-            array('[\w-]+', '\d+', '($1)'),
-            $subject));
-        if ((bool) preg_match($pattern, $path, $splats)) {
+            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
+            array(':', '|', '(.+)', '[\w-]+', '\d+', '($1)'),
+            preg_quote(trim($path, '/'), '/')));
+        if ((bool) preg_match($pattern, $url, $splats)) {
             $splats = array_slice($splats, 1);
         }
     }
     function dispatch($url = null, $exit = false, $pass = false) {
-        static $i = 0, $route;
-        if ($url != null) $route = trim($url, '/');
+        static $i = 0, $lastUrl;
+        if ($url != null) $lastUrl = trim($url, '/');
         $routes = routes();
         $count = count($routes);
         for ($i = $pass ? $i + 1 : 0; $i < $count; $i++) {
-            list($pattern, $func, $url) = $routes[$i];
+            list($pattern, $func, $path) = $routes[$i];
             $params = array();
-            $matched = (bool) preg_match($pattern, $route, $params);
+            $matched = (bool) preg_match($pattern, $lastUrl, $params);
             if ($matched) {
-                splats($route, $url);
-                params($route, $url);
+                splats($path, $lastUrl);
+                params($path, $lastUrl);
                 return run($func, array_slice($params, 1));
             }
         }
@@ -108,8 +102,8 @@ namespace {
         if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method'])) return;
         if (strcasecmp($_POST['_method'], 'DELETE') === 0) route($path, $func);
     }
-    function route($route, $func) {
-        web\routes($route, $func);
+    function route($path, $func) {
+        web\routes($path, $func);
     }
     function dispatch() {
         web\dispatch(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)));
@@ -195,8 +189,8 @@ namespace {
         return htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
     }
     function block(&$block = false) {
-        if ($block === false) ob_end_clean();
-        else ob_start(function($buffer) use (&$block) { return $block = $buffer; });
+        if ($block === false) return ob_end_clean();
+        ob_start(function($buffer) use (&$block) { $block = $buffer; });
     }
     class view {
         function __construct($file) { $this->file = $file; }
