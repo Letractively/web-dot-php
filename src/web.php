@@ -48,29 +48,29 @@ namespace web {
             $subject));
         $routes[] = array($pattern, $func, $route);
     }
-    function params($route = null, $url = null) {
+    function params($path = null, $url = null) {
         static $params = array();
-        if ($route == null) return $params;
+        if ($path == null) return $params;
         $subject = preg_quote(trim($url, '/'), '/');
         $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '.+'), $subject);
         $pattern = sprintf('/^%s$/i', preg_replace(
             array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
             array('(?<$1>[\w-]+)', '(?<$1>\d+)', '$1'),
             $subject));
-        if ((bool) preg_match($pattern, $route, $params)) {
+        if ((bool) preg_match($pattern, $path, $params)) {
             $params = array_slice($params, 1);
         }
     }
-    function splats($route = null, $url = null) {
+    function splats($path = null, $url = null) {
         static $splats = array();
-        if ($route == null) return $splats;
+        if ($path == null && $url == null) return $splats;
         $subject = preg_quote(trim($url, '/'), '/');
         $subject = str_replace(array('\:', '\|', '\*'), array(':', '|', '(.+)'), $subject);
         $pattern = sprintf('/^%s$/i', preg_replace(
             array('/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
             array('[\w-]+', '\d+', '($1)'),
             $subject));
-        if ((bool) preg_match($pattern, $route, $splats)) {
+        if ((bool) preg_match($pattern, $path, $splats)) {
             $splats = array_slice($splats, 1);
         }
     }
