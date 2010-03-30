@@ -124,20 +124,23 @@ namespace {
         header('Location: ' . url($url, true), true, $code);
         if ($exit) exit;
     }
+    function splats() {
+        return web\splats();
+    }
     function splat($position) {
-        $splats = web\splats();
+        $splats = splats();
         return $splats[$position];
     }
+    function params() {
+        return web\params();
+    }
     function param($name) {
-        $params = web\params();
+        $params = params();
         return $params[$name];
     }
     function run($func, array $params = array()) {
         if (is_string($func)) {
-            if (file_exists($func)) {
-                extract($params);
-                return require $func;
-            }
+            if (file_exists($func)) return require $func;
             if (strpos($func, '->') !== false) {
                 list($clazz, $method) = explode('->', $func, 2);
                 $func = array(new $clazz, $method);
