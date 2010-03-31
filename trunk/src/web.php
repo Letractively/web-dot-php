@@ -41,8 +41,8 @@ namespace web {
         static $routes = array();
         if ($path == null) return $routes;
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
-            array(':', '|', '(.+)', '([\w-]+)', '(\d+)', '($1)'),
+            array('/\\\\\*/', '/\\\\\:[\w-]+/', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('(.+)', '([\w-]+)', '(\d+)', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         $routes[] = array($pattern, $func, $path);
     }
@@ -50,8 +50,8 @@ namespace web {
         static $params = array();
         if ($path == null && $url == null) return $params;
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+(\|[\w-]+)+)/'),
-            array(':', '|', '.+', '(?<$1>[\w-]+)', '(?<$1>\d+)', '$1'),
+            array('/\\\\\*/', '/\\\\\:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('.+', '(?<$1>[\w-]+)', '(?<$1>\d+)', '$1$3'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $params)) {
             $params = array_slice($params, 1);
@@ -61,8 +61,8 @@ namespace web {
         static $splats = array();
         if ($path == null && $url == null) return $splats;
         $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\:/', '/\\\\\|/', '/\\\\\*/', '/:[\w-]+/', '/#[\w-]+/', '/([\w-]+(\|[\w-]+)+)/'),
-            array(':', '|', '(.+)', '[\w-]+', '\d+', '($1)'),
+            array('/\\\\\*/', '/\\\\\:[\w-]+/', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('(.+)', '[\w-]+', '\d+', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $splats)) {
             $splats = array_slice($splats, 1);
