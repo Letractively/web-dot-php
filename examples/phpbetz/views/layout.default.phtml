@@ -17,16 +17,13 @@
         <?php echo $view; ?>
     </div>
     <div class="column grid_4">
-        Right Column
-        <ul>
-            <li>kala</li>
-            <li>kela</li>
-        </ul>
+        <h5>Oikea palsta</h5>
+        <p>Lorem...</p>
     </div>
 </div>
 <div class="row">
     <div class="column grid_12">
-        Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
+        Sivun suoritusaika <?php global $starttime; echo (microtime(true) - $starttime) * 1000; ?> millisekuntia.
     </div>
 </div>
 <script type="text/javascript" src="<?php echo url('~/js/jquery.js'); ?>"></script>
