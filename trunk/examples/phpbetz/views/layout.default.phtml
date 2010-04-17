@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link type="text/css" href="<?php echo url('~/css/reset.css'); ?>" rel="stylesheet">
+<link type="text/css" href="<?php echo url('~/css/typography.css'); ?>" rel="stylesheet" />
+<link type="text/css" href="<?php echo url('~/css/grid.css'); ?>" rel="stylesheet">
+<link type="text/css" href="<?php echo url('~/css/ui/south-street/jquery-ui.css'); ?>" rel="stylesheet">
+<link type="text/css" href="<?php echo url('~/css/flags16.css'); ?>" rel="stylesheet">
+<?php if (isset($css)) echo $css; ?>
+</head>
+<body id="default">
+<br>
+<div class="row">
+    <div class="column grid_8">
+        <?php echo $view; ?>
+    </div>
+    <div class="column grid_4">
+        Right Column
+        <ul>
+            <li>kala</li>
+            <li>kela</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="column grid_12">
+        Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo url('~/js/jquery.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo url('~/js/jquery-ui.js'); ?>"></script>
+<?php if (isset($scripts)) echo $scripts; ?>
+</body>
+</html>
