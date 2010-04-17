@@ -50,4 +50,13 @@ get('/login/check', function() {
     }
 });
 
+get('/bets/games', function() {
+   $view = new view('views/bets.games.phtml');
+   echo $view;
+});
+
+post('/bets/games/#game', function($game) {
+    echo json_encode(array('game' => $game, 'score' => $_POST['score']));
+});
+
 dispatch();

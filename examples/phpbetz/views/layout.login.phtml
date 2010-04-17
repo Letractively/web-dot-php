@@ -3,13 +3,42 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title></title>
+<link type="text/css" href="css/ui/south-street/jquery-ui-1.8.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/flags16.css" rel="stylesheet" />
+<link type="text/css" href="css/flags32.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.custom.min.js"></script>
 </head>
 <body>
 <div id="content">
     <?php echo $view; ?>
+    <form action="<?php echo url('~/bets/games/1') ?>" class="gamebet f16" style="font-size: 0.65em">
+        <input type="radio" id="radio1" name="score" value="1" class="flag fi" /><label for="radio1">Suomi</label>
+        <input type="radio" id="radio2" name="score" value="x" /><label for="radio2">Tasapeli</label>
+        <input type="radio" id="radio3" name="score" value="2" class="flag us" /><label for="radio3">Ruotsi</label>
+    </form>
 </div>
 <div>
 Execution time <?php global $starttime; echo microtime(true) - $starttime; ?> secs.
 </div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('form.gamebet').buttonset();
+    $('input:radio').each(function() {
+        if ($(this).hasClass('flag')) {
+            $(this).button({ icons: { primary: $(this).attr('class') }});
+        }
+        var form = $(this.form);
+        $(this).click(function() {
+            alert(form.attr('action'));
+            $.post(form.attr('action'), form.serialize(), function(data, status) {
+                alert(status);
+                alert(data.game + ' ' + data.score);
+            }, 'json');
+            
+        });
+    });
+});
+</script>
 </body>
 </html>
