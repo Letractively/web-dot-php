@@ -71,13 +71,7 @@ post('/admin/teams', function() {
     echo $form->email;
     $form->email();
     echo $form->email('default value');
-
-    $form->validate()
-
-
     validate('name', array('required'));
-
-
     validate($_POST, array('name' => array('')));
 
 });
