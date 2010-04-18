@@ -59,4 +59,45 @@ post('/bets/games/#game', function($game) {
     echo json_encode(array('game' => $game, 'score' => $_POST['score']));
 });
 
+get('/admin/teams', function() { 
+
+});
+
+post('/admin/teams', function() {
+
+    $form = new form();
+    $form->email->filters('required');
+    $form->email->validate();
+    echo $form->email;
+    $form->email();
+    echo $form->email('default value');
+
+    $form->validate()
+
+
+    validate('name', array('required'));
+
+
+    validate($_POST, array('name' => array('')));
+
+});
+
+get('/admin/games', function() {
+
+});
+
+post('/admin/games', function() {
+
+});
+
+get('/admin/games', function() {
+
+});
+
+post('/admin/games', function() {
+
+});
+
+
+
 dispatch();
