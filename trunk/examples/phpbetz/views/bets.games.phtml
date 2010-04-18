@@ -15,8 +15,8 @@
 </div>
 
 <div class="row">
-    <div class="column grid_2">Ti 20.04, klo 22:29</div>
-    <div class="column grid_2"><span style="font-size: 58%; font-weight: bold;" id="defaultCountdown">2d 23h 46min</span></div>
+    <div class="column grid_2" style="height: 29px; line-height: 29px;">Ti 20.04, klo 22:29</div>
+    <div class="column grid_2" style="height: 29px; text-align: center;"><span style="font-size: 58%; font-weight: bold;" id="defaultCountdown">2d 23h 46min</span></div>
     <div class="column grid_4" style="text-align: center;">
         <form action="<?php echo url('~/bets/games/1') ?>" class="gamebet f16">
             <input type="radio" id="radio1" name="score" value="1" class="flag fi" /><label for="radio1">Suomi</label>
@@ -58,8 +58,16 @@ $(document).ready(function() {
         });
     });
     var newYear = new Date();
-    newYear = new Date(newYear.getFullYear() + 1, 1 - 1, 1);
-    $('#defaultCountdown').countdown({until: newYear, format: 'dHM' });
+    newYear = new Date(newYear.getTime() + 5000);
+    $('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {
+        $(this).parent('div').css('line-height', '29px');
+        $(this).parent('div').html('Ottelu on alkanut');
+        $('input:radio').each(function() {
+            $(this).button('disable');
+        });
+    }});
+
+
 });
 </script>
 <?php block(); ?>
