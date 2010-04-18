@@ -43,8 +43,11 @@ class form extends ArrayObject {
                 case 'rtrim':
                 case 'chop':  $this->value = rtrim($this->value); break;
                 // validators
+                case 'required':
                 case 'req':   $validates = strlen($this->value) > 0; break;
+                case 'boolean':
                 case 'bool':  $validates = false !== filter_var($this->value, FILTER_VALIDATE_BOOLEAN); break;
+                case 'integer':
                 case 'int':   $validates = false !== filter_var($this->value, FILTER_VALIDATE_INT); break;
                 case 'float': $validates = false !== filter_var($this->value, FILTER_VALIDATE_FLOAT); break;
                 case 'ip':    $validates = false !== filter_var($this->value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
