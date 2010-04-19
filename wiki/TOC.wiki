@@ -28,7 +28,7 @@
       * [API#filter filter]
       * [API#slug slug]
       * [API#block block]
-    * Classes
+    * [API#Classes Classes]
       * [API#view view]
       * [API#form form]
       * [API#field field]
