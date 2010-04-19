@@ -179,7 +179,6 @@ namespace {
             $_SESSION['web.php:flash'][$name] = $hops;
     }
     function filter(&$value, array $filters, array &$errors = array()) {
-        $errors = array();
         foreach ($filters as $filter) {
             $filter = trim($filter);
             $valid = true;
