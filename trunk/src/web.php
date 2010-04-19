@@ -178,6 +178,49 @@ namespace {
         else
             $_SESSION['web.php:flash'][$name] = $hops;
     }
+    function filter(&$value, array $filters, array &$errors = array()) {
+        $errors = array();
+        foreach ($filters as $filter) {
+            $filter = trim($filter);
+            $valid = true;
+            switch ($filter) {
+                // filters
+                case 'trim':  $value = trim($value); break;
+                case 'ltrim': $value = ltrim($value); break;
+                case 'rtrim':
+                case 'chop':  $value = rtrim($value); break;
+                // validators
+                case 'required':
+                case 'req':   $valid = strlen($value) > 0; break;
+                case 'boolean':
+                case 'bool':  $valid = false !== filter_var($value, FILTER_VALIDATE_BOOLEAN); break;
+                case 'integer':
+                case 'int':   $valid = false !== filter_var($value, FILTER_VALIDATE_INT); break;
+                case 'float': $valid = false !== filter_var($value, FILTER_VALIDATE_FLOAT); break;
+                case 'ip':    $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
+                case 'ipv4':  $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
+                case 'ipv6':  $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
+                case 'email': $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
+                case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
+                default:
+                    if ((strpos($filter, '/')) === 0) {
+                        $valid = false !== filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $filter)));
+                        $filter = 'regex';
+                    } elseif (is_callable($filter)) {
+                        $filtered = filter_var($value, FILTER_CALLBACK, array('options' => $filter));
+                        if (false !== $filtered) {
+                            $value = $filtered;
+                        } else {
+                            $valid = false;
+                        }
+                        $filter = 'callback';
+                    }
+                    break;
+            }
+            if (!$valid) $errors[] = $filter;
+        }
+        return count($errors) === 0;
+    }
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
         $title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
@@ -204,6 +247,45 @@ namespace {
             $file = $layout;
             unset($layout);
             goto start;
+        }
+    }
+    class form {
+        function __construct($args = null) {
+            if ($args == null) return;
+            foreach ($args as $name => $value) $this->$name = $value;
+        }
+        function __get($name) {
+            if (!isset($this->$name)) $this->$name = new field();
+            return $this->$name;
+        }
+        function __set($name, $field) {
+            $this->$name = ($field instanceof field) ? $field : new field($field);
+        }
+        function __call($name, $args) {
+            $field = $this->$name;
+            return $field($args[0]);
+        }
+        function validate() {
+            foreach($this as $field) {
+                if (!$field->valid) return false;
+            }
+            return true;
+        }
+    }
+    class field {
+        public $value, $valid, $errors;
+        function  __construct($value = null) {
+            $this->value = $value;
+            $this->valid = true;
+            $this->errors = array();
+        }
+        function filter() { return $this->valid = filter($this->value, func_get_args(), $this->errors); }
+        function __invoke($value) {
+            $this->value = $value;
+            return $this;
+        }
+        function __toString() {
+            return $this->value;
         }
     }
 }
