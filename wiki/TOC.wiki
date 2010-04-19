@@ -25,11 +25,13 @@
       * [API#url url]
       * [API#session session]
       * [API#flash flash]
+      * [API#filter filter]
       * [API#slug slug]
       * [API#block block]
     * Classes
       * [API#view view]
       * [API#form form]
+      * [API#field field]
   * *Support*
   * [FAQ Frequently Asked Questions]
   * [http://groups.google.com/group/web-dot-php Discussion Group]
