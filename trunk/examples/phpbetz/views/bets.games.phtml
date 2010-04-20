@@ -1,4 +1,10 @@
 <?php $layout = 'views/layout.default.phtml'; ?>
+
+<?php block($css); ?>
+<link rel="stylesheet" href="<?php echo url('~/css/countdown.css'); ?>">
+<?php block(); ?>
+
+
 <div class="row">
     <div class="column grid_8">
         <h1>Otteluveikkaus</h1>
@@ -19,9 +25,9 @@
     <div class="column grid_2" style="height: 29px; text-align: center;"><span style="font-size: 58%; font-weight: bold;" id="defaultCountdown">2d 23h 46min</span></div>
     <div class="column grid_4" style="text-align: center;">
         <form action="<?php echo url('~/bets/games/1') ?>" class="gamebet f16">
-            <input type="radio" id="radio1" name="score" value="1" class="flag fi" /><label for="radio1">Suomi</label>
-            <input type="radio" id="radio2" name="score" value="X" /><label for="radio2">Tasapeli</label>
-            <input type="radio" id="radio3" name="score" value="2" class="flag se" /><label for="radio3">Ruotsi</label>
+            <input type="radio" id="radio1" name="score" value="1" class="flag fi"><label for="radio1">Suomi</label>
+            <input type="radio" id="radio2" name="score" value="X"><label for="radio2">Tasapeli</label>
+            <input type="radio" id="radio3" name="score" value="2" class="flag se"><label for="radio3">Ruotsi</label>
         </form>
     </div>
 </div>
@@ -32,14 +38,10 @@
     </div>
 </div>
 
-<?php block($css); ?>
-<link type="text/css" href="<?php echo url('~/css/countdown.css'); ?>" rel="stylesheet">
-<?php block(); ?>
-
 <?php block($scripts); ?>
-<script type="text/javascript" src="<?php echo url('~/js/jquery-countdown.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo url('~/js/jquery-countdown-fi.js'); ?>"></script>
-<script type="text/javascript">
+<script src="<?php echo url('~/js/jquery-countdown.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery-countdown-fi.js'); ?>"></script>
+<script>
 $(document).ready(function() {
     $('#tabs').tabs();
     $('form.gamebet').buttonset();
@@ -66,8 +68,6 @@ $(document).ready(function() {
             $(this).button('disable');
         });
     }});
-
-
 });
 </script>
 <?php block(); ?>
