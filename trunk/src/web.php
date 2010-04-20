@@ -183,12 +183,6 @@ namespace {
             $filter = trim($filter);
             $valid = true;
             switch ($filter) {
-                // filters
-                case 'trim':  $value = trim($value); break;
-                case 'ltrim': $value = ltrim($value); break;
-                case 'rtrim':
-                case 'chop':  $value = rtrim($value); break;
-                // validators
                 case 'required':
                 case 'req':   $valid = strlen($value) > 0; break;
                 case 'boolean':
@@ -203,18 +197,18 @@ namespace {
                 case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
                 default:
                     if ((strpos($filter, '/')) === 0) {
-                        $valid = false !== filter_var($value, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $filter)));
+                        $valid = preg_match($filter, $value);
                         $filter = 'regex';
                     } elseif (is_callable($filter)) {
-                        $filtered = filter_var($value, FILTER_CALLBACK, array('options' => $filter));
-                        if (false !== $filtered) {
-                            $value = $filtered;
+                        $filtered = $filter($value);
+                        if ($filtered === true || $filtered === false) {
+                            $valid = $filtered;
                         } else {
-                            $valid = false;
+                            $value = $filtered;
                         }
-                        $filter = 'callback';
+                    } else {
+                        trigger_error(sprintf('Invalid filter: %s', $filter), E_USER_WARNING);
                     }
-                    break;
             }
             if (!$valid) $errors[] = $filter;
         }
