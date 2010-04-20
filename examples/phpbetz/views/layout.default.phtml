@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="fi">
 <head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
 <?php if (isset($meta)) echo $meta; ?>
-<link type="text/css" href="<?php echo url('~/css/reset.css'); ?>" rel="stylesheet">
-<link type="text/css" href="<?php echo url('~/css/typography.css'); ?>" rel="stylesheet" />
-<link type="text/css" href="<?php echo url('~/css/grid.css'); ?>" rel="stylesheet">
-<link type="text/css" href="<?php echo url('~/css/ui/south-street/jquery-ui.css'); ?>" rel="stylesheet">
-<link type="text/css" href="<?php echo url('~/css/flags16.css'); ?>" rel="stylesheet">
+<title></title>
+<link rel="stylesheet" href="<?php echo url('~/css/reset.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/typography.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/grid.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/ui/south-street/jquery-ui.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/flags16.css'); ?>">
 <?php if (isset($css)) echo $css; ?>
 </head>
 <body id="default">
@@ -27,8 +27,8 @@
         Sivun suoritusaika <?php global $starttime; echo (microtime(true) - $starttime) * 1000; ?> millisekuntia.
     </div>
 </div>
-<script type="text/javascript" src="<?php echo url('~/js/jquery.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo url('~/js/jquery-ui.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery-ui.js'); ?>"></script>
 <?php if (isset($scripts)) echo $scripts; ?>
 </body>
 </html>
