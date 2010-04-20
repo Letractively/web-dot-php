@@ -15,28 +15,26 @@ About: License
     This file is licensed under the MIT.
 */
 namespace web {
-    function init() {
-        $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
-        $base = substr($base, 0, strrpos($base, '/')) . '/';
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $path = substr($path, 0, strrpos($path, '/')) . '/';
-        $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-        $full .= $_SERVER['HTTP_HOST'];
-        $port = $_SERVER['SERVER_PORT'];
-        if (($full[4] === 's' && $port !== '443') || $port !== '80') $full .= ":$port";
-        define('WEB_URL_ROOT', $full . '/');
-        define('WEB_URL_PATH', $path);
-        define('WEB_URL_BASE', $base);
-        register_shutdown_function(function() {
-            if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
-            $flash =& $_SESSION['web.php:flash'];
-            foreach($flash as $key => $hops) {
-                if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
-                else $flash[$key]--;
-            }
-            if (count($flash) === 0) unset($flash);
-        });
-    }
+    $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
+    $base = substr($base, 0, strrpos($base, '/')) . '/';
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = substr($path, 0, strrpos($path, '/')) . '/';
+    $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $full .= $_SERVER['HTTP_HOST'];
+    $port = $_SERVER['SERVER_PORT'];
+    if (($full[4] === 's' && $port !== '443') || $port !== '80') $full .= ":$port";
+    define('WEB_URL_ROOT', $full . '/');
+    define('WEB_URL_PATH', $path);
+    define('WEB_URL_BASE', $base);
+    register_shutdown_function(function() {
+        if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
+        $flash =& $_SESSION['web.php:flash'];
+        foreach($flash as $key => $hops) {
+            if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
+            else $flash[$key]--;
+        }
+        if (count($flash) === 0) unset($flash);
+    });
     function routes($path = null, $func = null) {
         static $routes = array();
         if ($path == null) return $routes;
@@ -85,7 +83,6 @@ namespace web {
         }
         if ($exit) exit;
     }
-    init();
 }
 namespace {
     function get($path, $func) {
@@ -180,14 +177,9 @@ namespace {
     }
     function filter(&$value, array $filters, array &$errors = array()) {
         foreach ($filters as $filter) {
-            $filter = trim($filter);
             $valid = true;
             switch ($filter) {
-                case 'required':
-                case 'req':   $valid = strlen($value) > 0; break;
-                case 'boolean':
                 case 'bool':  $valid = false !== filter_var($value, FILTER_VALIDATE_BOOLEAN); break;
-                case 'integer':
                 case 'int':   $valid = false !== filter_var($value, FILTER_VALIDATE_INT); break;
                 case 'float': $valid = false !== filter_var($value, FILTER_VALIDATE_FLOAT); break;
                 case 'ip':    $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
@@ -196,16 +188,18 @@ namespace {
                 case 'email': $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
                 case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
                 default:
-                    if ((strpos($filter, '/')) === 0) {
+                    if (is_callable($filter)) {
+                        $filtered = $filter($value);
+                        if ($filtered !== null) {
+                            if (is_bool($filtered)) {
+                                $valid = $filtered;
+                            } else {
+                                $value = $filtered;
+                            }
+                        }
+                    } elseif ((strpos($filter, '/')) === 0) {
                         $valid = preg_match($filter, $value);
                         $filter = 'regex';
-                    } elseif (is_callable($filter)) {
-                        $filtered = $filter($value);
-                        if ($filtered === true || $filtered === false) {
-                            $valid = $filtered;
-                        } else {
-                            $value = $filtered;
-                        }
                     } else {
                         trigger_error(sprintf('Invalid filter: %s', $filter), E_USER_WARNING);
                     }
@@ -259,9 +253,7 @@ namespace {
             return $field($args[0]);
         }
         function validate() {
-            foreach($this as $field) {
-                if (!$field->valid) return false;
-            }
+            foreach($this as $field) if (!$field->valid) return false;
             return true;
         }
     }
@@ -278,7 +270,7 @@ namespace {
             return $this;
         }
         function __toString() {
-            return $this->value;
+            return strval($this->value);
         }
     }
 }
