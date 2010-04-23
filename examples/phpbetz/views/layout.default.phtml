@@ -6,12 +6,27 @@
 <title></title>
 <link rel="stylesheet" href="<?php echo url('~/css/reset.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/typography.css'); ?>">
-<link rel="stylesheet" href="<?php echo url('~/css/grid.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/ui/south-street/jquery-ui.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/flags16.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/flags32.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/main.css'); ?>">
 <?php if (isset($css)) echo $css; ?>
 </head>
 <body id="default">
+<br>
+<div id="breadcrumb" class="row">
+    <div class="column grid_12">
+        <ul id="breadcrumbs" class="xbreadcrumbs">
+             <li class="home"><a href="#">Etusivu</a></li>
+             <li><div>»</div></li>
+             <li><a href="#">Veikkaukset</a></li>
+             <li><div>»</div></li>
+             <li class="current"><a href="#">Otteluveikkaus</a></li>
+        </ul>
+        <div style="clear: both;"></div>
+        <hr>
+    </div>
+</div>
 <br>
 <div class="row">
     <div class="column grid_8">

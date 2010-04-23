@@ -1,4 +1,14 @@
-<?php $layout = 'views/layout.login.phtml'; ?>
-<form method="POST" action="<?php echo url('~/login'); ?>">
-    <input type="submit" value="Login with Google" />
-</form>
+<?php $layout = 'views/layout.default.phtml'; ?>
+<div class="row">
+    <div class="column grid_8">
+        <h1>Toiminnot</h1>
+        <hr>
+        <ul>
+            <li><a href="bets/games">Otteluveikkaus</a></li>
+            <li><a href="admin/teams">Joukkueet</a></li>
+        </ul>
+    </div>
+</div>
+
+<?php block($scripts); ?>
+<?php block(); ?>

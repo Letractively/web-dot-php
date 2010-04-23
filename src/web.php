@@ -208,6 +208,25 @@ namespace {
         }
         return count($errors) === 0;
     }
+    function length($min, $max = false) {
+        $max = $max ?: $min;
+        return function($value) use ($min, $max) {
+            $len = strlen($value);
+            return $len >= $min && $len <= $max;
+        };
+    }
+    function between($min, $max = false) {
+        $max = $max ?: $min;
+        return function($value) use ($min, $max) {
+            return $value >= $min && $value <= $max;
+        };
+    }
+    function choice() {
+        $choices = func_get_args();
+        return function($value) use ($choices) {
+            return in_array($value, $choices);
+        };
+    }
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
         $title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);

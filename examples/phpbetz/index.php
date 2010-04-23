@@ -33,6 +33,43 @@ get('/', function() {
     echo $view;
 });
 
+get('/bets/games', function() {
+   $view = new view('views/bets.games.phtml');
+   echo $view;
+});
+
+post('/bets/games/#game', function($game) {
+    echo json_encode(array('game' => $game, 'score' => $_POST['score']));
+});
+
+get('/admin/teams', function() {
+   $view = new view('views/admin.teams.phtml');
+   echo $view;
+    
+});
+
+post('/teams', function() {
+
+    $form = new form();
+
+    $form->email = new field('aapo');
+    $form->email();
+
+    $form->email = 'aapo';
+    $form->email->filter('required','bool');
+
+    if (validate($form->email)) {
+
+    }
+
+    echo $form->email->valid;
+    $form->email();
+    echo $form->email('default value');
+    validate('name', array('required'));
+    validate($_POST, array('name' => array('')));
+
+});
+
 post('/login', function() {
     $xrds = openid\discover('https://www.google.com/accounts/o8/id');
     openid\authenticate($xrds->XRD->Service->URI, array(
@@ -49,49 +86,5 @@ get('/login/check', function() {
         echo 'You have been logged in!';
     }
 });
-
-get('/bets/games', function() {
-   $view = new view('views/bets.games.phtml');
-   echo $view;
-});
-
-post('/bets/games/#game', function($game) {
-    echo json_encode(array('game' => $game, 'score' => $_POST['score']));
-});
-
-get('/admin/teams', function() { 
-
-});
-
-post('/admin/teams', function() {
-
-    $form = new form();
-    $form->email->filters('required');
-    $form->email->validate();
-    echo $form->email;
-    $form->email();
-    echo $form->email('default value');
-    validate('name', array('required'));
-    validate($_POST, array('name' => array('')));
-
-});
-
-get('/admin/games', function() {
-
-});
-
-post('/admin/games', function() {
-
-});
-
-get('/admin/games', function() {
-
-});
-
-post('/admin/games', function() {
-
-});
-
-
 
 dispatch();
