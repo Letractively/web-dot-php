@@ -1,0 +1,47 @@
+<?php $layout = 'views/layout.default.phtml'; ?>
+<?php block($css); ?>
+<link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
+<?php block(); ?>
+<div class="row">
+    <div class="column grid_8">
+        <h1>Joukkueet</h1>
+        <hr>
+        <p>Lorem...</p>
+
+        <table id="myTable" class="tablesorter">
+        <thead>
+        <tr>
+                <th>Joukkue</th>
+                <th>Lyhenne</th>
+                <th>Sijoitus</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td width="40%" class="f32"><div class="flag fi" style="padding-left: 36px; line-height: 32px;"><div id="team" style="padding-left: 4px;">Suomi</div></div></td>
+            <td>fi</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="f32"><div class="flag se" style="padding-left: 40px; line-height: 32px;">Ruotsi</div></td>
+            <td>se</td>
+            <td></td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery-tablesorter.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery-editinplace.js'); ?>"></script>
+<script>
+$(document).ready(function() {
+    $('#myTable').tablesorter();
+    $('#team').editInPlace({
+        url: 'http://localhost',
+        params: 'name=davidä'
+    });
+});
+</script>
+<?php block(); ?>
