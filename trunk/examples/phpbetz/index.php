@@ -49,25 +49,6 @@ get('/admin/teams', function() {
 });
 
 post('/teams', function() {
-
-    $form = new form();
-
-    $form->email = new field('aapo');
-    $form->email();
-
-    $form->email = 'aapo';
-    $form->email->filter('required','bool');
-
-    if (validate($form->email)) {
-
-    }
-
-    echo $form->email->valid;
-    $form->email();
-    echo $form->email('default value');
-    validate('name', array('required'));
-    validate($_POST, array('name' => array('')));
-
 });
 
 post('/login', function() {
