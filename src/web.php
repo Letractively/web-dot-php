@@ -175,7 +175,7 @@ namespace {
         else
             $_SESSION['web.php:flash'][$name] = $hops;
     }
-    function filter(&$value, array $filters, array &$errors = array()) {
+    function filter(&$value, array $filters) {
         foreach ($filters as $filter) {
             $valid = true;
             switch ($filter) {
@@ -199,24 +199,36 @@ namespace {
                         }
                     } elseif ((strpos($filter, '/')) === 0) {
                         $valid = preg_match($filter, $value);
-                        $filter = 'regex';
                     } else {
                         trigger_error(sprintf('Invalid filter: %s', $filter), E_USER_WARNING);
                     }
             }
-            if (!$valid) $errors[] = $filter;
+            if (!$valid) return false;
         }
-        return count($errors) === 0;
+        return true;
     }
-    function length($min, $max = false) {
-        $max = $max ?: $min;
+    function equal($exact) {
+        return function($value) use ($exact) { return $value === $exact; };
+    }
+    function length($min, $max) {
         return function($value) use ($min, $max) {
             $len = strlen($value);
             return $len >= $min && $len <= $max;
         };
     }
-    function between($min, $max = false) {
-        $max = $max ?: $min;
+    function minlength($min) {
+        return function($value) use ($min) {
+            $len = strlen($value);
+            return $len >= $min;
+        };
+    }
+    function maxlength($max) {
+        return function($value) use ($max) {
+            $len = strlen($value);
+            return $len <= $max;
+        };
+    }
+    function between($min, $max) {
         return function($value) use ($min, $max) {
             return $value >= $min && $value <= $max;
         };
@@ -277,13 +289,15 @@ namespace {
         }
     }
     class field {
-        public $value, $valid, $errors;
+        public $original, $value, $valid;
         function  __construct($value = null) {
+            $this->original = $value;
             $this->value = $value;
             $this->valid = true;
-            $this->errors = array();
         }
-        function filter() { return $this->valid = filter($this->value, func_get_args(), $this->errors); }
+        function filter() {
+            return $this->valid = filter($this->value, func_get_args());
+        }
         function __invoke($value) {
             $this->value = $value;
             return $this;
