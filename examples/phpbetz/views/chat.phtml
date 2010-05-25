@@ -1,0 +1,32 @@
+<?php $layout = 'views/layout.default.phtml'; ?>
+
+<?php block($css); ?>
+<?php block(); ?>
+
+<h1>Chatti</h1>
+<hr>
+<p>Lorem...</p>
+
+<div id="chat" style="height:105px; overflow: hidden;"></div>
+
+<div>
+    <form action="">
+        <div class="grid_7 alpha"><input type="text" style="display: block; width: 100%;" /></div>
+        <div class="grid_2 omega"><input type="submit" value="Lähetä viesti" /></div>
+    </form>
+</div>
+
+<?php block($scripts); ?>
+<script>
+$(document).ready(function() {
+    jQuery.chat = function(url) {
+        setInterval(function() {
+            $.get(url, function(data, status) {
+                $('#chat').replaceWith(data);
+            }, 'text');
+        }, 3000);
+    };
+    $.chat('<?php echo url('~/chat/poll'); ?>');
+});
+</script>
+<?php block(); ?>

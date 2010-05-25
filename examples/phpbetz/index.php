@@ -42,6 +42,17 @@ post('/bets/games/#game', function($game) {
     echo json_encode(array('game' => $game, 'score' => $_POST['score']));
 });
 
+get('/chat', function() {
+   $view = new view('views/chat.phtml');
+   echo $view;
+});
+
+get('/chat/poll', function() {
+    $dsn = sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__);
+    $dbh = new PDO($dsn);
+    echo json_encode($dbh->query('SELECT * FROM chat;')->fetchAll(PDO::FETCH_ASSOC));
+});
+
 get('/admin/teams', function() {
    $view = new view('views/admin.teams.phtml');
    echo $view;
@@ -71,7 +82,7 @@ get('/login/check', function() {
 
 get('/install', function() {
 
-        $tables =<<<'EOT'
+    $sql =<<<'EOT'
         CREATE TABLE teams (
             name            TEXT        NOT NULL,
             abbr            TEXT        NOT NULL,
@@ -85,7 +96,7 @@ get('/install', function() {
             home_goals      INTEGER,
             road            TEXT        NOT NULL,
             road_goals      INTEGER,
-            date            TEXT        NOT NULL,
+            time            TEXT        NOT NULL,
             CONSTRAINT pk_games         PRIMARY KEY (id),
             CONSTRAINT fk_teams_home    FOREIGN KEY (home) REFERENCES teams (name),
             CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name)
@@ -141,12 +152,19 @@ get('/install', function() {
             CONSTRAINT fk_teams_third   FOREIGN KEY (third)  REFERENCES teams (name),
             CONSTRAINT fk_scorers       FOREIGN KEY (scorer) REFERENCES scorers (name)
         );
+
+        CREATE TABLE chat (
+            id              INTEGER     NOT NULL,
+            time            TEXT        NOT NULL,
+            user            TEXT        NOT NULL,
+            message         TEXT        NOT NULL,
+            CONSTRAINT pk_chat          PRIMARY KEY (id),
+            CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
+        );
 EOT;
-
     $dsn = sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__);
-
-    echo $dsn;
-
+    $dbh = new PDO($dsn);
+    $dbh->exec($sql);
 });
 
 dispatch();
