@@ -25,12 +25,23 @@
     <div id="navigation">
         <div id="menu">
             <ul class="menu">
-                <li><a href="<?php echo url('~/news'); ?>" class="parent"><span>Uutiset</span></a></li>
+                <li><a href="<?php echo url('~/news'); ?>" class="parent"><span>Etusivu</span></a></li>
                 <li><a href="<?php echo url('~/bets/games'); ?>"><span>Otteluveikkaus</span></a></li>
                 <li><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki</span></a></li>
                 <li><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
                 <li><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li>
-                <li class="last" ><a href="<?php echo url('~/chat'); ?>"><span>Chatti</span></a></li>
+                <li><a href="<?php echo url('~/chat'); ?>"><span>Chatti</span></a></li>
+                <li class="last" >
+                    <a href="#"><span>Ylläpito</span></a>
+                    <ul>
+                        <li><a href="<?php echo url('~/admin/games'); ?>"><span>Ottelut</span></a></li>
+                        <li><a href="<?php echo url('~/admin/teams'); ?>"><span>Joukkueet</span></a></li>
+                        <li><a href="<?php echo url('~/admin/scorers'); ?>"><span>Maalintekijät</span></a></li>
+                        <li><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
+                    </ul>
+                </li>
+
+
             </ul>
         </div>
     </div>
