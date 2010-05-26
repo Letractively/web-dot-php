@@ -70,6 +70,9 @@ body {
     color: #808385;
 }
 
+.block {
+}
+
 .block h3 {
     padding: 6px;
     margin: 0;
@@ -84,4 +87,11 @@ body {
 
 .block-spacer {
     height: 10px;
+}
+
+input#chat-message {
+    margin-top: 2px;
+    line-height: 23px;
+    font-size: 1.25em;
+    height: 23px;
 }

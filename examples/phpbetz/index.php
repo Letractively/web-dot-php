@@ -26,6 +26,7 @@ error_reporting(E_ALL | E_STRICT);
  * Dispatch Request
  * ======================================================================= */
 require 'web.php';
+require 'db.php';
 require 'proposals/web.openid.php';
 
 get('/', function() {
@@ -43,14 +44,24 @@ post('/bets/games/#game', function($game) {
 });
 
 get('/chat', function() {
-   $view = new view('views/chat.phtml');
-   echo $view;
+    $db = new db();
+    $msgs = new view('views/chat.messages.phtml');
+    $msgs->messages = $db->chat->poll(15);
+    $view = new view('views/chat.phtml');
+    $view->messages = $msgs;
+    echo $view;
+});
+
+post('/chat', function() {
+    $db = new db();
+    $db->chat->post('bungle', $_POST['chat-message']);
 });
 
 get('/chat/poll', function() {
-    $dsn = sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__);
-    $dbh = new PDO($dsn);
-    echo json_encode($dbh->query('SELECT * FROM chat;')->fetchAll(PDO::FETCH_ASSOC));
+    $db = new db();
+    $view = new view('views/chat.messages.phtml');
+    $view->messages = $db->chat->poll(15);
+    echo $view;
 });
 
 get('/admin/teams', function() {
@@ -79,92 +90,9 @@ get('/login/check', function() {
     }
 });
 
-
 get('/install', function() {
-
-    $sql =<<<'EOT'
-        CREATE TABLE teams (
-            name            TEXT        NOT NULL,
-            abbr            TEXT        NOT NULL,
-            ranking         INTEGER,
-            CONSTRAINT pk_teams         PRIMARY KEY (name)
-        );
-
-        CREATE TABLE games (
-            id              INTEGER     NOT NULL,
-            home            TEXT        NOT NULL,
-            home_goals      INTEGER,
-            road            TEXT        NOT NULL,
-            road_goals      INTEGER,
-            time            TEXT        NOT NULL,
-            CONSTRAINT pk_games         PRIMARY KEY (id),
-            CONSTRAINT fk_teams_home    FOREIGN KEY (home) REFERENCES teams (name),
-            CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name)
-        );
-
-        CREATE TABLE scorers (
-            name            TEXT        NOT NULL,
-            team            TEXT        NOT NULL,
-            number          INTEGER,
-            goals           INTEGER     NOT NULL,
-            CONSTRAINT pk_scorers       PRIMARY KEY (name),
-            CONSTRAINT fk_teams         FOREIGN KEY (team) REFERENCES teams (name)
-        );
-
-        CREATE TABLE users (
-            username        TEXT        NOT NULL,
-            password        TEXT        NOT NULL,
-            email           TEXT,
-            active          INTEGER     NOT NULL,
-            level           INTEGER     NOT NULL,
-            visited         TEXT,
-            CONSTRAINT pk_users         PRIMARY KEY (username)
-        );
-
-        CREATE TABLE remember (
-            id              INTEGER     NOT NULL,
-            random          INTEGER     NOT NULL,
-            user            TEXT        NOT NULL,
-            CONSTRAINT pk_remember      PRIMARY KEY (id),
-            CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
-        );
-
-        CREATE TABLE gamebets (
-            game            INTEGER     NOT NULL,
-            user            TEXT        NOT NULL,
-            score           TEXT        NOT NULL,
-            points          REAL,
-            CONSTRAINT pk_gamebets      PRIMARY KEY (game, user),
-            CONSTRAINT fk_games         FOREIGN KEY (game) REFERENCES games (id),
-            CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
-        );
-
-        CREATE TABLE singlebets (
-            user            TEXT        NOT NULL,
-            winner          TEXT,
-            second          TEXT,
-            third           TEXT,
-            scorer          TEXT,
-            CONSTRAINT pk_singlebets    PRIMARY KEY (user),
-            CONSTRAINT fk_users         FOREIGN KEY (user)   REFERENCES users (username),
-            CONSTRAINT fk_teams_winner  FOREIGN KEY (winner) REFERENCES teams (name),
-            CONSTRAINT fk_teams_second  FOREIGN KEY (second) REFERENCES teams (name),
-            CONSTRAINT fk_teams_third   FOREIGN KEY (third)  REFERENCES teams (name),
-            CONSTRAINT fk_scorers       FOREIGN KEY (scorer) REFERENCES scorers (name)
-        );
-
-        CREATE TABLE chat (
-            id              INTEGER     NOT NULL,
-            time            TEXT        NOT NULL,
-            user            TEXT        NOT NULL,
-            message         TEXT        NOT NULL,
-            CONSTRAINT pk_chat          PRIMARY KEY (id),
-            CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
-        );
-EOT;
-    $dsn = sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__);
-    $dbh = new PDO($dsn);
-    $dbh->exec($sql);
+    $db = new db();
+    $db->install->tables();
 });
 
 dispatch();

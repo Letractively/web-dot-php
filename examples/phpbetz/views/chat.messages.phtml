@@ -1,0 +1,7 @@
+<?php foreach($messages as $msg): ?>
+<div>
+    <span class="time">[<span><?php echo date_format(date_create($msg['time']), 'H:i'); ?></span>]</span>
+    <span class="user">&lt;<span><?php echo $msg['user']; ?></span>&gt;</span>
+    <?php echo $msg['message']; ?>
+</div>
+<?php endforeach; ?>
