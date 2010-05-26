@@ -1,4 +1,4 @@
-html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,ul,li,table,caption,tbody,tfoot,thead,tr,th,td,hr{border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;margin:0;padding:0;}
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,ul,li,hr{border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;margin:0;padding:0;}
 a img{border:none;}
 body{font:0.8125em/1.618 Arial, sans-serif;background-color:#fff;color:#111;font-size-adjust:none;font-style:normal;font-variant:normal;font-weight:400;}
 p{padding:0 0 0.8125em;}
@@ -11,10 +11,7 @@ h5,h6{font-size:1em;line-height:1.3;font-weight:700;}
 ul{list-style-position:outside;}
 li ul,li ol{margin:0 1.618em;}
 dl dd{margin-left:1.618em;}
-table{margin-bottom:1.618em;border-collapse:collapse;}
-th{font-weight:700;text-align:left;}
-tr,th,td{height:21px;margin:0;padding:0 1.618em 0 1em;}
-caption{text-align:center;font-family:Georgia, serif;}
+table{border-collapse:collapse;}
 blockquote{padding-left:1.618em;border-left:3px solid #ccc;font-style:italic;letter-spacing:0.03em;margin:0 0 0.8125em;}
 blockquote > p{padding:0;}
 a{text-decoration:none;}
