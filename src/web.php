@@ -15,26 +15,29 @@ About: License
     This file is licensed under the MIT.
 */
 namespace web {
-    $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
-    $base = substr($base, 0, strrpos($base, '/')) . '/';
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $path = substr($path, 0, strrpos($path, '/')) . '/';
-    $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $full .= $_SERVER['HTTP_HOST'];
-    $port = $_SERVER['SERVER_PORT'];
-    if (($full[4] === 's' && $port !== '443') || $port !== '80') $full .= ":$port";
-    define('WEB_URL_ROOT', $full . '/');
-    define('WEB_URL_PATH', $path);
-    define('WEB_URL_BASE', $base);
-    register_shutdown_function(function() {
-        if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
-        $flash =& $_SESSION['web.php:flash'];
-        foreach($flash as $key => $hops) {
-            if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
-            else $flash[$key]--;
-        }
-        if (count($flash) === 0) unset($flash);
-    });
+    init();
+    function init() {
+        $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
+        $base = substr($base, 0, strrpos($base, '/')) . '/';
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $path = substr($path, 0, strrpos($path, '/')) . '/';
+        $full = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+        $full .= $_SERVER['HTTP_HOST'];
+        $port = $_SERVER['SERVER_PORT'];
+        if (($full[4] === 's' && $port !== '443') || $port !== '80') $full .= ":$port";
+        define('WEB_URL_ROOT', $full . '/');
+        define('WEB_URL_PATH', $path);
+        define('WEB_URL_BASE', $base);
+        register_shutdown_function(function() {
+            if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
+            $flash =& $_SESSION['web.php:flash'];
+            foreach($flash as $key => $hops) {
+                if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
+                else $flash[$key]--;
+            }
+            if (count($flash) === 0) unset($flash);
+        });
+    }
     function routes($path = null, $func = null) {
         static $routes = array();
         if ($path == null) return $routes;
@@ -179,14 +182,15 @@ namespace {
         foreach ($filters as $filter) {
             $valid = true;
             switch ($filter) {
-                case 'bool':  $valid = false !== filter_var($value, FILTER_VALIDATE_BOOLEAN); break;
-                case 'int':   $valid = false !== filter_var($value, FILTER_VALIDATE_INT); break;
-                case 'float': $valid = false !== filter_var($value, FILTER_VALIDATE_FLOAT); break;
-                case 'ip':    $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
-                case 'ipv4':  $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
-                case 'ipv6':  $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
-                case 'email': $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
-                case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
+                case 'bool':   $valid = false !== filter_var($value, FILTER_VALIDATE_BOOLEAN); break;
+                case 'int':    $valid = false !== filter_var($value, FILTER_VALIDATE_INT); break;
+                case 'float':  $valid = false !== filter_var($value, FILTER_VALIDATE_FLOAT); break;
+                case 'ip':     $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6); break;
+                case 'ipv4':   $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4); break;
+                case 'ipv6':   $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
+                case 'email':  $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
+                case 'url':    $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
+                case 'encode': $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); break;
                 default:
                     if (is_callable($filter)) {
                         $filtered = $filter($value);
@@ -238,6 +242,12 @@ namespace {
         return function($value) use ($choices) {
             return in_array($value, $choices);
         };
+    }
+    function links($value) {
+        return $value;
+    }
+    function smileys($value) {
+        return $value;
     }
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
