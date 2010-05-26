@@ -2,14 +2,14 @@
 <html lang="fi">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <?php if (isset($meta)) echo $meta; ?>
 <title></title>
-<link rel="stylesheet" href="<?php echo url('~/css/reset.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/typography.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/ui/dark-hive/jquery-ui.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/flags.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/960.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/menu.css'); ?>">
-<link rel="stylesheet" href="<?php echo url('~/css/grid.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/main.css'); ?>">
 <?php if (isset($css)) echo $css; ?>
 </head>
@@ -17,7 +17,7 @@
 <div id="container" class="container_12">
 <div id="container-top">
 
-    <div id="header" class="top-corner">
+    <div id="header" class="ui-corner-top">
         <img id="logo" src="<?php echo url('~/img/logo.png'); ?>">
         <img id="logo-text" src="<?php echo url('~/img/logo-text.png'); ?>">
     </div>
@@ -40,8 +40,6 @@
                         <li><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
                     </ul>
                 </li>
-
-
             </ul>
         </div>
     </div>
@@ -49,39 +47,31 @@
 
 
 <div id="container-main">
-
     <div id="main">
         <div id="main-left" class="grid_9">
             <?php echo $view; ?>
         </div>
         <div id="main-right" class="grid_3">
             <div class="block">
-                <h3 class="top-corner">Paikalla</h3>
-                <div class="bottom-corner">
+                <h3 class="ui-corner-top">Paikalla</h3>
+                <div class="ui-corner-bottom">
                     bungle<br />
                     matias
                 </div>
             </div>
-
             <div class="block-spacer"></div>
-
             <div class="block">
-                <h3 class="top-corner">Seuraava ottelu</h3>
-                <div class="bottom-corner">
+                <h3 class="ui-corner-top">Seuraava ottelu</h3>
+                <div class="ui-corner-bottom">
                     Ruotsi - Suomi
                 </div>
             </div>
-
-        </div>
-        <div class="grid_12">
-
         </div>
     </div>
-
 </div>
 
 <div id="container-bottom">
-    <div id="footer" class="bottom-corner">
+    <div id="footer">
         <div class="grid_12">
             <span>
                 Tekninen toteutus: <a href="http://www.php.net/">PHP</a>, <a href="http://code.google.com/p/web-dot-php/">web.php</a>, <a href="http://www.sqlite.org/">SQLite</a>, <a href="http://jquery.com/">jQuery</a> <a href="http://jqueryui.com/">UI</a>, <a href="http://apycom.com/">Apycom Menus</a>, <a href="http://960.gs/">960 Grid System</a>
@@ -92,11 +82,9 @@
         </div>
     </div>
 </div>
-    <br>
 </div>
 <script src="<?php echo url('~/js/jquery.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery-ui.js'); ?>"></script>
-<script src="<?php echo url('~/js/jquery-corner.js'); ?>"></script>
 <script src="<?php echo url('~/js/menu.js'); ?>"></script>
 <script src="<?php echo url('~/js/main.js'); ?>"></script>
 <?php if (isset($scripts)) echo $scripts; ?>
