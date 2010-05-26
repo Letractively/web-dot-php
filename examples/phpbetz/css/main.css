@@ -89,7 +89,7 @@ body {
     height: 10px;
 }
 
-input#chat-message {
+input#chatmessage {
     margin-top: 2px;
     line-height: 23px;
     font-size: 1.25em;

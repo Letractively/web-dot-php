@@ -54,7 +54,11 @@ get('/chat', function() {
 
 post('/chat', function() {
     $db = new db();
-    $db->chat->post('bungle', $_POST['chat-message']);
+	$form = new form($_POST);
+	$form->chatmessage->filter('links', 'smileys');
+	if($form->validate()) {
+		$db->chat->post('bungle', $form->chatmessage);
+	}
 });
 
 get('/chat/poll', function() {
