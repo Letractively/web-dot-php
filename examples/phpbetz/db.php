@@ -212,4 +212,5 @@ EOT;
 46	25/06 17:00	Nelspruit		Korea DPR	Background	Côte d'Ivoire
 47	25/06 21:30	Tshwane/Pretoria		Chile	Background	Spain
 48	25/06 21:30	Mangaung / Bloemfontein		Switzerland	Background	Honduras
+*/
 }
