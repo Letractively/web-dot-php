@@ -161,70 +161,55 @@ EOT;
     }
 
     function games() {
-
+        $sql = $this->db->prepare('INSERT INTO games (home, road, time) VALUES (?, ?, ?)');
+        $sql->execute(array('Etelä-Afrikka', 'Meksiko', '2010-06-11T17:00:00+0300'));
+        $sql->execute(array('Uruguay', 'Ranska', '2010-06-11T21:30:00+0300'));
     }
-    /*
-1	11/06 17:00	Johannesburg - JSC		South Africa	Background	Mexico
-2	11/06 21:30	Cape Town		Uruguay	Background	France
-17	16/06 21:30	Tshwane/Pretoria		South Africa	Background	Uruguay
-18	17/06 21:30	Polokwane		France	Background	Mexico
-33	22/06 17:00	Rustenburg		Mexico	Background	Uruguay
-34	22/06 17:00	Mangaung / Bloemfontein		France	Background	South Africa
-Group B
-Match	Date - Time	Venue			Results
+/*
 3	12/06 17:00	Johannesburg - JEP		Argentina	Background	Nigeria
 4	12/06 14:30	Nelson Mandela Bay/Port Elizabeth		Korea Republic	Background	Greece
-19	17/06 17:00	Mangaung / Bloemfontein		Greece	Background	Nigeria
-20	17/06 14:30	Johannesburg - JSC		Argentina	Background	Korea Republic
-35	22/06 21:30	Durban		Nigeria	Background	Korea Republic
-36	22/06 21:30	Polokwane		Greece	Background	Argentina
-Group C
-Match	Date - Time	Venue			Results
 5	12/06 21:30	Rustenburg		England	Background	USA
 6	13/06 14:30	Polokwane		Algeria	Background	Slovenia
-22	18/06 17:00	Johannesburg - JEP		Slovenia	Background	USA
-23	18/06 21:30	Cape Town		England	Background	Algeria
-37	23/06 17:00	Nelson Mandela Bay/Port Elizabeth		Slovenia	Background	England
-38	23/06 17:00	Tshwane/Pretoria		USA	Background	Algeria
-Group D
-Match	Date - Time	Venue			Results
 7	13/06 21:30	Durban		Germany	Background	Australia
 8	13/06 17:00	Tshwane/Pretoria		Serbia	Background	Ghana
-21	18/06 14:30	Nelson Mandela Bay/Port Elizabeth		Germany	Background	Serbia
-24	19/06 17:00	Rustenburg		Ghana	Background	Australia
-39	23/06 21:30	Johannesburg - JSC		Ghana	Background	Germany
-40	23/06 21:30	Nelspruit		Australia	Background	Serbia
-Group E
-Match	Date - Time	Venue			Results
 9	14/06 14:30	Johannesburg - JSC		Netherlands	Background	Denmark
 10	14/06 17:00	Mangaung / Bloemfontein		Japan	Background	Cameroon
-25	19/06 14:30	Durban		Netherlands	Background	Japan
-26	19/06 21:30	Tshwane/Pretoria		Cameroon	Background	Denmark
-43	24/06 21:30	Rustenburg		Denmark	Background	Japan
-44	24/06 21:30	Cape Town		Cameroon	Background	Netherlands
-Group F
-Match	Date - Time	Venue			Results
 11	14/06 21:30	Cape Town		Italy	Background	Paraguay
 12	15/06 14:30	Rustenburg		New Zealand	Background	Slovakia
-27	20/06 14:30	Mangaung / Bloemfontein		Slovakia	Background	Paraguay
-28	20/06 17:00	Nelspruit		Italy	Background	New Zealand
-41	24/06 17:00	Johannesburg - JEP		Slovakia	Background	Italy
-42	24/06 17:00	Polokwane		Paraguay	Background	New Zealand
-Group G
-Match	Date - Time	Venue			Results
 13	15/06 17:00	Nelson Mandela Bay/Port Elizabeth		Côte d'Ivoire	Background	Portugal
 14	15/06 21:30	Johannesburg - JEP		Brazil	Background	Korea DPR
-29	20/06 21:30	Johannesburg - JSC		Brazil	Background	Côte d'Ivoire
-30	21/06 14:30	Cape Town		Portugal	Background	Korea DPR
-45	25/06 17:00	Durban		Portugal	Background	Brazil
-46	25/06 17:00	Nelspruit		Korea DPR	Background	Côte d'Ivoire
-Group H
-Match	Date - Time	Venue			Results
 15	16/06 14:30	Nelspruit		Honduras	Background	Chile
 16	16/06 17:00	Durban		Spain	Background	Switzerland
+17	16/06 21:30	Tshwane/Pretoria		South Africa	Background	Uruguay
+18	17/06 21:30	Polokwane		France	Background	Mexico
+19	17/06 17:00	Mangaung / Bloemfontein		Greece	Background	Nigeria
+20	17/06 14:30	Johannesburg - JSC		Argentina	Background	Korea Republic
+21	18/06 14:30	Nelson Mandela Bay/Port Elizabeth		Germany	Background	Serbia
+22	18/06 17:00	Johannesburg - JEP		Slovenia	Background	USA
+23	18/06 21:30	Cape Town		England	Background	Algeria
+24	19/06 17:00	Rustenburg		Ghana	Background	Australia
+25	19/06 14:30	Durban		Netherlands	Background	Japan
+26	19/06 21:30	Tshwane/Pretoria		Cameroon	Background	Denmark
+27	20/06 14:30	Mangaung / Bloemfontein		Slovakia	Background	Paraguay
+28	20/06 17:00	Nelspruit		Italy	Background	New Zealand
+29	20/06 21:30	Johannesburg - JSC		Brazil	Background	Côte d'Ivoire
+30	21/06 14:30	Cape Town		Portugal	Background	Korea DPR
 31	21/06 17:00	Nelson Mandela Bay/Port Elizabeth		Chile	Background	Switzerland
 32	21/06 21:30	Johannesburg - JEP		Spain	Background	Honduras
+33	22/06 17:00	Rustenburg		Mexico	Background	Uruguay
+34	22/06 17:00	Mangaung / Bloemfontein		France	Background	South Africa
+35	22/06 21:30	Durban		Nigeria	Background	Korea Republic
+36	22/06 21:30	Polokwane		Greece	Background	Argentina
+37	23/06 17:00	Nelson Mandela Bay/Port Elizabeth		Slovenia	Background	England
+38	23/06 17:00	Tshwane/Pretoria		USA	Background	Algeria
+39	23/06 21:30	Johannesburg - JSC		Ghana	Background	Germany
+40	23/06 21:30	Nelspruit		Australia	Background	Serbia
+43	24/06 21:30	Rustenburg		Denmark	Background	Japan
+44	24/06 21:30	Cape Town		Cameroon	Background	Netherlands
+41	24/06 17:00	Johannesburg - JEP		Slovakia	Background	Italy
+42	24/06 17:00	Polokwane		Paraguay	Background	New Zealand
+45	25/06 17:00	Durban		Portugal	Background	Brazil
+46	25/06 17:00	Nelspruit		Korea DPR	Background	Côte d'Ivoire
 47	25/06 21:30	Tshwane/Pretoria		Chile	Background	Spain
 48	25/06 21:30	Mangaung / Bloemfontein		Switzerland	Background	Honduras
-         */
 }
