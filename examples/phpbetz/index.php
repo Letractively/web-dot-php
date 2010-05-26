@@ -65,9 +65,10 @@ get('/chat/poll', function() {
 });
 
 get('/admin/teams', function() {
-   $view = new view('views/admin.teams.phtml');
-   echo $view;
-    
+    $db = new db();
+    $view = new view('views/admin.teams.phtml');
+    $view->teams = $db->teams->all();
+    echo $view;
 });
 
 post('/teams', function() {
@@ -93,6 +94,7 @@ get('/login/check', function() {
 get('/install', function() {
     $db = new db();
     $db->install->tables();
+    $db->install->teams();
 });
 
 dispatch();

@@ -2,44 +2,43 @@
 <?php block($css); ?>
 <link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
 <?php block(); ?>
-<div class="row">
-    <div class="column grid_8">
-        <h1>Joukkueet</h1>
-        <hr>
-        <p>Lorem...</p>
 
-        <table id="myTable" class="tablesorter">
-        <thead>
-        <tr>
-                <th>Joukkue</th>
-                <th>Lyhenne</th>
-                <th>Sijoitus</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td width="40%" class="f32"><div class="flag fi" style="padding-left: 36px; line-height: 32px;"><div id="team" style="padding-left: 4px;">Suomi</div></div></td>
-            <td>fi</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="f32"><div class="flag se" style="padding-left: 40px; line-height: 32px;">Ruotsi</div></td>
-            <td>se</td>
-            <td></td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-</div>
+<h1>Joukkueet</h1>
+<hr>
+
+<table id="teams" class="tablesorter">
+<thead>
+<tr>
+    <th colspan="2">Joukkue</th>
+    <th>Lyhenne</th>
+    <th>Sijoitus</th>
+</tr>
+</thead>
+<tbody>
+<?php foreach($teams as $team): ?>
+<tr class="f32">
+    <td  style="width: 32px; line-height: 32px; ">
+        <div class="flag <?php echo $team['abbr']; ?>">&nbsp;</div>
+    </td>
+    <td width="40%" class="editable">
+            <?php echo $team['name']; ?>
+    </td>
+    <td class="editable"><?php echo $team['abbr']; ?></td>
+    <td class="editable"><?php echo $team['ranking']; ?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery-tablesorter.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery-editinplace.js'); ?>"></script>
 <script>
 $(document).ready(function() {
-    $('#myTable').tablesorter();
-    $('#team').editInPlace({
+    $('#teams').tablesorter();
+    $('.editable').editInPlace({
         url: 'http://localhost',
-        params: 'name=davidä'
+        params: 'name=david'
     });
 });
 </script>
