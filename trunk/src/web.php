@@ -244,11 +244,47 @@ namespace {
         };
     }
     function links($value) {
-        return $value;
+		$words = explode(" ", $value);
+		$content = "";
+		foreach($words as $word) {
+			$word = trim($word);
+			switch(substr($word, 0, 7)) {
+				case "http://":
+				$word = "<a href='$word'>$word</a> ";
+				break;
+			default:
+				$word .= " ";
+			}
+			$content .= $word;
+		}
+        return trim($content);
     }
     function smileys($value) {
-        return $value;
+		$words = explode(" ", $value);
+		$content = "";
+		foreach($words as $word) {
+			$word = trim($word);
+			switch(substr($word, 0, 3)) {
+				case ":)":
+					$word = "<img src='" . url('~/img/smileys/smile.gif') . "' alt=':)' /> ";
+					break;
+				case ":D":
+					$word = "<img src='" . url('~/img/smileys/lol.gif') . "' alt=':D' /> ";
+					break;
+				case "(y)":
+					$word = "<img src='" . url('~/img/smileys/peukku.gif') . "' alt='(y)' /> ";
+					break;
+				case "(b)":
+					$word = "<img src='" . url('~/img/smileys/beer.gif') . "' alt='(b)' /> ";
+					break;
+				default:
+					$word .= " ";
+			}
+			$content .= $word;
+		}
+        return trim($content);
     }
+	
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
         $title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);

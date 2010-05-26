@@ -13,11 +13,19 @@
 
 <div class="ui-widget">
     <form id="chat-form">
-        <div class="grid_7 alpha"><input id="chat-message" name="chat-message" type="text" style="display: block; width: 100%;" /></div>
+        <div class="grid_7 alpha"><input id="chatmessage" name="chatmessage" type="text" style="display: block; width: 100%;" /></div>
         <div class="grid_2 omega"><input type="submit" value="Lähetä viesti" /></div>
     </form>
 </div>
-    
+
+<table>
+ <tr>
+  <td>:) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/smile.gif'); ?>" alt=":)" /></td>
+  <td style="padding-left: 7px;">:D =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/lol.gif'); ?>" alt=":D" /></td>
+  <td style="padding-left: 7px;">(y) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/peukku.gif'); ?>" alt="(y)" /></td>
+  <td style="padding-left: 7px;">(b) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/beer.gif'); ?>" alt="(b)" /></td>
+ </tr>
+</table>
 
 <?php block($scripts); ?>
 <script>
@@ -32,7 +40,7 @@ $(document).ready(function() {
 
     $('#chat-form').submit(function() {
         $.post('<?php echo url('~/chat'); ?>', $(this).serialize());
-        $('#chat-message').val('').focus();
+        $('#chatmessage').val('').focus();
         return false;
     });
 });
