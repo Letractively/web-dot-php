@@ -33,6 +33,11 @@ get('/', function() {
     echo $view;
 });
 
+get('/rules', function() {
+    $view = new view('views/rules.phtml');
+    echo $view;
+});
+
 get('/bets/games', function() {
     $db = new db();
     $view = new view('views/bets.games.phtml');
