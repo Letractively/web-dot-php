@@ -18,6 +18,12 @@ body {
     
  }
 
+ .block .rules {
+    font-weight: bold;
+    background-color: #3C4145;
+    color: #E5E5E5;
+ }
+ 
 #container-top {
     background: #e5e5e5;
     padding-top: 10px;
@@ -87,6 +93,10 @@ body {
 
 .block-spacer {
     height: 10px;
+}
+
+#chat img {
+    margin-bottom: -4px;
 }
 
 input#chatmessage {
