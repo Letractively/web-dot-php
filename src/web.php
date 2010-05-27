@@ -275,7 +275,7 @@ namespace {
             '%-P'          => sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye'),
             '%P'           => sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye'),
             ';-P'          => sprintf($template, url('~/img/smileys/tongue_wink.gif'), 'tongue wink'),
-            ':P'           => sprintf($template, url('~/img/smileys/raspberry.gif'), 'raspberry'),
+            ':P'           => sprintf($template, url('~/img/smileys/rasberry.gif'), 'raspberry'),
             ':blank:'      => sprintf($template, url('~/img/smileys/blank.gif'), 'blank stare'),
             ':long:'       => sprintf($template, url('~/img/smileys/blank.gif'), 'long face'),
             ':ohh:'        => sprintf($template, url('~/img/smileys/ohh.gif'), 'ohh'),
