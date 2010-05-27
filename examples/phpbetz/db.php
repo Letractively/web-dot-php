@@ -1,10 +1,11 @@
 <?php
 class db extends PDO {
-    public $chat, $teams, $install;
+    public $chat, $teams, $bets, $install;
     function __construct() {
         parent::__construct(sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__));
         $this->chat = new chat($this);
         $this->teams = new teams($this);
+        $this->bets = new bets($this);
         $this->install = new install($this);
     }
 }
@@ -28,6 +29,30 @@ class chat extends dbo {
 class teams extends dbo {
     function all() {
         return $this->db->query('SELECT * FROM teams ORDER BY name ASC')->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+class bets extends dbo {
+    function games($user) {
+        $sql =<<< 'EOT'
+    SELECT
+        g.id AS id,
+        g.time AS time,
+        g.home AS home,
+        g.road AS road,
+        b.score as score,
+        b.user
+    FROM
+        games AS g
+    LEFT OUTER JOIN
+        gamebets AS b
+    ON
+        g.id = b.game AND b.user = ?
+    ORDER BY
+        time;
+EOT;
+        $sql = $this->db->prepare($sql);
+        $sql->execute(array($user));
+        $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 class install extends dbo {
@@ -123,7 +148,6 @@ EOT;
 
         $this->db->exec($sql);
     }
-
     function teams() {
         $sql = $this->db->prepare('INSERT INTO teams (name, abbr) VALUES (?, ?)');
         $sql->execute(array('Algeria', 'ALG'));
@@ -159,56 +183,55 @@ EOT;
         $sql->execute(array('Uruguay', 'URU'));
         $sql->execute(array('USA', 'USA'));
     }
-
     function games() {
         $sql = $this->db->prepare('INSERT INTO games (home, road, time) VALUES (?, ?, ?)');
         $sql->execute(array('Etelä-Afrikka', 'Meksiko', '2010-06-11T17:00:00+0300'));
         $sql->execute(array('Uruguay', 'Ranska', '2010-06-11T21:30:00+0300'));
-		$sql->execute(array('Argentiina', 'Nigeria', '2010-06-12T17:00:00+0300'));
-		$sql->execute(array('Etelä-Korea', 'Kreikka', '2010-06-12T14:30:00+0300'));
-		$sql->execute(array('Englanti', 'USA', '2010-06-12T21:30:00+0300'));
-		$sql->execute(array('Algeria', 'Slovenia', '2010-06-13T14:30:00+0300'));
-		$sql->execute(array('Saksa', 'Australia', '2010-06-13T21:30:00+0300'));
-		$sql->execute(array('Serbia', 'Ghana', '2010-06-13T17:00:00+0300'));
-		$sql->execute(array('Hollanti', 'Tanska', '2010-06-14T14:30:00+0300'));
-		$sql->execute(array('Japani', 'Kamerun', '2010-06-14T17:00:00+0300'));
-		$sql->execute(array('Italia', 'Paraguay', '2010-06-14T21:30:00+0300'));
-		$sql->execute(array('Uusi-Seelanti', 'Slovakia', '2010-06-15T21:30:00+0300'));
-		$sql->execute(array('Norsunluurannikko', 'Portugali', '2010-06-15T17:00:00+0300'));
-		$sql->execute(array('Brasilia', 'Pohjois-Korea', '2010-06-15T21:30:00+0300'));
-		$sql->execute(array('Honduras', 'Chile', '2010-06-16T14:30:00+0300'));
-		$sql->execute(array('Espanja', 'Sveitsi', '2010-06-16T17:00:00+0300'));
-		$sql->execute(array('Etelä-Afrikka', 'Uruguay', '2010-06-16T21:30:00+0300'));
-		$sql->execute(array('Ranska', 'Meksiko', '2010-06-17T21:30:00+0300'));
-		$sql->execute(array('Kreikka', 'Nigeria', '2010-06-17T17:00:00+0300'));
-		$sql->execute(array('Argentiina', 'Etelä-Korea', '2010-06-17T14:30:00+0300'));
-		$sql->execute(array('Saksa', 'Serbia', '2010-06-18T14:30:00+0300'));
-		$sql->execute(array('Slovenia', 'USA', '2010-06-18T17:00:00+0300'));
-		$sql->execute(array('Englanti', 'Algeria', '2010-06-18T21:30:00+0300'));
-		$sql->execute(array('Ghana', 'Australia', '2010-06-19T17:00:00+0300'));
-		$sql->execute(array('Hollanti', 'Japani', '2010-06-19T14:30:00+0300'));
-		$sql->execute(array('Kamerun', 'Tanska', '2010-06-19T21:30:00+0300'));
-		$sql->execute(array('Slovakia', 'Paraguay', '2010-06-20T14:30:00+0300'));
-		$sql->execute(array('Italia', 'Uusi-Seelanti', '2010-06-20T17:00:00+0300'));
-		$sql->execute(array('Brasilia', 'Norsunluurannikko', '2010-06-20T21:30:00+0300'));
-		$sql->execute(array('Portugali', 'Pohjois-Korea', '2010-06-21T14:30:00+0300'));
-		$sql->execute(array('Chile', 'Sveitsi', '2010-06-21T17:00:00+0300'));
-		$sql->execute(array('Espanja', 'Honduras', '2010-06-21T21:30:00+0300'));
-		$sql->execute(array('Meksiko', 'Uruguay', '2010-06-22T17:00:00+0300'));
-		$sql->execute(array('Ranska', 'Etelä-Afrikka', '2010-06-22T17:00:00+0300'));
-		$sql->execute(array('Nigeria', 'Etelä-Korea', '2010-06-22T21:30:00+0300'));
-		$sql->execute(array('Kreikka', 'Argentiina', '2010-06-22T21:30:00+0300'));
-		$sql->execute(array('Slovenia', 'Englanti', '2010-06-23T17:00:00+0300'));
-		$sql->execute(array('USA', 'Algeria', '2010-06-23T17:00:00+0300'));
-		$sql->execute(array('Ghana', 'Saksa', '2010-06-23T21:30:00+0300'));
-		$sql->execute(array('Australia', 'Serbia', '2010-06-23T21:30:00+0300'));
-		$sql->execute(array('Tanska', 'Japani', '2010-06-24T21:30:00+0300'));
-		$sql->execute(array('Kamerun', 'Hollanti', '2010-06-24T21:30:00+0300'));
-		$sql->execute(array('Slovakia', 'Italia', '2010-06-24T17:00:00+0300'));
-		$sql->execute(array('Paraguay', 'Uusi-Seelanti', '2010-06-24T17:00:00+0300'));
-		$sql->execute(array('Portugali', 'Brasilia', '2010-06-25T17:00:00+0300'));
-		$sql->execute(array('Pohjois-Korea', 'Norsunluurannikko', '2010-06-25T17:00:00+0300'));
-		$sql->execute(array('Chile', 'Espanja', '2010-06-25T21:30:00+0300'));
-		$sql->execute(array('Sveitsi', 'Honduras', '2010-06-25T21:30:00+0300'));
+        $sql->execute(array('Argentiina', 'Nigeria', '2010-06-12T17:00:00+0300'));
+        $sql->execute(array('Etelä-Korea', 'Kreikka', '2010-06-12T14:30:00+0300'));
+        $sql->execute(array('Englanti', 'USA', '2010-06-12T21:30:00+0300'));
+        $sql->execute(array('Algeria', 'Slovenia', '2010-06-13T14:30:00+0300'));
+        $sql->execute(array('Saksa', 'Australia', '2010-06-13T21:30:00+0300'));
+        $sql->execute(array('Serbia', 'Ghana', '2010-06-13T17:00:00+0300'));
+        $sql->execute(array('Hollanti', 'Tanska', '2010-06-14T14:30:00+0300'));
+        $sql->execute(array('Japani', 'Kamerun', '2010-06-14T17:00:00+0300'));
+        $sql->execute(array('Italia', 'Paraguay', '2010-06-14T21:30:00+0300'));
+        $sql->execute(array('Uusi-Seelanti', 'Slovakia', '2010-06-15T21:30:00+0300'));
+        $sql->execute(array('Norsunluurannikko', 'Portugali', '2010-06-15T17:00:00+0300'));
+        $sql->execute(array('Brasilia', 'Pohjois-Korea', '2010-06-15T21:30:00+0300'));
+        $sql->execute(array('Honduras', 'Chile', '2010-06-16T14:30:00+0300'));
+        $sql->execute(array('Espanja', 'Sveitsi', '2010-06-16T17:00:00+0300'));
+        $sql->execute(array('Etelä-Afrikka', 'Uruguay', '2010-06-16T21:30:00+0300'));
+        $sql->execute(array('Ranska', 'Meksiko', '2010-06-17T21:30:00+0300'));
+        $sql->execute(array('Kreikka', 'Nigeria', '2010-06-17T17:00:00+0300'));
+        $sql->execute(array('Argentiina', 'Etelä-Korea', '2010-06-17T14:30:00+0300'));
+        $sql->execute(array('Saksa', 'Serbia', '2010-06-18T14:30:00+0300'));
+        $sql->execute(array('Slovenia', 'USA', '2010-06-18T17:00:00+0300'));
+        $sql->execute(array('Englanti', 'Algeria', '2010-06-18T21:30:00+0300'));
+        $sql->execute(array('Ghana', 'Australia', '2010-06-19T17:00:00+0300'));
+        $sql->execute(array('Hollanti', 'Japani', '2010-06-19T14:30:00+0300'));
+        $sql->execute(array('Kamerun', 'Tanska', '2010-06-19T21:30:00+0300'));
+        $sql->execute(array('Slovakia', 'Paraguay', '2010-06-20T14:30:00+0300'));
+        $sql->execute(array('Italia', 'Uusi-Seelanti', '2010-06-20T17:00:00+0300'));
+        $sql->execute(array('Brasilia', 'Norsunluurannikko', '2010-06-20T21:30:00+0300'));
+        $sql->execute(array('Portugali', 'Pohjois-Korea', '2010-06-21T14:30:00+0300'));
+        $sql->execute(array('Chile', 'Sveitsi', '2010-06-21T17:00:00+0300'));
+        $sql->execute(array('Espanja', 'Honduras', '2010-06-21T21:30:00+0300'));
+        $sql->execute(array('Meksiko', 'Uruguay', '2010-06-22T17:00:00+0300'));
+        $sql->execute(array('Ranska', 'Etelä-Afrikka', '2010-06-22T17:00:00+0300'));
+        $sql->execute(array('Nigeria', 'Etelä-Korea', '2010-06-22T21:30:00+0300'));
+        $sql->execute(array('Kreikka', 'Argentiina', '2010-06-22T21:30:00+0300'));
+        $sql->execute(array('Slovenia', 'Englanti', '2010-06-23T17:00:00+0300'));
+        $sql->execute(array('USA', 'Algeria', '2010-06-23T17:00:00+0300'));
+        $sql->execute(array('Ghana', 'Saksa', '2010-06-23T21:30:00+0300'));
+        $sql->execute(array('Australia', 'Serbia', '2010-06-23T21:30:00+0300'));
+        $sql->execute(array('Tanska', 'Japani', '2010-06-24T21:30:00+0300'));
+        $sql->execute(array('Kamerun', 'Hollanti', '2010-06-24T21:30:00+0300'));
+        $sql->execute(array('Slovakia', 'Italia', '2010-06-24T17:00:00+0300'));
+        $sql->execute(array('Paraguay', 'Uusi-Seelanti', '2010-06-24T17:00:00+0300'));
+        $sql->execute(array('Portugali', 'Brasilia', '2010-06-25T17:00:00+0300'));
+        $sql->execute(array('Pohjois-Korea', 'Norsunluurannikko', '2010-06-25T17:00:00+0300'));
+        $sql->execute(array('Chile', 'Espanja', '2010-06-25T21:30:00+0300'));
+        $sql->execute(array('Sveitsi', 'Honduras', '2010-06-25T21:30:00+0300'));
     }
 }

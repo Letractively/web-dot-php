@@ -22,7 +22,7 @@
  <tr>
   <td>:) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/smile.gif'); ?>" alt=":)" /></td>
   <td style="padding-left: 7px;">:D =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/lol.gif'); ?>" alt=":D" /></td>
-  <td style="padding-left: 7px;">(y) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/peukku.gif'); ?>" alt="(y)" /></td>
+  <td style="padding-left: 7px;">(y) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/thumb.gif'); ?>" alt="(y)" /></td>
   <td style="padding-left: 7px;">(b) =</td><td style='width: 19px; height: 19px;'><img src="<?php echo url('~/img/smileys/beer.gif'); ?>" alt="(b)" /></td>
  </tr>
 </table>
@@ -33,9 +33,8 @@ $(document).ready(function() {
 
     $.ajaxSetup({cache: false})
 
-    setTimeout(function() {
+    setInterval(function() {
         $.get('<?php echo url('~/chat/poll'); ?>', function(data) { $('#chat').html(data); });
-        setTimeout(arguments.callee, 1000);
     }, 1000);
 
     $('#chat-form').submit(function() {
