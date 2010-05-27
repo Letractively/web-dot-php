@@ -33,6 +33,34 @@ get('/', function() {
     echo $view;
 });
 
+get('/admin/news', function() {
+    $view = new view('views/admin.news.phtml');
+    echo $view;
+});
+
+get('/news', function() {
+    $db = new db();
+    $view = new view('views/news.phtml');
+    $view->news = $db->news->all();
+    echo $view;
+});
+
+post('/admin/news', function() {
+    $form = new form($_POST);
+    $form->slug($form->title)->filter('slug');
+    $form->content->filter('trim', minlength(1), 'encode', 'links', 'smileys');
+    if($form->validate()) {
+        $db = new db();
+        $db->news->add($form->title, $form->content, $form->level, 'bungle', $form->slug);
+        redirect('~/news');
+    }
+});
+
+get('/stats', function() {
+    $view = new view('views/oldstats.phtml');
+    echo $view;
+});
+
 get('/rules', function() {
     $view = new view('views/rules.phtml');
     echo $view;
@@ -52,7 +80,7 @@ post('/bets/games/#game', function($game) {
 get('/chat', function() {
     $db = new db();
     $msgs = new view('views/chat.messages.phtml');
-    $msgs->messages = $db->chat->poll(15);
+    $msgs->messages = $db->chat->poll(17);
     $view = new view('views/chat.phtml');
     $view->messages = $msgs;
     echo $view;
@@ -70,7 +98,7 @@ post('/chat', function() {
 get('/chat/poll', function() {
     $db = new db();
     $view = new view('views/chat.messages.phtml');
-    $view->messages = $db->chat->poll(15);
+    $view->messages = $db->chat->poll(17);
     echo $view;
 });
 
