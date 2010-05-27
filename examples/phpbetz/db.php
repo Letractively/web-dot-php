@@ -1,12 +1,13 @@
 <?php
 class db extends PDO {
-    public $chat, $teams, $bets, $install;
+    public $chat, $teams, $bets, $install, $news;
     function __construct() {
         parent::__construct(sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__));
         $this->chat = new chat($this);
         $this->teams = new teams($this);
         $this->bets = new bets($this);
         $this->install = new install($this);
+        $this->news = new news($this);
     }
 }
 abstract class dbo {
@@ -26,6 +27,18 @@ class chat extends dbo {
         return array_reverse($sql->fetchAll(PDO::FETCH_ASSOC));
     }
 }
+
+class news extends dbo {
+    function all() {
+        return $this->db->query('SELECT * FROM news ORDER BY time DESC')->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    function add($title, $content, $level, $user, $slug) {
+        $sql = $this->db->prepare('INSERT INTO news (time, title, content, level, user, slug) VALUES (?, ?, ?, ?, ?, ?)');
+        return $sql->execute(array(date_format(date_create(), DATE_ISO8601), $title, $content, $level, $user, $slug));
+    }
+}
+
 class teams extends dbo {
     function all() {
         return $this->db->query('SELECT * FROM teams ORDER BY name ASC')->fetchAll(PDO::FETCH_ASSOC);
@@ -135,6 +148,19 @@ class install extends dbo {
                 CONSTRAINT fk_scorers       FOREIGN KEY (scorer) REFERENCES scorers (name)
             );
 
+            DROP TABLE IF EXISTS news;
+            CREATE TABLE news (
+                id              INTEGER     NOT NULL,
+                time            TEXT        NOT NULL,
+                user            TEXT        NOT NULL,
+                title           TEXT        NOT NULL,
+                content         TEXT        NOT NULL,
+                level           INTEGER     NOT NULL,
+                slug            TEXT        NOT NULL,
+                CONSTRAINT pk_news          PRIMARY KEY (id),
+                CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
+            );
+            
             DROP TABLE IF EXISTS chat;
             CREATE TABLE chat (
                 id              INTEGER     NOT NULL,
