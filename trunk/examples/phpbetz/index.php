@@ -35,8 +35,10 @@ get('/', function() {
 });
 
 get('/bets/games', function() {
-   $view = new view('views/bets.games.phtml');
-   echo $view;
+    $db = new db();
+    $view = new view('views/bets.games.phtml');
+    $view->games = $db->bets->games('bungle');
+    echo $view;
 });
 
 post('/bets/games/#game', function($game) {
@@ -53,12 +55,12 @@ get('/chat', function() {
 });
 
 post('/chat', function() {
-    $db = new db();
-	$form = new form($_POST);
-	$form->chatmessage->filter('links', 'smileys');
-	if($form->validate()) {
-		$db->chat->post('bungle', $form->chatmessage);
-	}
+    $form = new form($_POST);
+    $form->chatmessage->filter('trim', minlength(1), 'encode', 'links', 'smileys');
+    if($form->validate()) {
+        $db = new db();
+        $db->chat->post('bungle', $form->chatmessage);
+    }
 });
 
 get('/chat/poll', function() {
@@ -99,6 +101,7 @@ get('/install', function() {
     $db = new db();
     $db->install->tables();
     $db->install->teams();
+    $db->install->games();
 });
 
 dispatch();
