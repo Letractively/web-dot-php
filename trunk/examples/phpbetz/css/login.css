@@ -1,0 +1,88 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #F0F0F0 url(../img/grass.jpg);
+    text-align: center;
+}
+#wrapper {
+    position: relative;
+    height: 100%;
+    width: 500px; /* container width to be same as that of the target element*/
+    margin: 0 auto; /* horizontal aligned center*/
+}
+#content {
+    position: absolute;
+    top: 50%;
+    width: 500px; /* width of target element */
+    height: 256px; /* height of target element */
+    margin-top: -150px; /* Important: HALF the height of target element */
+}
+#login {
+    height: 256px;
+    text-align: left;
+}
+#login h1 {
+    padding: 6px;
+    margin: 0;
+    background-color: #e5e5e5;
+    font-size: 1.6em;
+    text-align: center;
+}
+#login h3 {
+    padding: 6px;
+    margin: 0;
+    font-size: 0.85em;
+    background-color: #e5e5e5;
+    text-align: center;
+}
+#login div {
+    padding: 6px;
+    background: white;
+}
+#login-wrapper {
+    width: 280px;
+    float: left;
+    border-right: 1px solid #e5e5e5;
+}
+#login-form label.normal {
+    font-family:Georgia, serif;
+    font-size: 130%;
+    padding-left: 2px;
+}
+#login-form input[type=submit] {
+    width: 140px;
+}
+#login-form input[type=text] {
+    font-size: 1.25em;
+    height: 23px;
+    line-height: 23px;
+    margin-top: 2px;
+    width: 270px;
+}
+#login-form input[type=password]{
+    font-size: 1.25em;
+    height: 23px;
+    line-height: 23px;
+    margin-top: 2px;
+    width: 223px;
+}
+#login-form.registration input[type=password]{
+    width: 270px;
+}
+#login-form a {
+    padding-left: 2em;
+    color: #154fbd;
+    text-decoration: underline;
+}
+#login-form-google input[type=image] {
+    padding: 43px 0;
+}
+#login div .clear {
+    padding: 0;
+}
+.clear {
+    clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
+}

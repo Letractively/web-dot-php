@@ -1,0 +1,33 @@
+<?php $layout = 'views/layout.login.phtml'; ?>
+
+<?php block($css); ?>
+<?php block(); ?>
+
+<h1 class="ui-corner-top">Kirjaudu sisään World Cup 2010 -hupilyöntiin</h1>
+<div>
+    <div id="login-wrapper"  style="float: left;">
+        <form id="login-form">
+            <label for="username" class="normal">Käyttäjätunnus:</label><br>
+            <input id="username" name="username"  type="text" value=""><br>
+            <label for="password" class="normal">Salasana:</label><br>
+            <input id="password" name="password" type="password" value="">
+            <input id="remember" name="remember" type="checkbox"><label for="remember">m</label><br>
+            <br>
+            <input type="submit" value="Kirjaudu sisään"> <a href="<?php echo url('~/registration') ?>">Rekisteröidy</a>
+        </form>
+    </div>
+    <div id="login-google-wrapper" style="float: right;">
+        <form id="login-form-google">
+            <input type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
+        </form>
+    </div>
+    <div class="clear"></div>
+</div>
+<h3 class="ui-corner-bottom">"m" = muista minut | Voit kirjautua Google-tunnuksellasi klikkaamalla logoa.</h3>
+<?php block($scripts); ?>
+<script>
+$(document).ready(function() {
+    $("#remember").button();
+});
+</script>
+<?php block(); ?>

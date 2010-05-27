@@ -29,9 +29,15 @@ require 'db.php';
 require 'proposals/web.openid.php';
 
 get('/', function() {
-    $view = new view('views/index.phtml');
+    $view = new view('views/login.phtml');
     echo $view;
 });
+
+get('/registration', function() {
+    $view = new view('views/registration.phtml');
+    echo $view;
+});
+
 
 get('/admin/news', function() {
     $view = new view('views/admin.news.phtml');
@@ -89,7 +95,7 @@ get('/chat', function() {
 post('/chat', function() {
     $form = new form($_POST);
     $form->chatmessage->filter('trim', minlength(1), 'encode', 'links', 'smileys');
-    if($form->validate()) {
+    if ($form->validate()) {
         $db = new db();
         $db->chat->post('bungle', $form->chatmessage);
     }

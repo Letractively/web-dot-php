@@ -3,11 +3,9 @@ html, body {
     padding:0;
     height:100%;
 }
-
 body {
     background: #e5e5e5;
 }
-
 #container {
     position: relative;
     background: #f0f0f0;
@@ -16,8 +14,7 @@ body {
     height: 100%;
     min-height: 100%;
     
- }
-
+}
  .block .rules {
     font-weight: bold;
     background-color: #3C4145;
@@ -28,31 +25,25 @@ body {
     background: #e5e5e5;
     padding-top: 10px;
 }
-
 #header {
     background: url(../img/header-bg.jpg) #200d06;
     padding: 10px 10px;
     height: 105px;
     color: white;
 }
-
 #header #logo {
     float: left;
 }
-
 #header #logo-text {
     float: left;
     margin: 23px 23px 23px 10px;
 }
-
 #navigation {
     background: #4A5155;
 }
-
 #main {
     margin: 10px 0;
 }
-
 #footer {
     position: absolute;
     width: 100%;
@@ -63,7 +54,6 @@ body {
     bottom: 0px;
     background: url(../img/main-bg.png) top repeat-x #e5e5e5;
 }
-
 #footer a {
     color: #808385;
 }
@@ -75,26 +65,19 @@ body {
 #footer .time {
     color: #808385;
 }
-
-.block {
-}
-
 .block h3 {
     padding: 6px;
     margin: 0;
     background-color: #ccc;
     font-size: 1.2em;
 }
-
 .block div {
     padding: 6px;
     background: #e5e5e5;
 }
-
 .block-spacer {
     height: 10px;
 }
-
 #chat img {
     margin-bottom: -4px;
 }
@@ -105,7 +88,6 @@ input#chatmessage {
     font-size: 1.25em;
     height: 23px;
 }
-
 .bottom-spacer {
     height: 51px;
 }
