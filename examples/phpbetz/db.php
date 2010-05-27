@@ -27,7 +27,6 @@ class chat extends dbo {
         return array_reverse($sql->fetchAll(PDO::FETCH_ASSOC));
     }
 }
-
 class news extends dbo {
     function all() {
         return $this->db->query('SELECT * FROM news ORDER BY time DESC')->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +37,6 @@ class news extends dbo {
         return $sql->execute(array(date_format(date_create(), DATE_ISO8601), $title, $content, $level, $user, $slug));
     }
 }
-
 class teams extends dbo {
     function all() {
         return $this->db->query('SELECT * FROM teams ORDER BY name ASC')->fetchAll(PDO::FETCH_ASSOC);
@@ -171,7 +169,6 @@ class install extends dbo {
                 CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
             );
 EOT;
-
         $this->db->exec($sql);
     }
     function teams() {
