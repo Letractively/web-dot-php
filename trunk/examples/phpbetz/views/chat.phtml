@@ -1,10 +1,13 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
+<link rel="stylesheet" href="<?php echo url('~/css/scroll.css'); ?>">
 <?php block(); ?>
 <h1>Chatti</h1>
 <hr>
-<div id="chat" style="height: 361px; overflow: auto;">
-    <?php echo $messages; ?>
+<div id="chat-wrapper">
+    <div id="chat" style="height: 356px; overflow: auto;">
+        <?php echo $messages; ?>
+    </div>
 </div>
 <br>
 <div class="ui-widget">
@@ -15,17 +18,20 @@
 </div>
 <div style='clear: both;'></div>
 <div>
-<?php
-        $template = '<img src="%s" class="smiley" alt="%s" title="%s" style="margin-bottom: -4px;margin-right: 1px;" width="19px" height="19px" />';
+
+<?php block($right); ?>
+<div class="block-spacer"></div>
+<div class="block">
+    <h3 class="ui-corner-top">Hymiöt</h3>
+    <div class="ui-corner-bottom">
+    <?php
+        $template = '<span style="padding: 5px;"><img src="%s" class="smiley" alt="%s" title="%s" width="19px" height="19px"></span>';
         $smileys = array(
             sprintf($template, url('~/img/smileys/grin.gif'), 'grin',':-)'),
-            sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':D'),
             sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':-D'),
-            sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':lol:'),
             sprintf($template, url('~/img/smileys/cheese.gif'), 'cheese',':cheese:'),
             sprintf($template, url('~/img/smileys/smile.gif'), 'smile',':)'),
             sprintf($template, url('~/img/smileys/wink.gif'), 'wink',';-)'),
-            sprintf($template, url('~/img/smileys/wink.gif'), 'wink',';)'),
             sprintf($template, url('~/img/smileys/smirk.gif'), 'smirk',':smirk:'),
             sprintf($template, url('~/img/smileys/rolleyes.gif'), 'rolleyes',':roll:'),
             sprintf($template, url('~/img/smileys/confused.gif'), 'confused',':-S'),
@@ -33,11 +39,9 @@
             sprintf($template, url('~/img/smileys/bigsurprise.gif'), 'big surprise',':bug:'),
             sprintf($template, url('~/img/smileys/tongue_laugh.gif'), 'tongue laugh',':-P'),
             sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye','%-P'),
-            sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye','%P'),
             sprintf($template, url('~/img/smileys/tongue_wink.gif'), 'tongue wink',';-P'),
             sprintf($template, url('~/img/smileys/rasberry.gif'), 'raspberry',':P'),
             sprintf($template, url('~/img/smileys/blank.gif'), 'blank stare',':blank:'),
-            sprintf($template, url('~/img/smileys/blank.gif'), 'long face',':long:'),
             sprintf($template, url('~/img/smileys/ohh.gif'), 'ohh',':ohh:'),
             sprintf($template, url('~/img/smileys/grrr.gif'), 'grrr',':grrr:'),
             sprintf($template, url('~/img/smileys/gulp.gif'), 'gulp',':gulp:'),
@@ -48,12 +52,9 @@
             sprintf($template, url('~/img/smileys/shuteye.gif'), 'shut eye',':shut:'),
             sprintf($template, url('~/img/smileys/hmm.gif'), 'hmmm',':-/'),
             sprintf($template, url('~/img/smileys/mad.gif'), 'mad','>:('),
-            sprintf($template, url('~/img/smileys/mad.gif'), 'mad',':mad:'),
             sprintf($template, url('~/img/smileys/angry.gif'), 'angry','>:-('),
-            sprintf($template, url('~/img/smileys/angry.gif'), 'angry',':angry:'),
             sprintf($template, url('~/img/smileys/zip.gif'), 'zipper',':zip:'),
             sprintf($template, url('~/img/smileys/kiss.gif'), 'kiss',':kiss:'),
-            sprintf($template, url('~/img/smileys/shock.gif'), 'shock',':ahhh:'),
             sprintf($template, url('~/img/smileys/shock.gif'), 'shock',':shock:'),
             sprintf($template, url('~/img/smileys/shade_smile.gif'), 'cool smile',':coolsmile:'),
             sprintf($template, url('~/img/smileys/shade_smirk.gif'), 'cool smirk',':coolsmirk:'),
@@ -66,43 +67,50 @@
             sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim',':exclaim:'),
             sprintf($template, url('~/img/smileys/question.gif'), 'question',':question:'),
             sprintf($template, url('~/img/smileys/thumb.gif'), 'question','(y)'),
-            sprintf($template, url('~/img/smileys/beer.gif'), 'beer','(b)')
-            );
+            sprintf($template, url('~/img/smileys/beer.gif'), 'beer','(b)'),
+            sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball','(so)'),
+        );
 
- echo "<br />";
- foreach($smileys as $smiley) {
-    echo $smiley;
- }
- ?>
+        foreach($smileys as $smiley) echo $smiley;
+?>
+    </div>
+</div>
+<?php block(); ?>
 </div>
 <?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery.mousewheel.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.scroll.js'); ?>"></script>
 <script>
 $(document).ready(function() {
 
     $.ajaxSetup({cache: false})
-    
-    $("#chat").animate( { scrollTop: $("#chat").attr("scrollHeight") }, 'normal');
 
-    function loadChat() {
-        var oldScrollHeight = $("#chat").attr("scrollHeight") - 20;                    
-        $.get('<?php echo url('~/chat/poll'); ?>',
-              function(data) {
-                $('#chat').html(data);
-                var scrollHeight = $("#chat").attr("scrollHeight") - 20;
-                if (scrollHeight > oldScrollHeight) {
-                    $("#chat").animate({ scrollTop: scrollHeight }, 'normal');
-                }
-        });
-    }
-    
-    setInterval(loadChat, 1000);
+    chat = $('#chat');
+    chat.jScrollPane();
+    chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
 
-    $('#chat-form').submit(function() {
-        $.post('<?php echo url('~/chat'); ?>', $(this).serialize());
-        $('#chatmessage').val('').focus();
+    setInterval(
+        function() {
+            chat.load('<?php echo url('~/chat/poll'); ?>', function() {
+                chat.jScrollPane();
+            });
+        },
+        1250
+    );
+
+    $('#chat-form').submit(
+        function() {
+            $.post('<?php echo url('~/chat'); ?>', $(this).serialize());
+            $('#chatmessage').val('').focus();
+            return false;
+        }
+    );
+
+    $('.smiley').click(function() {
+        $('#chatmessage').val($('#chatmessage').val() + ' ' + $(this).attr('title') + ' ').focus();
         return false;
     });
- /*   
+
     $('.smiley').qtip({
         show: 'mouseover',
         hide: 'mouseout',
@@ -113,7 +121,6 @@ $(document).ready(function() {
             }
         }
     });
-    */
 });
 </script>
 <?php block(); ?>

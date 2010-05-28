@@ -306,7 +306,10 @@ namespace {
             ':exclaim:'    => sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim'),
             ':question:'   => sprintf($template, url('~/img/smileys/question.gif'), 'question'),
             '(y)'          => sprintf($template, url('~/img/smileys/thumb.gif'), 'question'),
-            '(b)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer')
+            '(Y)'          => sprintf($template, url('~/img/smileys/thumb.gif'), 'question'),
+            '(b)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
+            '(B)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
+            '(so)'          => sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball')
         );
         return str_replace(array_keys($smileys), array_values($smileys), $value);
     }
