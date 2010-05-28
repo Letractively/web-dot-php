@@ -11,14 +11,14 @@
             <input id="username" name="username"  type="text" value=""><br>
             <label for="password" class="normal">Salasana:</label><br>
             <input id="password" name="password" type="password" value="">
-            <input id="remember" name="remember" type="checkbox"><label for="remember">m</label><br>
+            <input id="remember" name="remember" type="checkbox"><label for="remember" class="tip" title="Muista minut">m</label><br>
             <br>
             <input type="submit" value="Kirjaudu sisään"> <a href="<?php echo url('~/registration') ?>">Rekisteröidy</a>
         </form>
     </div>
     <div id="login-google-wrapper" style="float: right;">
         <form id="login-form-google">
-            <input type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
+            <input class="tip-google" title="Kirjaudu sisään Google-tunnuksellasi" type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
         </form>
     </div>
     <div class="clear"></div>
@@ -27,7 +27,27 @@
 <?php block($scripts); ?>
 <script>
 $(document).ready(function() {
-    $("#remember").button();
+    $('#remember').button();
+    $('.tip').qtip({
+        show: 'mouseover',
+        hide: 'mouseout',
+        position: {
+            corner: {
+                target: 'topRight',
+                tooltip: 'bottomLeft'
+            }
+        }
+    });
+    $('.tip-google').qtip({
+        show: 'mouseover',
+        hide: 'mouseout',
+        position: {
+            corner: {
+                target: 'topCenter',
+                tooltip: 'bottomCenter'
+            }
+        }
+    });
 });
 </script>
 <?php block(); ?>

@@ -3,7 +3,7 @@
 <?php block($css); ?>
 <?php block(); ?>
 
-<h1 class="ui-corner-top">Kirjaudu sisään World Cup 2010 -hupilyöntiin</h1>
+<h1 class="ui-corner-top">Rekisteröidy World Cup 2010 -hupilyöntiin</h1>
 <div>
     <div id="login-wrapper"  style="float: left;">
         <form id="login-form" class="registration">
@@ -21,11 +21,25 @@
     </div>
     <div id="login-google-wrapper" style="float: right;">
         <form id="login-form-google">
-            <input type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
+            <input class="tip-google" title="Rekisteröidy Google-tunnuksellasi" type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
         </form>
     </div>
     <div class="clear"></div>
 </div>
 <h3 class="ui-corner-bottom">Voit rekisteröityä Google-tunnuksellasi klikkaamalla Googlen logoa.</h3>
 <?php block($scripts); ?>
+<script>
+$(document).ready(function() {
+    $('.tip-google').qtip({
+        show: 'mouseover',
+        hide: 'mouseout',
+        position: {
+            corner: {
+                target: 'topCenter',
+                tooltip: 'bottomCenter'
+            }
+        }
+    });
+});
+</script>
 <?php block(); ?>
