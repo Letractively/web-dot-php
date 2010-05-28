@@ -90,3 +90,13 @@ input#chatmessage {
 .bottom-spacer {
     height: 51px;
 }
+#chat-wrapper {
+    border: 1px solid #e5e5e5;
+    padding: 5px;
+}
+#chat {
+    overflow:  hidden !important;
+}
+img.smiley {
+    cursor: pointer;
+}
