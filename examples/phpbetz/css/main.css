@@ -15,12 +15,11 @@ body {
     min-height: 100%;
     
 }
- .block .rules {
+.block .rules {
     font-weight: bold;
     background-color: #3C4145;
     color: #E5E5E5;
- }
- 
+}
 #container-top {
     background: #e5e5e5;
     padding-top: 10px;

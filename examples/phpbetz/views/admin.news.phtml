@@ -1,8 +1,6 @@
-﻿<?php $layout = 'views/layout.default.phtml'; ?>
-
+﻿<?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
 <?php block(); ?>
-
 <h1>Lisää uutinen</h1>
 <hr />
 <?php
@@ -11,11 +9,11 @@ if(isset($success)) {
 }
 ?>
 <form action="<?php echo url('~/admin/news'); ?>" method="post">
- <h3>Otsikko</h3>
- <input name="title" type="text" style="width: 70%" />
- <h3>Sisältö</h3>
- <textarea name="content" rows="20" cols="59"></textarea><br />
- <input type="checkbox" value="1" name="level" /> Tärkeä
- <br /><br />
- <input type="submit" value="Tallenna" />
+    <h3>Otsikko</h3>
+    <input name="title" type="text" style="width: 70%" />
+    <h3>Sisältö</h3>
+    <textarea name="content" rows="20" cols="59"></textarea><br />
+    <input type="checkbox" value="1" name="level" /> Tärkeä
+    <br /><br />
+    <input type="submit" value="Tallenna" />
 </form>

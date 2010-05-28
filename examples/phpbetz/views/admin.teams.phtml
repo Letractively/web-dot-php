@@ -1,11 +1,9 @@
-<?php $layout = 'views/layout.default.phtml'; ?>
+<?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
 <link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
 <?php block(); ?>
-
 <h1>Joukkueet</h1>
 <hr>
-
 <table id="teams" class="tablesorter">
 <thead>
 <tr>
@@ -29,10 +27,9 @@
 <?php endforeach; ?>
 </tbody>
 </table>
-
 <?php block($scripts); ?>
-<script src="<?php echo url('~/js/jquery-tablesorter.js'); ?>"></script>
-<script src="<?php echo url('~/js/jquery-editinplace.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.editinplace.js'); ?>"></script>
 <script>
 $(document).ready(function() {
     $('#teams').tablesorter();
