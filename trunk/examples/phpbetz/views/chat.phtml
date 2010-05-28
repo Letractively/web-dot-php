@@ -1,16 +1,12 @@
-<?php $layout = 'views/layout.default.phtml'; ?>
-
+<?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
 <?php block(); ?>
-
 <h1>Chatti</h1>
 <hr>
-
 <div id="chat" style="height: 361px; overflow: auto;">
     <?php echo $messages; ?>
 </div>
 <br>
-
 <div class="ui-widget">
     <form id="chat-form">
         <div class="grid_7 alpha"><input id="chatmessage" name="chatmessage" type="text" style="display: block; width: 100%;" /></div>
@@ -78,11 +74,8 @@
     echo $smiley;
  }
  ?>
-
 </div>
-
 <?php block($scripts); ?>
-
 <script>
 $(document).ready(function() {
 

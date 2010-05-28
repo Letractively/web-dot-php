@@ -1,16 +1,12 @@
-<?php $layout = 'views/layout.default.phtml'; ?>
-
+<?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
 <link rel="stylesheet" href="<?php echo url('~/css/countdown.css'); ?>">
 <?php block(); ?>
-
 <h1>Otteluveikkaus</h1>
 <hr>
-
 <div class="grid_2 alpha"><strong>Ottelu pelataan</strong></div>
 <div class="grid_2" style="text-align: center;"><strong>H-hetki</strong></div>
 <div class="grid_5 omega" style="text-align: center;"><strong>Veikkaus</strong></div>
-
 <div class="grid_2 alpha" style="height: 31px; line-height: 31px;">Ti 20.04, klo 22:29</div>
 <div class="grid_2" style="height: 31px; text-align: center;"><span style="font-weight: bold;" id="defaultCountdown">2d 23h 46min</span></div>
 <div class="grid_5 omega" style="text-align: center;">
@@ -20,10 +16,9 @@
         <input type="radio" id="radio3" name="score" value="2" class="flag se"><label for="radio3">Ruotsi</label>
     </form>
 </div>
-
 <?php block($scripts); ?>
-<script src="<?php echo url('~/js/jquery-countdown.js'); ?>"></script>
-<script src="<?php echo url('~/js/jquery-countdown-fi.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.countdown.fi.js'); ?>"></script>
 <script>
 $(document).ready(function() {
     $('#tabs').tabs();

@@ -2,7 +2,7 @@
 class db extends PDO {
     public $chat, $teams, $bets, $install, $news;
     function __construct() {
-        parent::__construct(sprintf('sqlite:%s/db/phpbetz.sq3', __DIR__));
+        parent::__construct('sqlite:' . realpath(__DIR__ . '/../data/phpbetz.sq3'));
         $this->chat = new chat($this);
         $this->teams = new teams($this);
         $this->bets = new bets($this);
