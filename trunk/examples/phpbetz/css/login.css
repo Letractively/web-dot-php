@@ -73,7 +73,7 @@ body {
     width: 270px;
 }
 #login-form a {
-    padding-left: 2em;
+    padding: 7px 30px;
     color: #154fbd;
     text-decoration: underline;
 }
