@@ -107,7 +107,7 @@ $(document).ready(function() {
     );
 
     $('.smiley').click(function() {
-        $('#chatmessage').val($('#chatmessage').val() + ' ' + $(this).attr('title') + ' ').focus();
+        $('#chatmessage').val($.trim($('#chatmessage').val() + ' ' + $(this).attr('title')) + ' ').focus();
         return false;
     });
 
