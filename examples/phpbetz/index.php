@@ -32,7 +32,7 @@ get('/news', function() {
 post('/admin/news', function() {
     $form = new form($_POST);
     $form->slug($form->title)->filter('slug');
-    $form->content->filter('trim', minlength(1), 'encode', 'links', 'smileys');
+    $form->content->filter('trim', minlength(1), 'links', 'smileys');
     if($form->validate()) {
         $db = new db();
         $db->news->add($form->title, $form->content, $form->level, 'bungle', $form->slug);
