@@ -2,11 +2,9 @@
 $starttime = microtime(true);
 error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Helsinki');
-set_include_path('..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . PATH_SEPARATOR . get_include_path());
 
-require 'web.php';
+require 'lib/web.php';
 require 'lib/db.php';
-require 'proposals/web.openid.php';
 
 get('/', function() {
     $view = new view('views/login.phtml');
