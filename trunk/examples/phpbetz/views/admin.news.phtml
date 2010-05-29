@@ -12,8 +12,20 @@ if(isset($success)) {
     <h3>Otsikko</h3>
     <input name="title" type="text" style="width: 70%" />
     <h3>Sisältö</h3>
-    <textarea name="content" rows="20" cols="59"></textarea><br />
+    <textarea id="newseditor" name="content" rows="20" cols="59"></textarea><br />
     <input type="checkbox" value="1" name="level" /> Tärkeä
     <br /><br />
     <input type="submit" value="Tallenna" />
 </form>
+
+
+
+<script src="<?php echo url('~/js/nicEdit.js'); ?>"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+bkLib.onDomLoaded(function() { 
+    new nicEditor({iconsPath : '<?php echo url("~/img/nicEditorIcons.gif'");?>}, {fullPanel : true}).panelInstance('newseditor');
+});
+//]]>
+</script>
