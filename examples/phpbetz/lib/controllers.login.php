@@ -71,8 +71,11 @@ get('/registration/google/confirm', function() {
         $form->username = $_SESSION['google-fname'];
         $form->email = $_SESSION['google-email'];
         unset($_SESSION['google-fname']);
+        $db = new db;
         $view = new view('views/registration.google.phtml');
         $view->form = $form;
+        if ($db->users->email_taken($form->email)) $view->email_taken = true;
+        $db = null;
         echo $view;
     } else {
         redirect('~/');
@@ -90,15 +93,18 @@ post('/registration/google/confirm', function() {
     $view = new view('views/registration.google.phtml');
     $view->form = $form;
     if ($form->validate()) {
+        $db = new db;
         try {
-            $db = new db;
             $db->users->claim($form->username, $claim, $form->email);
             unset($_SESSION['google-claim'], $_SESSION['google-email']);
+            $db = null;
             redirect('~/news');
         } catch (PDOException $e) {
             if ($e->getCode() != 23000) throw $e;
-            $view->username_taken = true;
+            if ($db->users->username_taken($form->username)) $view->username_taken = true;
+            if ($db->users->email_taken($form->email)) $view->email_taken = true;
         }
+        $db = null;
     }
     echo $view;
 });

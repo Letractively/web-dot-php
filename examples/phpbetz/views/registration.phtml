@@ -3,16 +3,16 @@
 <?php block(); ?>
 <h1 class="ui-corner-top">Rekisteröidy World Cup 2010 -hupilyöntiin</h1>
 <div>
+    <?php if (isset($google_not_registered)): ?>
+    <div class="notice">
+        Et ole vielä rekisteröinyt Google-tunnustasi.
+        Klikkaa oikealla puolella olevaa Googlen logoa rekisteröityäksesi.
+        Voit rekisteröityä myös ilman Googlen tarjoamaa kirjautumispalvelua
+        täyttämällä alla olevan lomakkeen.
+    </div>
+    <?php endif; ?>
     <div id="login-wrapper"  style="float: left;">
         <form id="login-form" class="registration" action="<?php echo url('~/registration'); ?>" method="post">
-            <?php if (isset($google_not_registered)): ?>
-            <div class="notice">
-                Et ole vielä rekisteröinyt Google-tunnustasi.
-                Klikkaa oikealla puolella olevaa Googlen logoa rekisteröityäksesi.
-                Voit rekisteröityä myös ilman Googlen tarjoamaa kirjautumispalvelua
-                täyttämällä alla olevan lomakkeen.
-            </div>
-            <?php endif; ?>
             <label for="username" class="normal">Käyttäjätunnus:</label><br>
             <?php if (isset($username_taken)): ?>
             <div class="notice">
@@ -34,9 +34,9 @@
             </div>
             <?php endif; ?>
             <input id="password1" name="password1" maxlength="20" type="password" value="">
-            <label for="password1" class="normal example">Salasanan vähimmäispituus on 6 merkkiä</label><br>
             <label for="password2" class="normal">Salasana (uudestaan):</label><br>
             <input id="password2" name="password2" type="password" value="">
+            <label for="password1" class="normal example">Salasanan vähimmäispituus on 6 merkkiä</label><br>
             <label for="email" class="normal">Sähköpostiosoite:</label><br>
             <?php if (isset($email_taken)): ?>
             <div class="notice">
@@ -49,7 +49,7 @@
             </div>
             <?php endif; ?>
             <input id="email" name="email" maxlength="50" type="text" value="<?php echo $form->email; ?>"><br>
-            <label for="username" class="normal example">esim. john.doe@worldcup.com</label><br>
+            <label for="email" class="normal example">esim. john.doe@worldcup.com</label><br>
             <br>
             <input type="submit" value="Rekisteröidy"> <a href="<?php echo url('~/') ?>">Takaisin</a>
         </form>
