@@ -9,9 +9,13 @@ post('/', function() {
     $form = new form($_POST);
     $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', 'encode');
     $form->password->filter(length(6, 20), 'password');
+    $db = new db;
     if ($form->validate() && $db->users->login($form->username, $form->password)) {
+        login($form->username);
+        $db = null;
         redirect('~/news');
     }
+    $db = null;
     $view = new view('views/login.phtml');
     $view->invalid = true;
     echo $view;
