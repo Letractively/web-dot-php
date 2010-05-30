@@ -1,6 +1,4 @@
 <?php
-
-
 get('/admin/news', function() {
     $view = new view('views/admin.news.phtml');
     echo $view;
@@ -13,8 +11,8 @@ post('/admin/news', function() {
     if($form->validate()) {
         $db = new db;
         $db->news->add($form->title, $form->content, $form->level, 'bungle', $form->slug);
+        $db->close();
         redirect('~/news');
-        $db = null;
     }
 });
 
@@ -22,6 +20,6 @@ get('/admin/teams', function() {
     $db = new db;
     $view = new view('views/admin.teams.phtml');
     $view->teams = $db->teams->all();
+    $db->close();
     echo $view;
-    $db = null;
 });

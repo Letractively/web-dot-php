@@ -14,12 +14,17 @@ class bets extends dbo {
     LEFT OUTER JOIN
         gamebets AS b
     ON
-        g.id = b.game AND b.user = ?
+        g.id = b.game AND b.user = :user
     ORDER BY
         time;
 EOT;
-        $sql = $this->db->prepare($sql);
-        $sql->execute(array($user));
-        $sql->fetchAll(PDO::FETCH_ASSOC);
+        $stm = $this->db->prepare($sql);
+        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $res = $stm->execute();
+        $games = array();
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $games[] = $row;
+        $res->finalize();
+        $stm->close();
+        return $games;
     }
 }

@@ -6,10 +6,10 @@ require 'db.users.php';
 require 'db.teams.php';
 require 'db.install.php';
 
-class db extends PDO {
+class db extends SQLite3 {
     public $news, $bets, $chat, $users, $teams, $install;
     function __construct() {
-        parent::__construct('sqlite:' . realpath(__DIR__ . '/../data/phpbetz.sq3'), null, null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        parent::__construct(realpath(__DIR__ . '/../data/phpbetz.sq3'));
         $this->news = new news($this);
         $this->bets = new bets($this);
         $this->chat = new chat($this);
