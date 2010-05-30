@@ -1,6 +1,6 @@
 <?php
 get('/bets/games', function() {
-    $db = new db();
+    $db = new db;
     $view = new view('views/bets.games.phtml');
     $view->games = $db->bets->games('bungle');
     echo $view;

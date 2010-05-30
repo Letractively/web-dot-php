@@ -41,7 +41,6 @@ class install extends dbo {
                 email           TEXT,
                 active          INTEGER     NOT NULL,
                 admin           INTEGER     NOT NULL,
-                type            TEXT,
                 visited_time    TEXT,
                 visited_page    TEXT,
                 CONSTRAINT pk_users         PRIMARY KEY (username)

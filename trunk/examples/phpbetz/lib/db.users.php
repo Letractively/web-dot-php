@@ -1,10 +1,16 @@
 <?php
 class users extends dbo {
     function login($username, $password) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS login FROM users WHERE username = ? AND password = ?');
-        $sql->execute(array($username, $password));
+        $sql = $this->db->prepare('SELECT COUNT(*) AS login FROM users WHERE username = ? AND password = ? AND active = ?');
+        $sql->execute(array($username, $password, 1));
         $row = $sql->fetch(PDO::FETCH_ASSOC);
         return $row && (int)$row['login'] === 1;   
+    }
+    function authenticate($username) {
+        $sql = $this->db->prepare('SELECT * FROM users WHERE username = ? AND active = ?');
+        $sql->execute(array($username, 1));
+        $row = $sql->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
     function register($username, $password, $email) {
         $sql = $this->db->prepare('INSERT INTO users (username, password, email, active, admin) VALUES (?, ?, ?, ?, ?)');
@@ -15,8 +21,8 @@ class users extends dbo {
         return $sql->execute(array($username, $claim, $email, 1, 0));
     }
     function claimed($claim) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS claimed FROM users WHERE claim = ?');
-        $sql->execute(array($claim));
+        $sql = $this->db->prepare('SELECT COUNT(*) AS claimed FROM users WHERE claim = ? AND active = ?');
+        $sql->execute(array($claim, 1));
         $row = $sql->fetch(PDO::FETCH_ASSOC);
         return $row && (int)$row['claimed'] === 1;
     }

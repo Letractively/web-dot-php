@@ -11,7 +11,7 @@ post('/admin/news', function() {
     $form->slug($form->title)->filter('slug');
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
     if($form->validate()) {
-        $db = new db();
+        $db = new db;
         $db->news->add($form->title, $form->content, $form->level, 'bungle', $form->slug);
         redirect('~/news');
         $db = null;
@@ -19,7 +19,7 @@ post('/admin/news', function() {
 });
 
 get('/admin/teams', function() {
-    $db = new db();
+    $db = new db;
     $view = new view('views/admin.teams.phtml');
     $view->teams = $db->teams->all();
     echo $view;

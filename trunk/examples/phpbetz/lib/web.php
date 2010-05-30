@@ -333,9 +333,14 @@ namespace {
         ob_start(function($buffer) use (&$block) { $block = $buffer; });
     }
     class view {
+        static $globals = array();
+        static function __callStatic($name, $value) {
+            self::$globals[$name] = $value;
+        }
         function __construct($file) { $this->file = $file; }
         function __toString() {
             extract((array)$this);
+            extract(self::$globals);
             start:
             ob_start();
             require $file;
@@ -352,7 +357,7 @@ namespace {
             foreach ($args as $name => $value) $this->$name = $value;
         }
         function __get($name) {
-            if (!isset($this->$name)) $this->$name = new field();
+            if (!isset($this->$name)) $this->$name = new field;
             return $this->$name;
         }
         function __set($name, $field) {
