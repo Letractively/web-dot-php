@@ -4,7 +4,9 @@ html, body {
     height:100%;
 }
 body {
-    background: #e5e5e5;
+    background: url('../img/wcbg.jpg');  
+    background-color: #DAEAF7;
+    background-repeat: no-repeat;
 }
 #container {
     position: relative;
@@ -21,11 +23,11 @@ body {
     color: #E5E5E5;
 }
 #container-top {
-    background: #e5e5e5;
-    padding-top: 10px;
+    background: #67B7DC;
+    margin-top: 10px;
 }
 #header {
-    background: url(../img/header-bg.jpg) #200d06;
+    background: url(../img/header-bg.jpg) #67B7DC;
     padding: 10px 10px;
     height: 105px;
     color: white;
