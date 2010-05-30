@@ -4,8 +4,8 @@ get('/news', function() {
     $db = new db;
     $view = new view('views/news.phtml');
     $view->news = $db->news->all();
+    $db->close();
     echo $view;
-    $db = null;
 });
 
 get('/stats', function() {
@@ -20,12 +20,12 @@ get('/rules', function() {
 
 get('/chat', function() {
     $db = new db;
-    $msgs = new view('views/chat.messages.phtml');
-    $msgs->messages = $db->chat->poll(50);
+    $chat = new view('views/chat.messages.phtml');
+    $chat->messages = $db->chat->poll(50);
+    $db->close();
     $view = new view('views/chat.phtml');
-    $view->messages = $msgs;
+    $view->chat = $chat;
     echo $view;
-    $db = null;
 });
 
 post('/chat', function() {
@@ -34,7 +34,7 @@ post('/chat', function() {
     if ($form->validate()) {
         $db = new db;
         $db->chat->post('bungle', $form->chatmessage);
-        $db = null;
+        $db->close();
     }
 });
 
@@ -42,6 +42,6 @@ get('/chat/poll', function() {
     $db = new db;
     $view = new view('views/chat.messages.phtml');
     $view->messages = $db->chat->poll(50);
+    $db->close();
     echo $view;
-    $db = null;
 });

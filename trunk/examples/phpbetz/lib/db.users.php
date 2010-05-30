@@ -1,41 +1,72 @@
 <?php
 class users extends dbo {
     function login($username, $password) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS login FROM users WHERE username = ? AND password = ? AND active = ?');
-        $sql->execute(array($username, $password, 1));
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-        return $row && (int)$row['login'] === 1;   
+        $stm = $this->db->prepare('SELECT COUNT(*) FROM users WHERE username = :username AND password = :password AND active = :active');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':password', $password, SQLITE3_TEXT);
+        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        return $row && $row[0] === 1;
     }
     function authenticate($username) {
-        $sql = $this->db->prepare('SELECT * FROM users WHERE username = ? AND active = ?');
-        $sql->execute(array($username, 1));
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
+        $stm = $this->db->prepare('SELECT * FROM users WHERE username = :username AND active = :active');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_ASSOC);
+        $res->finalize();
+        $stm->close();
         return $row;
     }
     function register($username, $password, $email) {
-        $sql = $this->db->prepare('INSERT INTO users (username, password, email, active, admin) VALUES (?, ?, ?, ?, ?)');
-        return $sql->execute(array($username, $password, $email, 1, 0));
+        $stm = $this->db->prepare('INSERT OR IGNORE INTO users (username, password, email, active, admin) VALUES (:username, :password, :email, :active, :admin)');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':password', $password, SQLITE3_TEXT);
+        $stm->bindValue(':email', $email, SQLITE3_TEXT);
+        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
+        $stm->bindValue(':admin', 0, SQLITE3_INTEGER);
+        $stm->execute();
+        $stm->close();
     }
     function claim($username, $claim, $email) {
-        $sql = $this->db->prepare('INSERT INTO users (username, claim, email, active, admin) VALUES (?, ?, ?, ?, ?)');
-        return $sql->execute(array($username, $claim, $email, 1, 0));
+        $stm = $this->db->prepare('INSERT INTO OR IGNORE users (username, claim, email, active, admin) VALUES (:username, :claim, :email, :active, :admin)');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':claim', $claim, SQLITE3_TEXT);
+        $stm->bindValue(':email', $email, SQLITE3_TEXT);
+        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
+        $stm->bindValue(':admin', 0, SQLITE3_INTEGER);
+        $stm->execute();
+        $stm->close();
     }
     function claimed($claim) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS claimed FROM users WHERE claim = ? AND active = ?');
-        $sql->execute(array($claim, 1));
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-        return $row && (int)$row['claimed'] === 1;
+        $stm = $this->db->prepare('SELECT COUNT(*) FROM users WHERE claim = :claim AND active = :active');
+        $stm->bindValue(':claim', $claim, SQLITE3_TEXT);
+        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        return $row && $row[0] === 1;
     }
     function username_taken($username) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS username FROM users WHERE username = ?');
-        $sql->execute(array($username));
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-        return $row && (int)$row['username'] === 1;
+        $stm = $this->db->prepare('SELECT COUNT(*) AS username FROM users WHERE username = :username');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        return $row && $row[0] === 1;
     }
     function email_taken($email) {
-        $sql = $this->db->prepare('SELECT COUNT(*) AS email FROM users WHERE email = ?');
-        $sql->execute(array($email));
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-        return $row && (int)$row['email'] === 1;
+        $stm = $this->db->prepare('SELECT COUNT(*) AS email FROM users WHERE email = :email');
+        $stm->bindValue(':email', $email, SQLITE3_TEXT);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        return $row && $row[0] === 1;
     }
 }

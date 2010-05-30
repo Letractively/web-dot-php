@@ -1,5 +1,4 @@
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -8,20 +7,15 @@ body {
     text-align: center;
 }
 #wrapper {
-    position: relative;
-    height: 100%;
     width: 500px; /* container width to be same as that of the target element*/
     margin: 0 auto; /* horizontal aligned center*/
+    
 }
 #content {
-    position: absolute;
-    top: 50%;
     width: 500px; /* width of target element */
-    height: 256px; /* height of target element */
-    margin-top: -300px; /* Important: HALF the height of target element */
+    margin: 50px 0; /* Important: HALF the height of target element */
 }
 #login {
-    height: 256px;
     text-align: left;
 }
 #login h1 {
@@ -54,7 +48,7 @@ body {
 }
 #login-form label.example {
     font-family:Georgia, serif;
-    font-size: 90%;
+    font-size: 10px;
     padding-left: 2px;
 }
 #login-form input[type=submit] {

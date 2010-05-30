@@ -1,5 +1,4 @@
 <?php
-
 get('/', function() {
     $view = new view('views/login.phtml');
     echo $view;
@@ -11,11 +10,11 @@ post('/', function() {
     $form->password->filter(length(6, 20), 'password');
     $db = new db;
     if ($form->validate() && $db->users->login($form->username, $form->password)) {
+        $db->close();
         login($form->username);
-        $db = null;
         redirect('~/news');
     }
-    $db = null;
+    $db->close();
     $view = new view('views/login.phtml');
     $view->invalid = true;
     echo $view;
@@ -36,18 +35,19 @@ post('/registration', function() {
     $form->password2->filter(length(6, 20), equal($form->password1->value));
     $form->email->filter('trim', 'email', 'encode');
     $view = new view('views/registration.phtml');
-    $db = new db;
-    try {
-        if ($form->validate()) {
-            $db->users->register($form->username, password($form->password1), $form->email);
+    if ($form->validate()) {
+        $db = new db;
+        $db->users->register($form->username, password($form->password1), $form->email);
+        $changes = $db->changes();
+        if ($changes === 0) {
+            if ($db->users->username_taken($form->username)) $view->username_taken = true;
+            if ($db->users->email_taken($form->email)) $view->email_taken = true;
+            $db->close();
+        } else {
+            $db->close();
             redirect('~/news');
         }
-    } catch (PDOException $e) {
-        if ($e->getCode() != 23000) throw $e;
-        if ($db->users->username_taken($form->username)) $view->username_taken = true;
-        if ($db->users->email_taken($form->email)) $view->email_taken = true;
     }
-    
     $view->form = $form;
     echo $view;
 });
@@ -79,7 +79,7 @@ get('/registration/google/confirm', function() {
         $view = new view('views/registration.google.phtml');
         $view->form = $form;
         if ($db->users->email_taken($form->email)) $view->email_taken = true;
-        $db = null;
+        $db->close();
         echo $view;
     } else {
         redirect('~/');
@@ -98,17 +98,17 @@ post('/registration/google/confirm', function() {
     $view->form = $form;
     if ($form->validate()) {
         $db = new db;
-        try {
-            $db->users->claim($form->username, $claim, $form->email);
-            unset($_SESSION['google-claim'], $_SESSION['google-email']);
-            $db = null;
-            redirect('~/news');
-        } catch (PDOException $e) {
-            if ($e->getCode() != 23000) throw $e;
+        $db->users->claim($form->username, $claim, $form->email);
+        $changes = $db->changes();
+        if ($changes === 0) {
             if ($db->users->username_taken($form->username)) $view->username_taken = true;
             if ($db->users->email_taken($form->email)) $view->email_taken = true;
+            $db->close();
+        } else {
+            $db->close();
+            unset($_SESSION['google-claim'], $_SESSION['google-email']);
+            redirect('~/news');
         }
-        $db = null;
     }
     echo $view;
 });
@@ -136,10 +136,10 @@ get('/login/google', function() {
             $claim = password($form->openid_claimed_id);
             $db = new db;
             if ($db->users->claimed($claim)) {
-                $db = null;
+                $db->close();
                 redirect('~/news');
             }
-            $db = null;
+            $db->close();
             if ($login == 'login') {
                 flash('google-not-registered', true);
                 redirect('~/registration');

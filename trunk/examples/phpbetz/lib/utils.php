@@ -16,7 +16,7 @@ function authenticate() {
         $username = $_SESSION['logged-in-username'];
         $db = new db;
         $user = $db->users->authenticate($username);
-        $db = null;
+        $db->close();
         if ($user) {
             define('authenticated', true);
             define('admin', (int)$user['admin'] === 1);
