@@ -97,6 +97,21 @@ input#chatmessage {
 #chat {
     overflow:  hidden !important;
 }
+
+#chat a {
+    color: #a40000;
+    font-weight: bold;
+}
+
+#chat .date {
+    color: #BABDB6;
+}
+
+#chat .nick {
+    color: #204a87;
+    font-weight:bold;
+}
+
 img.smiley {
     cursor: pointer;
 }
