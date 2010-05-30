@@ -86,6 +86,7 @@ $(document).ready(function() {
     $.ajaxSetup({cache: false})
 
     chat = $('#chat');
+    $('#chatmessage').focus();
     chat.jScrollPane();
     chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
 

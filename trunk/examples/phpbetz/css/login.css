@@ -18,7 +18,7 @@ body {
     top: 50%;
     width: 500px; /* width of target element */
     height: 256px; /* height of target element */
-    margin-top: -150px; /* Important: HALF the height of target element */
+    margin-top: -300px; /* Important: HALF the height of target element */
 }
 #login {
     height: 256px;
@@ -52,6 +52,11 @@ body {
     font-size: 130%;
     padding-left: 2px;
 }
+#login-form label.example {
+    font-family:Georgia, serif;
+    font-size: 90%;
+    padding-left: 2px;
+}
 #login-form input[type=submit] {
     width: 140px;
 }
@@ -80,6 +85,9 @@ body {
 #login-form-google input[type=image] {
     padding: 43px 0;
 }
+#login-google-wrapper img {
+    padding: 43px 0;
+}
 #login div .clear {
     padding: 0;
 }
@@ -91,3 +99,19 @@ body {
     width:0;
     height:0
 }
+#login-form .error, #login-form .notice {
+    margin-top: 0.5em;
+    margin-right: 4px;
+}
+#login-form div.notice a {
+    padding: 0;
+}
+.error,
+.notice,
+.success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+.error      { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice     { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success    { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.error a    { color: #8a1f11; }
+.notice a   { color: #514721; }
+.success a  { color: #264409; }
