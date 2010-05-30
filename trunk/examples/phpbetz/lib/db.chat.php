@@ -14,8 +14,8 @@ class chat extends dbo {
         $res = $stm->execute();
         $messages = array();
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $messages[] = $row;
-        $stm->close();
         $res->finalize();
+        $stm->close();
         return array_reverse($messages);
     }
 }

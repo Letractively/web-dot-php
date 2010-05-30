@@ -92,8 +92,10 @@ $(document).ready(function() {
 
     setInterval(
         function() {
+            var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
             chat.load('<?php echo url('~/chat/poll'); ?>', function() {
                 chat.jScrollPane();
+                if (scroll) chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
             });
         },
         1250
