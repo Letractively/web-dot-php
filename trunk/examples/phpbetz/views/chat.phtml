@@ -95,8 +95,7 @@ $(document).ready(function() {
             $.get('<?php echo url('~/chat/poll'); ?>', function(data) {
                 if (data.length == 0) return;
                 var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
-                chat.append(data);
-                chat.jScrollPane();
+                chat.append(data).jScrollPane();
                 if (scroll) chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
             }, 'text');
             setTimeout(arguments.callee, 1000);
