@@ -1,6 +1,28 @@
 <?php $layout = 'layouts/layout.login.phtml'; ?>
 <?php block($css); ?>
 <?php block(); ?>
+<?php if (isset($email_taken)): ?>
+<h1 class="ui-corner-top">Google-rekisteröitymisesi epäonnistui</h1>
+<div>
+    <div id="login-wrapper-notice">
+        <h4>Virhe rekisteröitymisessä</h4>
+        <div class="notice">
+            Sähköpostiosoitteella <?php echo $form->email; ?> on jo
+            rekisteröidytty palveluun. Tietyllä sähköpostiosoitteella voi
+            rekisteröityä vain kerran. Et voi rekisteröityä Google-tunnuksellasi
+            tämän takia.
+        </div>
+        <div>
+            On mahdollista, että joku muu on rekisteröinyt sähköpostiosoitteesi.
+            Mikäli näin on, ota yhteyttä ylläpitoon: <a href="mailto:worldcup2010@fchaps.com">worldcup2010@fchaps.com</a>.
+        </div>
+        <div>
+            <a href="<?php echo url('~/registration'); ?>">Takaisin rekisteröitymislomakkeelle</a>
+        </div>
+    </div>
+</div>
+<h3 class="ui-corner-bottom">.</h3>
+<?php else: ?>
 <h1 class="ui-corner-top">Vahvista Google-rekisteröitymisesi</h1>
 <div>
     <div id="login-wrapper"  style="float: left;">
@@ -32,6 +54,7 @@
     <div class="clear"></div>
 </div>
 <h3 class="ui-corner-bottom">Voit valita minkä tahansa käyttäjätunnuksen, mitä ei ole vielä toisella käyttäjällä.</h3>
+<?php endif; ?>
 <?php block($scripts); ?>
 <script>
 $(document).ready(function() {

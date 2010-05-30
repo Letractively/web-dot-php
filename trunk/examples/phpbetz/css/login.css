@@ -106,6 +106,13 @@ body {
 #login-form div.notice a {
     padding: 0;
 }
+#login-wrapper-notice div.notice {
+    margin-bottom: 0.5em;
+}
+#login-wrapper-notice div.notice a {
+    margin-bottom: 0.5em;
+    padding: 0;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
