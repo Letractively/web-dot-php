@@ -19,12 +19,18 @@ get('/rules', function() {
 });
 
 get('/chat', function() {
+    session();
+    $last = 0;
     $db = new db;
-    $chat = new view('views/chat.messages.phtml');
-    $chat->messages = $db->chat->poll(50);
+    $messages = $db->chat->latest(50, $last);
     $db->close();
     $view = new view('views/chat.phtml');
-    $view->chat = $chat;
+    if (count($messages) > 0) {
+        $_SESSION['last-chat-message-id'] = $last;
+        $chat = new view('views/chat.messages.phtml');
+        $chat->messages = $messages;
+        $view->chat = $chat;
+    }
     echo $view;
 });
 
@@ -39,9 +45,14 @@ post('/chat', function() {
 });
 
 get('/chat/poll', function() {
+    session();
+    $last = $_SESSION['last-chat-message-id'];
     $db = new db;
-    $view = new view('views/chat.messages.phtml');
-    $view->messages = $db->chat->poll(50);
+    $messages = $db->chat->poll($last);
     $db->close();
+    if (count($messages) === 0) return;
+    $_SESSION['last-chat-message-id'] = $last;
+    $view = new view('views/chat.messages.phtml');
+    $view->messages = $messages;
     echo $view;
 });
