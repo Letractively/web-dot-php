@@ -3,19 +3,25 @@
 <?php block(); ?>
 <h1 class="ui-corner-top">Kirjaudu sisään World Cup 2010 -hupilyöntiin</h1>
 <div>
-    <div id="login-wrapper"  style="float: left;">
-        <form id="login-form">
+    <div id="login-wrapper" style="float: left;">
+        <form id="login-form" action="./" method="post">
+            <?php if (isset($invalid)): ?>
+            <div class="notice">
+                Käyttäjätunnus tai salasana on virheellinen, tai et ole vielä <a href="<?php echo url('~/registration'); ?>">rekisteröinyt</a>.
+            </div>
+            <?php endif; ?>
             <label for="username" class="normal">Käyttäjätunnus:</label><br>
-            <input id="username" name="username"  type="text" value=""><br>
+            <input id="username" name="username" maxlength="15" type="text" value=""><br>
+            <label for="username" class="normal example">Sallitut merkit: a-ö, 0-9, _ ja - (esim. ninja_3)</label><br>
             <label for="password" class="normal">Salasana:</label><br>
-            <input id="password" name="password" type="password" value="">
+            <input id="password" name="password" maxlength="20" type="password">
             <input id="remember" name="remember" type="checkbox"><label for="remember" class="tip" title="Muista minut">m</label><br>
             <br>
-            <input type="submit" value="Kirjaudu sisään"> <a href="<?php echo url('~/registration') ?>">Rekisteröidy</a>
+            <input type="submit" value="Kirjaudu sisään"> <a href="<?php echo url('~/registration'); ?>">Rekisteröidy</a>
         </form>
     </div>
     <div id="login-google-wrapper" style="float: right;">
-        <form id="login-form-google">
+        <form id="login-form-google" action="<?php echo url('~/login/google'); ?>" method="post">
             <input class="tip-google" title="Kirjaudu sisään Google-tunnuksellasi" type="image" src="<?php echo url('~/img/google-openid.png'); ?>">
         </form>
     </div>
@@ -26,6 +32,7 @@
 <script>
 $(document).ready(function() {
     $('#remember').button();
+    $('#username').focus();
     $('.tip').qtip({
         show: 'mouseover',
         hide: 'mouseout',

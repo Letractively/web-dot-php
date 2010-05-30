@@ -36,14 +36,22 @@ class install extends dbo {
             DROP TABLE IF EXISTS users;
             CREATE TABLE users (
                 username        TEXT        NOT NULL,
-                password        TEXT        NOT NULL,
+                password        TEXT,
+                claim           TEXT,
                 email           TEXT,
                 active          INTEGER     NOT NULL,
-                level           INTEGER     NOT NULL,
-                visited         TEXT,
-                location        TEXT,
+                admin           INTEGER     NOT NULL,
+                type            TEXT,
+                visited_time    TEXT,
+                visited_page    TEXT,
                 CONSTRAINT pk_users         PRIMARY KEY (username)
             );
+
+            DROP INDEX IF EXISTS idx_users_email;
+            CREATE UNIQUE INDEX idx_users_email ON users (email);
+
+            DROP INDEX IF EXISTS idx_users_claim;
+            CREATE UNIQUE INDEX idx_users_claim ON users (claim);
 
             DROP TABLE IF EXISTS remember;
             CREATE TABLE remember (
