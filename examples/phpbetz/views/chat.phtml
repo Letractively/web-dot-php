@@ -6,7 +6,7 @@
 <hr>
 <div id="chat-wrapper">
     <div id="chat" style="height: 356px; overflow: auto;">
-        <?php echo $chat; ?>
+        <?php if (isset($chat)) echo $chat; ?>
     </div>
 </div>
 <br>
@@ -84,23 +84,26 @@
 $(document).ready(function() {
 
     $.ajaxSetup({cache: false})
-
-    chat = $('#chat');
     $('#chatmessage').focus();
+
+    var chat = $('#chat');
     chat.jScrollPane();
     chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
-
-    setInterval(
+    
+    setTimeout(
         function() {
-            var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
-            chat.load('<?php echo url('~/chat/poll'); ?>', function() {
+            $.get('<?php echo url('~/chat/poll'); ?>', function(data) {
+                if (data.length == 0) return;
+                var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
+                chat.append(data);
                 chat.jScrollPane();
                 if (scroll) chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
-            });
+            }, 'text');
+            setTimeout(arguments.callee, 1000);
         },
-        1250
+        1000
     );
-
+    
     $('#chat-form').submit(
         function() {
             $.post('<?php echo url('~/chat'); ?>', $(this).serialize());
