@@ -52,7 +52,7 @@ post('/chat', function() {
 get('/chat/poll', function() {
     if (!authenticated) return;
     session();
-    $last = $_SESSION['last-chat-message-id'];
+    $last = isset($_SESSION['last-chat-message-id']) ? $_SESSION['last-chat-message-id'] : 0;
     $db = new db;
     $messages = $db->chat->poll($last);
     $db->close();
