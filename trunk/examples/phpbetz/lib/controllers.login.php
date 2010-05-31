@@ -1,7 +1,15 @@
 <?php
 get('/', function() {
-    $view = new view('views/login.phtml');
-    echo $view;
+    if (authenticated) {
+        $db = new db;
+        $view = new view('views/main.phtml');
+        $view->news = $db->news->all();
+        $db->close();
+        echo $view;
+    } else {
+        $view = new view('views/login.phtml');
+        echo $view;
+    }
 });
 
 post('/', function() {
@@ -11,8 +19,8 @@ post('/', function() {
     $db = new db;
     if ($form->validate() && $db->users->login($form->username, $form->password)) {
         $db->close();
-        login($form->username);
-        redirect('~/news');
+        login($form->username->value, isset($_POST['remember']));
+        redirect('~/');
     }
     $db->close();
     $view = new view('views/login.phtml');
@@ -21,7 +29,6 @@ post('/', function() {
 });
 
 get('/registration', function() {
-    session();
     $view = new view('views/registration.phtml');
     if (isset($_SESSION['google-not-registered'])) $view->google_not_registered = true;
     $view->form = new form;
@@ -45,7 +52,8 @@ post('/registration', function() {
             $db->close();
         } else {
             $db->close();
-            redirect('~/news');
+            login($form->username->value, true);
+            redirect('~/');
         }
     }
     $view->form = $form;
@@ -53,7 +61,6 @@ post('/registration', function() {
 });
 
 post('/registration/google', function() {
-    session();
     $_SESSION['login-google'] = 'registration';
     $xrds = openid_discover('https://www.google.com/accounts/o8/id');
     openid_authenticate($xrds->getUrl(), array(
@@ -69,7 +76,6 @@ post('/registration/google', function() {
 });
 
 get('/registration/google/confirm', function() {
-    session();
     if (isset($_SESSION['google-claim']) && isset($_SESSION['google-fname']) && isset($_SESSION['google-email'])) {
         $form = new form($_GET);
         $form->username = $_SESSION['google-fname'];
@@ -87,7 +93,6 @@ get('/registration/google/confirm', function() {
 });
 
 post('/registration/google/confirm', function() {
-    session();
     if (!isset($_SESSION['google-claim']) || !isset($_SESSION['google-email'])) redirect('~/');
     $claim = $_SESSION['google-claim'];
     $email = $_SESSION['google-email'];
@@ -107,14 +112,14 @@ post('/registration/google/confirm', function() {
         } else {
             $db->close();
             unset($_SESSION['google-claim'], $_SESSION['google-email']);
-            redirect('~/news');
+            login($form->username->value, true);
+            redirect('~/');
         }
     }
     echo $view;
 });
 
 post('/login/google', function() {
-    session();
     $_SESSION['login-google'] = 'login';
     $xrds = openid_discover('https://www.google.com/accounts/o8/id');
     openid_authenticate($xrds->getUrl(), array(
@@ -125,7 +130,6 @@ post('/login/google', function() {
 });
 
 get('/login/google', function() {
-    session();
     if (isset($_SESSION['login-google'])) {
         $login = $_SESSION['login-google'];
         unset($_SESSION['login-google']);
@@ -138,8 +142,8 @@ get('/login/google', function() {
             $username = $db->users->claimed($claim);
             if ($username !== false) {
                 $db->close();
-                login($username);
-                redirect('~/news');
+                login($username, true);
+                redirect('~/');
             }
             $db->close();
             if ($login == 'login') {

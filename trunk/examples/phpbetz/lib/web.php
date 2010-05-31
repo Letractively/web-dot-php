@@ -159,19 +159,7 @@ namespace {
         $url = implode('/', $url);
         return ($abs) ? WEB_URL_ROOT . $url : '/' . $url;
     }
-    function session() {
-        static $called = false;
-        if ($called) return;
-        $called = true;
-        if (!defined('SID')) session_start();
-        $session = crc32($_SERVER['HTTP_USER_AGENT']);
-        if (!isset($_SESSION['web.php:session']))
-            $_SESSION['web.php:session'] = $session;
-        elseif ($_SESSION['web.php:session'] !== $session)
-            trigger_error('Possible Session Hijacking Attempt.', E_USER_ERROR);
-    }
     function flash($name, $value, $hops = 1) {
-        session();
         $_SESSION[$name] = $value;
         if (!isset($_SESSION['web.php:flash']))
             $_SESSION['web.php:flash'] = array($name => $hops);

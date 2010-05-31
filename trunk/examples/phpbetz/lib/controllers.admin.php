@@ -14,7 +14,7 @@ post('/admin/news', function() {
         $db = new db;
         $db->news->add($form->title, $form->content, $form->level, username, $form->slug);
         $db->close();
-        redirect('~/news');
+        redirect('~/');
     }
 });
 

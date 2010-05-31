@@ -24,7 +24,7 @@
     <div id="navigation">
         <div id="menu">
             <ul class="menu">
-                <li><a href="<?php echo url('~/news'); ?>" class="parent"><span>Etusivu</span></a></li>
+                <li><a href="<?php echo url('~/'); ?>" class="parent"><span>Etusivu</span></a></li>
                 <li><a href="<?php echo url('~/bets/games'); ?>"><span>Otteluveikkaus</span></a></li>
                 <li><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki &trade;</span></a></li>
                 <li><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
@@ -80,7 +80,7 @@
                 Tekninen toteutus: <a href="http://www.php.net/">PHP</a>, <a href="http://code.google.com/p/web-dot-php/">web.php</a>, <a href="http://www.sqlite.org/">SQLite</a>, <a href="http://jquery.com/">jQuery</a> <a href="http://jqueryui.com/">UI</a>, <a href="http://apycom.com/">Apycom Menus</a>, <a href="http://960.gs/">960 Grid System</a>
             </span>
             <span style="float: right;">
-                Sivun suoritusaika: <span class="time"><?php global $starttime; echo number_format((microtime(true) - $starttime) * 1000, 2, ',', ' '); ?></span> millisekuntia.
+                Sivun suoritusaika: <span class="time"><?php echo number_format((microtime(true) - starttime) * 1000, 2, ',', ' '); ?></span> millisekuntia.
             </span>
         </div>
     </div>

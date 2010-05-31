@@ -54,10 +54,10 @@ class install extends dbo {
 
         DROP TABLE IF EXISTS remember;
         CREATE TABLE remember (
-            id              INTEGER     NOT NULL,
-            random          INTEGER     NOT NULL,
             user            TEXT        NOT NULL,
-            CONSTRAINT pk_remember      PRIMARY KEY (id),
+            key             TEXT        NOT NULL,
+            expire          TEXT        NOT NULL,
+            CONSTRAINT pk_remember      PRIMARY KEY (key, user),
             CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
         );
 
