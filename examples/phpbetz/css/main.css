@@ -5,7 +5,7 @@ html, body {
 }
 body {
     background: url('../img/wcbg.jpg');  
-    background-color: #DAEAF7;
+    background-color: #CCDAE6;
     background-repeat: no-repeat;
 }
 #container {
@@ -22,7 +22,7 @@ body {
     color: #E5E5E5;
 }
 #container-top {
-    background: #67B7DC;
+    background: #60AACE;
     padding-top: 10px;
     
 }
