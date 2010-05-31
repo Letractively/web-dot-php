@@ -114,6 +114,11 @@ input#chatmessage {
     font-weight:bold;
 }
 
+#chat .mynick {
+    color: #ce5c00;
+    font-weight: bold;
+}
+
 img.smiley {
     cursor: pointer;
 }
