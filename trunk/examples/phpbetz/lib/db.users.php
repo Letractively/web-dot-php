@@ -88,7 +88,7 @@ class users extends dbo {
         $stm = $this->db->prepare('DELETE FROM remember WHERE user = :user AND key = :key AND expire > :expire');
         $stm->bindValue(':user', $username, SQLITE3_TEXT);
         $stm->bindValue(':key', $key, SQLITE3_TEXT);
-        $stm->bindValue(':expire', date_format(date_create(), DATE_ISO8601), SQLITE3_TEXT);
+        $stm->bindValue(':expire', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->execute();
         $stm->close();
         if ($this->db->changes() > 0) return $this->authenticate($username);

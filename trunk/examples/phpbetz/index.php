@@ -1,5 +1,6 @@
 <?php
 define('starttime', microtime(true));
+define('DATE_SQLITE', 'Y-m-d\TH:i:s');
 error_reporting(-1);
 date_default_timezone_set('Europe/Helsinki');
 session_start();
