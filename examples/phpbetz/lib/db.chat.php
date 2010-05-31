@@ -9,7 +9,7 @@ class chat extends dbo {
         $stm->close();
     }
     function latest($limit, &$last) {
-        $stm = $this->db->prepare('SELECT * FROM chat ORDER BY time DESC LIMIT :limit');
+        $stm = $this->db->prepare('SELECT * FROM chat ORDER BY id DESC LIMIT :limit');
         $stm->bindValue(':limit', $limit, SQLITE3_INTEGER);
         $res = $stm->execute();
         $messages = array();
@@ -26,7 +26,7 @@ class chat extends dbo {
         return array_reverse($messages);
     }
     function poll(&$last) {
-        $stm = $this->db->prepare('SELECT * FROM chat WHERE id > :id ORDER BY time');
+        $stm = $this->db->prepare('SELECT * FROM chat WHERE id > :id ORDER BY id');
         $stm->bindValue(':id', $last, SQLITE3_INTEGER);
         $res = $stm->execute();
         $messages = array();
