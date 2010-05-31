@@ -8,7 +8,9 @@ function login($username) {
     $_SESSION['logged-in-username'] = $username;
 }
 function logoff() {
-    
+    session();
+    unset($_SESSION['logged-in-username']); // do we need this?
+    session_regenerate_id(true);
 }
 function authenticate() {
     session();
