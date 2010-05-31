@@ -15,7 +15,6 @@ body {
     height: auto !important;
     height: 100%;
     min-height: 100%;
-    
 }
 .block .rules {
     font-weight: bold;
@@ -24,7 +23,8 @@ body {
 }
 #container-top {
     background: #67B7DC;
-    margin-top: 10px;
+    padding-top: 10px;
+    
 }
 #header {
     background: url(../img/header-bg.jpg) #67B7DC;
