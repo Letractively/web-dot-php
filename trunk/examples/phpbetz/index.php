@@ -9,5 +9,5 @@ require 'lib/web.php';
 require 'lib/db.php';
 require 'lib/controllers.php';
 
-//authenticate();
+authenticate();
 dispatch();

@@ -25,54 +25,52 @@
     <h3 class="ui-corner-top">Hymiöt</h3>
     <div class="ui-corner-bottom">
     <?php
-        $template = '<span style="padding: 5px;"><img src="%s" class="smiley" alt="%s" title="%s" width="19px" height="19px"></span>';
-        $smileys = array(
-            sprintf($template, url('~/img/smileys/grin.gif'), 'grin',':-)'),
-            sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':-D'),
-            sprintf($template, url('~/img/smileys/cheese.gif'), 'cheese',':cheese:'),
-            sprintf($template, url('~/img/smileys/smile.gif'), 'smile',':)'),
-            sprintf($template, url('~/img/smileys/wink.gif'), 'wink',';-)'),
-            sprintf($template, url('~/img/smileys/smirk.gif'), 'smirk',':smirk:'),
-            sprintf($template, url('~/img/smileys/rolleyes.gif'), 'rolleyes',':roll:'),
-            sprintf($template, url('~/img/smileys/confused.gif'), 'confused',':-S'),
-            sprintf($template, url('~/img/smileys/surprise.gif'), 'surprised',':wow:'),
-            sprintf($template, url('~/img/smileys/bigsurprise.gif'), 'big surprise',':bug:'),
-            sprintf($template, url('~/img/smileys/tongue_laugh.gif'), 'tongue laugh',':-P'),
-            sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye','%-P'),
-            sprintf($template, url('~/img/smileys/tongue_wink.gif'), 'tongue wink',';-P'),
-            sprintf($template, url('~/img/smileys/rasberry.gif'), 'raspberry',':P'),
-            sprintf($template, url('~/img/smileys/blank.gif'), 'blank stare',':blank:'),
-            sprintf($template, url('~/img/smileys/ohh.gif'), 'ohh',':ohh:'),
-            sprintf($template, url('~/img/smileys/grrr.gif'), 'grrr',':grrr:'),
-            sprintf($template, url('~/img/smileys/gulp.gif'), 'gulp',':gulp:'),
-            sprintf($template, url('~/img/smileys/ohoh.gif'), 'oh oh','8-/'),
-            sprintf($template, url('~/img/smileys/downer.gif'), 'downer',':down:'),
-            sprintf($template, url('~/img/smileys/embarrassed.gif'), 'red face',':red:'),
-            sprintf($template, url('~/img/smileys/sick.gif'), 'sick',':sick:'),
-            sprintf($template, url('~/img/smileys/shuteye.gif'), 'shut eye',':shut:'),
-            sprintf($template, url('~/img/smileys/hmm.gif'), 'hmmm',':-/'),
-            sprintf($template, url('~/img/smileys/mad.gif'), 'mad','>:('),
-            sprintf($template, url('~/img/smileys/angry.gif'), 'angry','>:-('),
-            sprintf($template, url('~/img/smileys/zip.gif'), 'zipper',':zip:'),
-            sprintf($template, url('~/img/smileys/kiss.gif'), 'kiss',':kiss:'),
-            sprintf($template, url('~/img/smileys/shock.gif'), 'shock',':shock:'),
-            sprintf($template, url('~/img/smileys/shade_smile.gif'), 'cool smile',':coolsmile:'),
-            sprintf($template, url('~/img/smileys/shade_smirk.gif'), 'cool smirk',':coolsmirk:'),
-            sprintf($template, url('~/img/smileys/shade_grin.gif'), 'cool grin',':coolgrin:'),
-            sprintf($template, url('~/img/smileys/shade_hmm.gif'), 'cool hmm',':coolhmm:'),
-            sprintf($template, url('~/img/smileys/shade_mad.gif'), 'cool mad',':coolmad:'),
-            sprintf($template, url('~/img/smileys/shade_cheese.gif'), 'cool cheese',':coolcheese:'),
-            sprintf($template, url('~/img/smileys/vampire.gif'), 'vampire',':vampire:'),
-            sprintf($template, url('~/img/smileys/snake.gif'), 'snake',':snake:'),
-            sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim',':exclaim:'),
-            sprintf($template, url('~/img/smileys/question.gif'), 'question',':question:'),
-            sprintf($template, url('~/img/smileys/thumb.gif'), 'question','(y)'),
-            sprintf($template, url('~/img/smileys/beer.gif'), 'beer','(b)'),
-            sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball','(so)'),
-        );
-
-        foreach($smileys as $smiley) echo $smiley;
-?>
+    $template = '<span style="padding: 5px;"><img src="%s" class="smiley" alt="%s" title="%s" width="19px" height="19px"></span>';
+    $smileys = array(
+        sprintf($template, url('~/img/smileys/grin.gif'), 'grin',':-)'),
+        sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':-D'),
+        sprintf($template, url('~/img/smileys/cheese.gif'), 'cheese',':cheese:'),
+        sprintf($template, url('~/img/smileys/smile.gif'), 'smile',':)'),
+        sprintf($template, url('~/img/smileys/wink.gif'), 'wink',';-)'),
+        sprintf($template, url('~/img/smileys/smirk.gif'), 'smirk',':smirk:'),
+        sprintf($template, url('~/img/smileys/rolleyes.gif'), 'rolleyes',':roll:'),
+        sprintf($template, url('~/img/smileys/confused.gif'), 'confused',':-S'),
+        sprintf($template, url('~/img/smileys/surprise.gif'), 'surprised',':wow:'),
+        sprintf($template, url('~/img/smileys/bigsurprise.gif'), 'big surprise',':bug:'),
+        sprintf($template, url('~/img/smileys/tongue_laugh.gif'), 'tongue laugh',':-P'),
+        sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye','%-P'),
+        sprintf($template, url('~/img/smileys/tongue_wink.gif'), 'tongue wink',';-P'),
+        sprintf($template, url('~/img/smileys/rasberry.gif'), 'raspberry',':P'),
+        sprintf($template, url('~/img/smileys/blank.gif'), 'blank stare',':blank:'),
+        sprintf($template, url('~/img/smileys/ohh.gif'), 'ohh',':ohh:'),
+        sprintf($template, url('~/img/smileys/grrr.gif'), 'grrr',':grrr:'),
+        sprintf($template, url('~/img/smileys/gulp.gif'), 'gulp',':gulp:'),
+        sprintf($template, url('~/img/smileys/ohoh.gif'), 'oh oh','8-/'),
+        sprintf($template, url('~/img/smileys/downer.gif'), 'downer',':down:'),
+        sprintf($template, url('~/img/smileys/embarrassed.gif'), 'red face',':red:'),
+        sprintf($template, url('~/img/smileys/sick.gif'), 'sick',':sick:'),
+        sprintf($template, url('~/img/smileys/shuteye.gif'), 'shut eye',':shut:'),
+        sprintf($template, url('~/img/smileys/hmm.gif'), 'hmmm',':-/'),
+        sprintf($template, url('~/img/smileys/mad.gif'), 'mad',':mad:'),
+        sprintf($template, url('~/img/smileys/angry.gif'), 'angry',':angry:'),
+        sprintf($template, url('~/img/smileys/zip.gif'), 'zipper',':zip:'),
+        sprintf($template, url('~/img/smileys/kiss.gif'), 'kiss',':kiss:'),
+        sprintf($template, url('~/img/smileys/shock.gif'), 'shock',':shock:'),
+        sprintf($template, url('~/img/smileys/shade_smile.gif'), 'cool smile',':coolsmile:'),
+        sprintf($template, url('~/img/smileys/shade_smirk.gif'), 'cool smirk',':coolsmirk:'),
+        sprintf($template, url('~/img/smileys/shade_grin.gif'), 'cool grin',':coolgrin:'),
+        sprintf($template, url('~/img/smileys/shade_hmm.gif'), 'cool hmm',':coolhmm:'),
+        sprintf($template, url('~/img/smileys/shade_mad.gif'), 'cool mad',':coolmad:'),
+        sprintf($template, url('~/img/smileys/shade_cheese.gif'), 'cool cheese',':coolcheese:'),
+        sprintf($template, url('~/img/smileys/vampire.gif'), 'vampire',':vampire:'),
+        sprintf($template, url('~/img/smileys/snake.gif'), 'snake',':snake:'),
+        sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim',':exclaim:'),
+        sprintf($template, url('~/img/smileys/question.gif'), 'question',':question:'),
+        sprintf($template, url('~/img/smileys/thumb.gif'), 'question','(y)'),
+        sprintf($template, url('~/img/smileys/beer.gif'), 'beer','(b)'),
+        sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball','(so)'),
+    );
+    foreach($smileys as $smiley) echo $smiley; ?>
     </div>
 </div>
 <?php block(); ?>
@@ -112,7 +110,7 @@ $(document).ready(function() {
     );
 
     $('.smiley').click(function() {
-        $('#chatmessage').val($.trim($('#chatmessage').val() + ' ' + $(this).attr('title')) + ' ').focus();
+        $('#chatmessage').val($.trim($('#chatmessage').val().rtrim() + ' ' + $(this).attr('title')) + ' ').focus();
         return false;
     });
 

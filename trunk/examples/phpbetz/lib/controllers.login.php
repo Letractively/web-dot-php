@@ -135,8 +135,10 @@ get('/login/google', function() {
         if ($form->validate() && openid_check($form->openid_op_endpoint)) {
             $claim = password($form->openid_claimed_id);
             $db = new db;
-            if ($db->users->claimed($claim)) {
+            $username = $db->users->claimed($claim);
+            if ($username !== false) {
                 $db->close();
+                login($username);
                 redirect('~/news');
             }
             $db->close();

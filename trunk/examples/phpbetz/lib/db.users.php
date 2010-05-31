@@ -32,7 +32,7 @@ class users extends dbo {
         $stm->close();
     }
     function claim($username, $claim, $email) {
-        $stm = $this->db->prepare('INSERT INTO OR IGNORE users (username, claim, email, active, admin) VALUES (:username, :claim, :email, :active, :admin)');
+        $stm = $this->db->prepare('INSERT OR IGNORE INTO users (username, claim, email, active, admin) VALUES (:username, :claim, :email, :active, :admin)');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->bindValue(':claim', $claim, SQLITE3_TEXT);
         $stm->bindValue(':email', $email, SQLITE3_TEXT);
@@ -42,14 +42,14 @@ class users extends dbo {
         $stm->close();
     }
     function claimed($claim) {
-        $stm = $this->db->prepare('SELECT COUNT(*) FROM users WHERE claim = :claim AND active = :active');
+        $stm = $this->db->prepare('SELECT username FROM users WHERE claim = :claim');
         $stm->bindValue(':claim', $claim, SQLITE3_TEXT);
-        $stm->bindValue(':active', 1, SQLITE3_INTEGER);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);
         $res->finalize();
         $stm->close();
-        return $row && $row[0] === 1;
+        if ($row === false) return false;
+        return $row[0];
     }
     function username_taken($username) {
         $stm = $this->db->prepare('SELECT COUNT(*) AS username FROM users WHERE username = :username');

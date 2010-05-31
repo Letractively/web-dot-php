@@ -5,7 +5,7 @@ function password($password) {
 function login($username) {
     session();
     session_regenerate_id(true);
-    $_SESSION['logged-in-username'] = strval($username);
+    $_SESSION['logged-in-username'] = $username;
 }
 function logoff() {
     
@@ -19,14 +19,12 @@ function authenticate() {
         $db->close();
         if ($user) {
             define('authenticated', true);
-            define('admin', (int)$user['admin'] === 1);
-            view::user('user', $user);
-        } else {
-            define('authenticated', false);
-            define('admin', false);
+            define('admin', $user['admin'] === 1);
+            define('username', $username);
+            view::register('user', $user);
+            return;
         }
-    } else {
-        define('authenticated', false);
-        define('admin', false);
     }
+    define('authenticated', false);
+    define('admin', false);
 }

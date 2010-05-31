@@ -334,7 +334,7 @@ namespace {
     }
     class view {
         static $globals = array();
-        static function __callStatic($name, $value) {
+        static function register($name, $value) {
             self::$globals[$name] = $value;
         }
         function __construct($file) { $this->file = $file; }
