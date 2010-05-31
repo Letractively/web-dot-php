@@ -1,8 +1,7 @@
 <?php foreach($messages as $message): ?>
-<?php if(username == $message['user']) $class = "mynick"; else $class = "nick"; ?>
 <div>
     <div class="time" style="float: left;"><span class="date">[<?php echo date_format(date_create($message['time']), 'H:i'); ?>]</span></div>
-    <div class="user" style="float: left; padding: 0 0.5em;">&lt;<span class="<?php echo $class;?>"><?php echo $message['user']; ?></span>&gt;
+    <div class="user" style="float: left; padding: 0 0.5em;">&lt;<span class="<?php echo username == $message['user'] ? "mynick" : "nick"; ?><?php echo $class;?>"><?php echo $message['user']; ?></span>&gt;
     </div>
     <div class="message" style="overflow:hidden;"><?php echo $message['message']; ?></div>
 </div>
