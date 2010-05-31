@@ -2,7 +2,7 @@
 class chat extends dbo {
     function post($user, $message) {
         $stm = $this->db->prepare('INSERT INTO chat (time, user, message) VALUES (:time, :user, :message)');
-        $stm->bindValue(':time', date_format(date_create(), DATE_ISO8601), SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
         $stm->bindValue(':message', $message, SQLITE3_TEXT);
         $stm->execute();

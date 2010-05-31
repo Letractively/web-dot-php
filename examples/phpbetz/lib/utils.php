@@ -14,7 +14,7 @@ function remember($username) {
     $cookie = urlencode(sprintf('%s:%s', $username, $key));
     setcookie ('logged-in-cookie', $cookie, date_timestamp_get($expire), '/', '', false, true);
     $db = new db;
-    $db->users->remember($username, $key, date_format($expire, DATE_ISO8601));
+    $db->users->remember($username, $key, date_format($expire, DATE_SQLITE));
     $db->close();
 }
 function logoff() {
@@ -29,8 +29,8 @@ function logoff() {
         $cookie = urldecode($_COOKIE['logged-in-cookie']);
         $parts = explode(':', $cookie);
         if (count($cookie) == 2) {
-            $username = $cookie[0];
-            $key = $cookie[1];
+            $username = $parts[0];
+            $key = $parts[1];
             $db = new db;
             $db->users->forget($username, $key);
             $db->close();
@@ -74,4 +74,5 @@ function authenticate() {
     }
     define('authenticated', false);
     define('admin', false);
+    define('username', 'anonymous');
 }

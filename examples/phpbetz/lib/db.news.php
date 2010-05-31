@@ -10,7 +10,7 @@ class news extends dbo {
 
     function add($title, $content, $level, $user, $slug) {
         $stm = $this->db->prepare('INSERT INTO news (time, slug, title, content, level, user) VALUES (:time, :slug, :title, :content, :level, :user)');
-        $stm->bindValue(':time', date_format(date_create(), DATE_ISO8601), SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->bindValue(':slug', $user, SQLITE3_TEXT);
         $stm->bindValue(':title', $title, SQLITE3_TEXT);
         $stm->bindValue(':content', $content, SQLITE3_TEXT);

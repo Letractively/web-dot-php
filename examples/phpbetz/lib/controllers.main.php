@@ -18,8 +18,8 @@ get('/chat', function() {
     $messages = $db->chat->latest(50, $last);
     $db->close();
     $view = new view('views/chat.phtml');
+    $_SESSION['last-chat-message-id'] = $last;
     if (count($messages) > 0) {
-        $_SESSION['last-chat-message-id'] = $last;
         $chat = new view('views/chat.messages.phtml');
         $chat->messages = $messages;
         $view->chat = $chat;
