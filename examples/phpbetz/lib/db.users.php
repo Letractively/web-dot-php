@@ -52,7 +52,7 @@ class users extends dbo {
         return $row[0];
     }
     function username_taken($username) {
-        $stm = $this->db->prepare('SELECT COUNT(*) AS username FROM users WHERE username = :username');
+        $stm = $this->db->prepare('SELECT COUNT(*) FROM users WHERE username = :username');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);
@@ -61,12 +61,37 @@ class users extends dbo {
         return $row && $row[0] === 1;
     }
     function email_taken($email) {
-        $stm = $this->db->prepare('SELECT COUNT(*) AS email FROM users WHERE email = :email');
+        $stm = $this->db->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
         $stm->bindValue(':email', $email, SQLITE3_TEXT);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);
         $res->finalize();
         $stm->close();
         return $row && $row[0] === 1;
+    }
+    function remember($username, $key, $expire) {
+        $stm = $this->db->prepare('INSERT OR REPLACE INTO remember (user, key, expire) VALUES (:user, :key, :expire)');
+        $stm->bindValue(':user', $username, SQLITE3_TEXT);
+        $stm->bindValue(':key', $key, SQLITE3_TEXT);
+        $stm->bindValue(':expire', $expire, SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+    }
+    function forget($username, $key) {
+        $stm = $this->db->prepare('DELETE FROM remember WHERE user = :user AND key = :key)');
+        $stm->bindValue(':user', $username, SQLITE3_TEXT);
+        $stm->bindValue(':key', $key, SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+    }
+    function remembered($username, $key) {
+        $stm = $this->db->prepare('DELETE FROM remember WHERE user = :user AND key = :key AND expire > :expire');
+        $stm->bindValue(':user', $username, SQLITE3_TEXT);
+        $stm->bindValue(':key', $key, SQLITE3_TEXT);
+        $stm->bindValue(':expire', date_format(date_create(), DATE_ISO8601), SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+        if ($this->db->changes() > 0) return $this->authenticate($username);
+        return false;
     }
 }

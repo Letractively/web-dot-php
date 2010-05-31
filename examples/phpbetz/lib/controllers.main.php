@@ -1,14 +1,4 @@
 <?php
-
-get('/news', function() {
-    if (!authenticated) redirect('~/unauthorized');
-    $db = new db;
-    $view = new view('views/news.phtml');
-    $view->news = $db->news->all();
-    $db->close();
-    echo $view;
-});
-
 get('/stats', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/stats.phtml');
@@ -23,7 +13,6 @@ get('/rules', function() {
 
 get('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
-    session();
     $last = 0;
     $db = new db;
     $messages = $db->chat->latest(50, $last);
@@ -51,7 +40,6 @@ post('/chat', function() {
 
 get('/chat/poll', function() {
     if (!authenticated) return;
-    session();
     $last = isset($_SESSION['last-chat-message-id']) ? $_SESSION['last-chat-message-id'] : 0;
     $db = new db;
     $messages = $db->chat->poll($last);
