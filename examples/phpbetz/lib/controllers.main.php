@@ -1,6 +1,7 @@
 <?php
 
 get('/news', function() {
+    if (!authenticated) redirect('~/unauthorized');
     $db = new db;
     $view = new view('views/news.phtml');
     $view->news = $db->news->all();
@@ -9,16 +10,19 @@ get('/news', function() {
 });
 
 get('/stats', function() {
+    if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/stats.phtml');
     echo $view;
 });
 
 get('/rules', function() {
+    if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/rules.phtml');
     echo $view;
 });
 
 get('/chat', function() {
+    if (!authenticated) redirect('~/unauthorized');
     session();
     $last = 0;
     $db = new db;
@@ -35,16 +39,18 @@ get('/chat', function() {
 });
 
 post('/chat', function() {
+    if (!authenticated) redirect('~/unauthorized');
     $form = new form($_POST);
     $form->chatmessage->filter('trim', minlength(1), 'encode', 'links', 'smileys');
     if ($form->validate()) {
         $db = new db;
-        $db->chat->post('bungle', $form->chatmessage);
+        $db->chat->post(username, $form->chatmessage);
         $db->close();
     }
 });
 
 get('/chat/poll', function() {
+    if (!authenticated) return;
     session();
     $last = $_SESSION['last-chat-message-id'];
     $db = new db;
