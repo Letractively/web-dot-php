@@ -11,9 +11,9 @@
 </div>
 <br>
 <div class="ui-widget">
-    <form id="chat-form">
-        <div class="grid_7 alpha"><input id="chatmessage" name="chatmessage" type="text" style="display: block; width: 100%;" /></div>
-        <div class="grid_2 omega"><input type="submit" value="Lähetä viesti" /></div>
+    <form id="form" method="POST" action="<?php echo url('~/chat'); ?>">
+        <div class="grid_7 alpha"><input id="message" name="message" type="text" style="display: block; width: 100%;" /></div>
+        <div class="grid_2 omega"><input id="send" type="submit" value="Lähetä viesti" /></div>
     </form>
 </div>
 <div style='clear: both;'></div>
@@ -78,5 +78,5 @@
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.mousewheel.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery.scroll.js'); ?>"></script>
-<script src="<?php echo url('~/js/chat.js'); ?>"></script>>
+<script src="<?php echo url('~/js/chat.js?') . md5_file('js/chat.js'); ?>"></script>
 <?php block(); ?>
