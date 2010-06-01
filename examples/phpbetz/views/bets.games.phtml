@@ -4,7 +4,7 @@
 <?php block(); ?>
 <h1>Otteluveikkaus</h1>
 <hr>
-<table id="bets" style="padding: 2em !important;">
+<table id="bets" style="display: none;">
 <tr>
     <th colspan="2">Päivämäärä / Kellonaika</th>
     <th colspan="5">Ottelu</th>
@@ -24,12 +24,12 @@
     </td>
     <td class="road"><?php echo $game['road']; ?></td>
     <td class="bet">
-        <form action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16" style="display: none;">
-            <input  id="home<?php echo $game['id']; ?>" type="radio" name="score" value="1" class="flag <?php echo $game['home_abbr']; ?>">
+        <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
+            <input  id="home<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
             <label for="home<?php echo $game['id']; ?>"><?php echo $game['home']; ?></label>
-            <input  id="draw<?php echo $game['id']; ?>" type="radio" name="score" value="X">
+            <input  id="draw<?php echo $game['id']; ?>" type="radio" name="score" value="X" <?php if ($game['score'] == 'X') echo 'checked'; ?>>
             <label for="draw<?php echo $game['id']; ?>">Tasapeli</label>
-            <input  id="road<?php echo $game['id']; ?>" type="radio" name="score" value="2" class="flag <?php echo $game['road_abbr']; ?>">
+            <input  id="road<?php echo $game['id']; ?>" type="radio" name="score" value="2" <?php if ($game['score'] == '2') echo 'checked'; ?> class="flag <?php echo $game['road_abbr']; ?>">
             <label for="road<?php echo $game['id']; ?>"><?php echo $game['road']; ?></label>
         </form>
     </td>
@@ -37,69 +37,61 @@
 <?php endforeach; ?>
 </table>
 <?php block($scripts); ?>
-
+<script src="<?php echo url('~/js/jquery.blockui.js'); ?>"></script>
 <script>
+$.blockUI({
+    message: 'Ladataan otteluita...',
+    css: {
+        border: 'none',
+        padding: '15px',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: .5,
+        color: '#fff'
+    },
+    fadeIn: 0,
+    fadeOut: 400
+});
+
+setTimeout(initialize, 5);
+
 function posted(data, status) {
-    alert('jee');
+    if (status != success) {
+        alert(data);
+    }
 }
 
-$('input:radio').each(function() {
-    var input = $(this);
-    if (input.hasClass('flag')) {
-        input.button({
-            icons: {
-                primary: input.attr('class')
-            },
-            text: false
-        });
-    } else {
-        input.button({
-            icons: {
-                primary: 'ui-icon-close'
-            },
-            text: false
-        });
-    }
-    var form = $(this.form);
-    input.click(function() {
-        $.post(form.attr('action'), form.serialize(), posted);
-    });
-});
-
-$('form').buttonset().toggle();
-/*
-$('label').qtip({
-    show: 'mouseover',
-    hide: 'mouseout',
-    position: {
-        corner: {
-            target: 'topCenter',
-            tooltip: 'bottomCenter'
+function initialize() {
+    $('input:radio').each(function() {
+        var input = $(this);
+        if (input.hasClass('flag')) {
+            input.button({
+                icons: {
+                    primary: input.attr('class')
+                },
+                text: false
+            });
+        } else {
+            input.button({
+                icons: {
+                    primary: 'ui-icon-close'
+                },
+                text: false
+            });
         }
-    }
-});
-*/
-/*
-$('input:radio').each(function() {
-    if ($(this).hasClass('flag')) {
-        $(this).button({ icons: { primary: $(this).attr('class') }});
-    }
-});
-
-$('input:radio').each(function() {
-    if ($(this).hasClass('flag')) {
-        $(this).button({ icons: { primary: $(this).attr('class') }});
-    }
-    var form = $(this.form);
-    $(this).click(function() {
-        alert(form.attr('action'));
-        $.post(form.attr('action'), form.serialize(), function(data, status) {
-            alert(status);
-            alert(data.game + ' ' + data.score);
-        }, 'json');
-
+        var form = $(this.form);
+        input.click(function() {
+            $.post(form.attr('action'), form.serialize(), posted);
+        });
     });
-});
+
+    $('form').buttonset();
+    $('#bets').toggle();
+
+    $.unblockUI();
+}
+/*
 var newYear = new Date();
 newYear = new Date(newYear.getTime() + 50000);
 $('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {

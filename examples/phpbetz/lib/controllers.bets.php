@@ -9,6 +9,14 @@ get('/bets/games', function() {
 });
 
 post('/bets/games/#game', function($game) {
-    if (!authenticated) redirect('~/unauthorized');
-    echo json_encode(array('game' => $game, 'score' => $_POST['score']));
+    if (!authenticated) return status(401);
+    $form = new form($_POST);
+    $form->score->filter(choice('1', 'X', '2'));
+    if ($form->validate()) {
+        $db = new db;
+        $db->bets->game($game, username, $form->score->value);
+        $db->close();
+    } else {
+        status(500);
+    }
 });
