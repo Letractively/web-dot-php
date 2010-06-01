@@ -5,6 +5,4 @@ String.prototype.rtrim = function() {
     return this.replace(/\s+$/,"");
 }
 
-$(document).ready(function() {
-    $("button, input:submit").button();
-});
+$("input:submit").button();
