@@ -5,6 +5,11 @@
 <h1>Otteluveikkaus</h1>
 <hr>
 <table id="bets" style="padding: 2em !important;">
+<tr>
+    <th colspan="2">Päivämäärä / Kellonaika</th>
+    <th colspan="5">Ottelu</th>
+    <th>Veikkaus</th>
+</tr>
 <?php foreach($games as $game): ?>
 <tr>
     <td class="weekday"><?php echo date_format(date_create($game['time']), 'l'); ?></td>
