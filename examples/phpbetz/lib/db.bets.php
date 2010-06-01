@@ -26,7 +26,8 @@ class bets extends dbo {
     ON
         g.id = b.game AND b.user = :user
     ORDER BY
-        time;
+        time, id
+    LIMIT 10;
 EOT;
         $stm = $this->db->prepare($sql);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
