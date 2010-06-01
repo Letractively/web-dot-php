@@ -127,6 +127,42 @@ label.ui-button {
     
 }
 
+table#bets {
+    width: 100%;
+    padding: 50px;
+}
+table#bets tr {
+    line-height: 32px;
+    height: 32px;
+}
+table#bets tr td.f32 {
+    width: 32px;
+}
+table#bets tr td.weekday {
+    text-align: right;
+    padding: 0 1em 0 0em;
+}
+table#bets tr td.time {
+    padding: 0;
+}
+table#bets tr td.home {
+    text-align: right;
+    padding: 0 1em 0 2em;
+    
+}
+table#bets tr td.dash {
+    text-align: center;
+    width: 20px;
+}
+table#bets tr td.road {
+    padding: 0 2em 0 1em;
+}
+table#bets tr td.bet {
+    width: 112px;
+    text-align: right;
+}
+
+
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
