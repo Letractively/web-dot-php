@@ -44,7 +44,7 @@ get('/chat/poll', function() {
     $db = new db;
     $messages = $db->chat->poll($last);
     $db->close();
-    if (count($messages) === 0) return;
+    if (count($messages) === 0) return status(304);
     $_SESSION['last-chat-message-id'] = $last;
     $view = new view('views/chat.messages.phtml');
     $view->messages = $messages;
