@@ -25,7 +25,7 @@
     <h3 class="ui-corner-top">Hymiöt</h3>
     <div class="ui-corner-bottom">
     <?php
-    $template = '<span style="padding: 5px;"><img src="%s" class="smiley" alt="%s" title="%s" width="19px" height="19px"></span>';
+    $template = '<img src="%s" class="smiley" alt="%s" title="%s" width="19px" height="19px">';
     $smileys = array(
         sprintf($template, url('~/img/smileys/grin.gif'), 'grin',':-)'),
         sprintf($template, url('~/img/smileys/lol.gif'), 'lol',':-D'),
@@ -70,7 +70,7 @@
         sprintf($template, url('~/img/smileys/beer.gif'), 'beer','(b)'),
         sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball','(so)'),
     );
-    foreach($smileys as $smiley) echo $smiley; ?>
+    foreach($smileys as $smiley) echo $smiley . "\n"; ?>
     </div>
 </div>
 <?php block(); ?>
@@ -78,52 +78,5 @@
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.mousewheel.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery.scroll.js'); ?>"></script>
-<script>
-$(document).ready(function() {
-
-    $.ajaxSetup({cache: false})
-    $('#chatmessage').focus();
-
-    var chat = $('#chat');
-    chat.jScrollPane();
-    chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
-    
-    setTimeout(
-        function() {
-            $.get('<?php echo url('~/chat/poll'); ?>', function(data) {
-                if (data.length == 0) return;
-                var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
-                chat.append(data).jScrollPane();
-                if (scroll) chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
-            }, 'text');
-            setTimeout(arguments.callee, 1000);
-        },
-        1000
-    );
-    
-    $('#chat-form').submit(
-        function() {
-            $.post('<?php echo url('~/chat'); ?>', $(this).serialize());
-            $('#chatmessage').val('').focus();
-            return false;
-        }
-    );
-
-    $('.smiley').click(function() {
-        $('#chatmessage').val($.trim($('#chatmessage').val().rtrim() + ' ' + $(this).attr('title')) + ' ').focus();
-        return false;
-    });
-
-    $('.smiley').qtip({
-        show: 'mouseover',
-        hide: 'mouseout',
-        position: {
-            corner: {
-                target: 'topRight',
-                tooltip: 'bottomLeft'
-            }
-        }
-    });
-});
-</script>
+<script src="<?php echo url('~/js/chat.js'); ?>"></script>>
 <?php block(); ?>
