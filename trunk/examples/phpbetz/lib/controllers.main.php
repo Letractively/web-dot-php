@@ -30,10 +30,10 @@ get('/chat', function() {
 post('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
     $form = new form($_POST);
-    $form->chatmessage->filter('trim', minlength(1), 'encode', 'links', 'smileys');
+    $form->message->filter('trim', minlength(1), 'encode', 'links', 'smileys');
     if ($form->validate()) {
         $db = new db;
-        $db->chat->post(username, $form->chatmessage);
+        $db->chat->post(username, $form->message->value);
         $db->close();
     }
 });

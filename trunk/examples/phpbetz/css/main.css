@@ -83,7 +83,7 @@ body {
     margin-bottom: -4px;
 }
 
-input#chatmessage {
+input#message {
     margin-top: 2px;
     line-height: 23px;
     font-size: 1.25em;
@@ -122,6 +122,11 @@ input#chatmessage {
 img.smiley {
     cursor: pointer;
 }
+
+label.ui-button {
+    
+}
+
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

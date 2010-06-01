@@ -4,47 +4,81 @@
 <?php block(); ?>
 <h1>Otteluveikkaus</h1>
 <hr>
-<div class="grid_2 alpha"><strong>Ottelu pelataan</strong></div>
-<div class="grid_2" style="text-align: center;"><strong>H-hetki</strong></div>
-<div class="grid_5 omega" style="text-align: center;"><strong>Veikkaus</strong></div>
-<div class="grid_2 alpha" style="height: 31px; line-height: 31px;">Ti 20.04, klo 22:29</div>
-<div class="grid_2" style="height: 31px; text-align: center;"><span style="font-weight: bold;" id="defaultCountdown">2d 23h 46min</span></div>
-<div class="grid_5 omega" style="text-align: center;">
-    <form action="<?php echo url('~/bets/games/1') ?>" class="gamebet f16">
-        <input type="radio" id="radio1" name="score" value="1" class="flag fi"><label for="radio1">Suomi</label>
-        <input type="radio" id="radio2" name="score" value="X"><label for="radio2">Tasapeli</label>
-        <input type="radio" id="radio3" name="score" value="2" class="flag se"><label for="radio3">Ruotsi</label>
+<?php foreach($games as $game): ?>
+<div class="grid_2 alpha" style="height:40px; line-height: 40px;"><?php echo $game['time']; ?></div>
+<div class="grid_7 omega" style="text-align: left;">
+    <form id="game<?php echo $game['id']; ?>" action="<?php echo url('~/bets/games/1') ?>" class="gamebet f16">
+        <input id="home<?php echo $game['id']; ?>" type="radio" name="score" value="1" class="home flag <?php echo $game['home_abbr']; ?>"><label for="home<?php echo $game['id']; ?>"><?php echo $game['home']; ?></label>
+        <input id="draw<?php echo $game['id']; ?>" type="radio" name="score" value="X"><label for="draw<?php echo $game['id']; ?>">Tasapeli</label>
+        <input id="road<?php echo $game['id']; ?>" type="radio" name="score" value="2" class="road flag <?php echo $game['road_abbr']; ?>"><label for="road<?php echo $game['id']; ?>"><?php echo $game['road']; ?></label>
     </form>
 </div>
+<div class="clear"></div>
+<?php endforeach; ?>
 <?php block($scripts); ?>
-<script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
-<script>
-$(document).ready(function() {
-    $('#tabs').tabs();
-    $('form.gamebet').buttonset();
-    $('input:radio').each(function() {
-        if ($(this).hasClass('flag')) {
-            $(this).button({ icons: { primary: $(this).attr('class') }});
-        }
-        var form = $(this.form);
-        $(this).click(function() {
-            alert(form.attr('action'));
-            $.post(form.attr('action'), form.serialize(), function(data, status) {
-                alert(status);
-                alert(data.game + ' ' + data.score);
-            }, 'json');
 
+<script>
+$('form').buttonset();
+$('input:radio').each(function() {
+    var input = $(this);
+    if (input.hasClass('flag')) {
+        input.button({
+            icons: {
+                primary: input.attr('class')
+            },
+            text: false
         });
-    });
-    var newYear = new Date();
-    newYear = new Date(newYear.getTime() + 50000);
-    $('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {
-        $(this).parent('div').css('line-height', '29px');
-        $(this).parent('div').html('Ottelu on alkanut');
-        $('input:radio').each(function() {
-            $(this).button('disable');
+    } else {
+        input.button({
+            icons: {
+                primary: 'ui-icon-close'
+            },
+            text: false
         });
-    }});
+    }
 });
+
+$('label').qtip({
+    show: 'mouseover',
+    hide: 'mouseout',
+    position: {
+        corner: {
+            target: 'topRight',
+            tooltip: 'bottomLeft'
+        }
+    }
+});
+
+/*
+$('input:radio').each(function() {
+    if ($(this).hasClass('flag')) {
+        $(this).button({ icons: { primary: $(this).attr('class') }});
+    }
+});
+
+$('input:radio').each(function() {
+    if ($(this).hasClass('flag')) {
+        $(this).button({ icons: { primary: $(this).attr('class') }});
+    }
+    var form = $(this.form);
+    $(this).click(function() {
+        alert(form.attr('action'));
+        $.post(form.attr('action'), form.serialize(), function(data, status) {
+            alert(status);
+            alert(data.game + ' ' + data.score);
+        }, 'json');
+
+    });
+});
+var newYear = new Date();
+newYear = new Date(newYear.getTime() + 50000);
+$('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {
+    $(this).parent('div').css('line-height', '29px');
+    $(this).parent('div').html('Ottelu on alkanut');
+    $('input:radio').each(function() {
+        $(this).button('disable');
+    });
+}});
+*/
 </script>
 <?php block(); ?>
