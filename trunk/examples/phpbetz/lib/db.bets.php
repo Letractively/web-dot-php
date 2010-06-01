@@ -37,4 +37,13 @@ EOT;
         $stm->close();
         return $games;
     }
+
+    function game($game, $user, $score) {
+        $stm = $this->db->prepare('INSERT OR REPLACE INTO gamebets (game, user, score) VALUES (:game, :user, :score)');
+        $stm->bindValue(':game', $game, SQLITE3_INTEGER);
+        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->bindValue(':score', $score, SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+    }
 }
