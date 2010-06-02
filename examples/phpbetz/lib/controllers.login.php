@@ -14,7 +14,7 @@ get('/', function() {
 
 post('/', function() {
     $form = new form($_POST);
-    $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', 'encode');
+    $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', specialchars());
     $form->password->filter(length(6, 20), 'password');
     $db = new db;
     if ($form->validate() && $db->users->login($form->username, $form->password)) {
@@ -37,10 +37,10 @@ get('/registration', function() {
 
 post('/registration', function() {
     $form = new form($_POST);
-    $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', 'encode');
+    $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', specialchars());
     $form->password1->filter(length(6, 20), equal($form->password2->value));
     $form->password2->filter(length(6, 20), equal($form->password1->value));
-    $form->email->filter('trim', 'email', 'encode');
+    $form->email->filter('trim', 'email', specialchars());
     $view = new view('views/registration.phtml');
     if ($form->validate()) {
         $db = new db;
@@ -97,7 +97,7 @@ post('/registration/google/confirm', function() {
     $claim = $_SESSION['google-claim'];
     $email = $_SESSION['google-email'];
     $form = new form($_POST);
-    $form->username->filter('trim', '/^[a-z0-9åäö_-]+$/ui', 'encode');
+    $form->username->filter('trim', '/^[a-z0-9åäö_-]+$/ui', specialchars());
     $form->email($email);
     $view = new view('views/registration.google.phtml');
     $view->form = $form;
