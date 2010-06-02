@@ -26,12 +26,12 @@
     <td class="countdown"><span style="font-weight: bold;" class="counter"><?php echo date_timestamp_get(date_create($game['time'])) * 1000; ?></span></td>
     <td class="bet">
         <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
-            <input  id="home<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
-            <label for="home<?php echo $game['id']; ?>"><?php echo $game['home']; ?></label>
-            <input  id="draw<?php echo $game['id']; ?>" type="radio" name="score" value="X" <?php if ($game['score'] == 'X') echo 'checked'; ?>>
-            <label for="draw<?php echo $game['id']; ?>">Tasapeli</label>
-            <input  id="road<?php echo $game['id']; ?>" type="radio" name="score" value="2" <?php if ($game['score'] == '2') echo 'checked'; ?> class="flag <?php echo $game['road_abbr']; ?>">
-            <label for="road<?php echo $game['id']; ?>"><?php echo $game['road']; ?></label>
+            <input  id="home-<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
+            <label for="home-<?php echo $game['id']; ?>"><?php echo $game['home']; ?></label>
+            <input  id="draw-<?php echo $game['id']; ?>" type="radio" name="score" value="X" <?php if ($game['score'] == 'X') echo 'checked'; ?>>
+            <label for="draw-<?php echo $game['id']; ?>">Tasapeli</label>
+            <input  id="road-<?php echo $game['id']; ?>" type="radio" name="score" value="2" <?php if ($game['score'] == '2') echo 'checked'; ?> class="flag <?php echo $game['road_abbr']; ?>">
+            <label for="road-<?php echo $game['id']; ?>"><?php echo $game['road']; ?></label>
         </form>
     </td>
 </tr>
@@ -89,7 +89,7 @@ function initialize() {
     });
 
     $('form').buttonset();
-    $('#bets').toggle();
+    
     $('.counter').each(function() {
         var time = new Date(parseInt($(this).html()));
         $(this).countdown({
@@ -100,6 +100,8 @@ function initialize() {
             }
         });
     });
+
+    $('#bets').toggle();
 
     $.unblockUI();
 }

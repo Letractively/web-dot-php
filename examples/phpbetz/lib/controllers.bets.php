@@ -20,3 +20,13 @@ post('/bets/games/#game', function($game) {
         status(500);
     }
 });
+
+get('/bets/teams', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $db = new db;
+    $view = new view('views/bets.teams.phtml');
+    $view->teams = $db->teams->all();
+    $db->close();
+    echo $view;
+});
+

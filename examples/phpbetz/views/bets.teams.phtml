@@ -1,0 +1,104 @@
+<?php $layout = 'layouts/layout.default.phtml'; ?>
+<?php block($css); ?>
+<style>
+.ui-button {
+    width: 44px;
+    height: 40px;
+    margin: 0.5em;
+}
+.ui-icon {
+    width: 32px;
+    height: 32px;
+}
+.ui-button-icon-only .ui-icon {
+    margin-top: -16px;
+    margin-left: -16px;
+}
+hr.thin {
+    height: 1px;
+}
+.team-bet {
+    align: right;
+    line-height: 50px;
+}
+.team-bet h4 {
+    padding-left: 40px;
+    line-height: 32px;
+    margin-top: 0.5em;
+}
+
+</style>
+<?php block(); ?>
+<h1>Kolmen kärki &trade;</h1>
+<hr>
+<div class="grid_6 alpha">
+    <h2>Turnauksen voittaja</h2>
+    <p>
+        Veikkaa turnauksen voittajaa klikkaamalla joukkueen lippua.
+    </p>
+</div>
+<div class="grid_3 omega team-bet" id="first-bet"></div>
+<div class="clear"></div>
+<form id="first" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
+    <?php foreach($teams as $team): ?>
+    <input  id="first-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
+    <label for="first-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
+    <?php endforeach; ?>
+</form>
+<br>
+<hr class="thin">
+<div class="grid_6 alpha">
+    <h2>Hopeamitalisti</h2>
+    <p>
+        Veikkaa turnauksen hopeamitalistia klikkaamalla joukkueen lippua.
+    </p>
+</div>
+<div class="grid_3 omega team-bet" id="second-bet"></div>
+<div class="clear"></div>
+<form id="second" method="post" action="<?php echo url('~/bets/teams/2'); ?>" style="display: none;" class="f32">
+    <?php foreach($teams as $team): ?>
+    <input  id="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
+    <label for="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
+    <?php endforeach; ?>
+</form>
+<br>
+<hr class="thin">
+<div class="grid_6 alpha">
+    <h2>Pronssimitalisti</h2>
+    <p>
+        Veikkaa turnauksen pronssimitalisia klikkaamalla joukkueen lippua.
+    </p>
+</div>
+<div class="grid_3 omega team-bet" id="third-bet"></div>
+<div class="clear"></div>
+<form id="third" method="post" action="<?php echo url('~/bets/teams/3'); ?>" style="display: none;" class="f32">
+    <?php foreach($teams as $team): ?>
+    <input  id="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
+    <label for="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
+    <?php endforeach; ?>
+</form>
+<?php block($scripts); ?>
+<script>
+$('input:radio').each(function() {
+    var input = $(this);
+    input.button({
+        icons: {
+            primary: input.attr('class')
+        },
+        text: false
+    });
+    var form = $(this.form);
+    input.click(function() {
+        $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + input.attr('value') + '\']').button('disable');
+        $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + form.data('value') + '\']').button('enable');
+        form.data('value', input.attr('value'));
+        $('#' + form.attr('id') + '-bet').html('<div class="f32"><h4 class="flag ' + input.attr('title') + '">' + input.attr('value') + '</h4></div>');
+    });
+});
+
+$('label').qtip();
+$('#first').toggle();
+$('#second').toggle();
+$('#third').toggle();
+</script>
+<?php block(); ?>
