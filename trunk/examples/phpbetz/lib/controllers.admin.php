@@ -10,6 +10,7 @@ post('/admin/news', function() {
     $form = new form($_POST);
     $form->slug($form->title)->filter('slug');
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
+    $form->level->filter('int');
     if($form->validate()) {
         $db = new db;
         $db->news->add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
