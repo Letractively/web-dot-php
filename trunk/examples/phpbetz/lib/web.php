@@ -228,7 +228,6 @@ namespace {
                 case 'ipv6':   $valid = false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); break;
                 case 'email':  $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
                 case 'url':    $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
-                case 'encode': $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); break;
                 default:
                     if (is_callable($filter)) {
                         $filtered = $filter($value);
@@ -284,6 +283,11 @@ namespace {
     function preglace($pattern, $replacement) {
         return function($subject) use ($pattern, $replacement) {
             return preg_replace($pattern, $replacement, $subject);
+        };
+    }
+    function specialchars($quote = ENT_NOQUOTES, $charset = "UTF-8", $double = true) {
+        return function($value) use ($quote, $charset, $double) {
+            return htmlspecialchars($value, $quote, $charset, $double);
         };
     }
     function links($value) {
