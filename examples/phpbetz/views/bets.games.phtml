@@ -42,7 +42,7 @@
 <script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
 <script>
 $.blockUI({
-    message: 'Ladataan otteluita...',
+    message: '<h2>Ladataan otteluita...</h2>(JQuery UI:n bugi hidastaa lataamista)',
     css: {
         border: 'none',
         padding: '15px',
@@ -63,8 +63,6 @@ function posted(data, status) {
         alert(data);
     }
 }
-
-
 
 function initialize() {
     $('input:radio').each(function() {
