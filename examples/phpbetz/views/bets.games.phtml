@@ -13,7 +13,7 @@
 <?php foreach($games as $game): ?>
 <tr>
     <td class="weekday"><?php echo date_format(date_create($game['time']), 'l'); ?></td>
-    <td class="time"><?php echo date_format(date_create($game['time']), 'd.h H:i'); ?></td>
+    <td class="time"><?php echo date_format(date_create($game['time']), 'd.h, \k\l\o H:i'); ?></td>
     <td class="home"><?php echo $game['home']; ?></td>
     <td class="f32">
         <div class="flag <?php echo $game['home_abbr']; ?>">&nbsp;</div>
