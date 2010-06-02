@@ -125,6 +125,9 @@ table#bets {
     padding: 50px;
 }
 table#bets tr {
+    border-bottom: 1px solid #e5e5e5;
+}
+table#bets tr td {
     line-height: 32px;
     height: 32px;
 }
@@ -154,9 +157,10 @@ table#bets tr td.road {
 table#bets tr td.bet {
     width: 112px;
     text-align: right;
+    padding-top: 3px;
 }
 table#bets tr td.countdown {
-    width: 125px;
+    width: 85px;
     line-height: 18px;
 }
 
