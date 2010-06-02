@@ -6,14 +6,14 @@
 <hr>
 <table id="bets" style="display: none;">
 <tr>
-    <th>Otteluaika</th>
+    <th>Ottelu pelataan</th>
     <th colspan="5">Ottelu</th>
     <th>H-hetki</th>
     <th>Veikkaus</th>
 </tr>
 <?php foreach($games as $game): ?>
 <tr>
-    <td class="time"><?php echo substr(date_format(date_create($game['time']), 'l'), 0, 2) . ' ' . date_format(date_create($game['time']), 'd.h H:i'); ?></td>
+    <td class="time"><?php echo date_format(date_create($game['time']), 'l j.n H:i'); ?></td>
     <td class="home"><?php echo $game['home']; ?></td>
     <td class="f32">
         <div class="flag <?php echo $game['home_abbr']; ?>">&nbsp;</div>
@@ -53,13 +53,13 @@ $.blockUI({
         color: '#fff'
     },
     fadeIn: 0,
-    fadeOut: 400
+    fadeOut: 200
 });
 
-setTimeout(initialize, 5);
+setTimeout(initialize, 50);
 
 function posted(data, status) {
-    if (status != success) {
+    if (status != 'success') {
         alert(data);
     }
 }
@@ -96,8 +96,8 @@ function initialize() {
         var time = new Date(parseInt($(this).html()));
         $(this).countdown({
             until: time,
-            format: 'hms',
-            tickInterval: 5,
+            format: 'hm',
+            tickInterval: 10,
             onExpiry: function() {
             }
         });
