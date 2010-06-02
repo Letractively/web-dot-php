@@ -285,7 +285,7 @@ namespace {
             return preg_replace($pattern, $replacement, $subject);
         };
     }
-    function specialchars($quote = ENT_NOQUOTES, $charset = "UTF-8", $double = true) {
+    function specialchars($quote = ENT_NOQUOTES, $charset = 'UTF-8', $double = true) {
         return function($value) use ($quote, $charset, $double) {
             return htmlspecialchars($value, $quote, $charset, $double);
         };
