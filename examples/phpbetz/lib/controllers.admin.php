@@ -12,7 +12,7 @@ post('/admin/news', function() {
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
     if($form->validate()) {
         $db = new db;
-        $db->news->add($form->title, $form->content, $form->level, username, $form->slug);
+        $db->news->add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
         $db->close();
         redirect('~/');
     }
