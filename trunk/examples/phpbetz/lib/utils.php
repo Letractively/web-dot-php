@@ -1,6 +1,6 @@
 <?php
 function password($password) {
-    return hash_hmac('sha512', $password, config::secret);
+    return hash_hmac('sha512', $password, secret);
 }
 function login($username, $remember = false) {
     @session_regenerate_id(true);
@@ -13,9 +13,7 @@ function remember($username) {
     $expire = date_modify(date_create(), '+40 day');
     $cookie = urlencode(sprintf('%s:%s', $username, $key));
     setcookie ('logged-in-cookie', $cookie, date_timestamp_get($expire), '/', '', false, true);
-    $db = new db;
-    $db->users->remember($username, $key, date_format($expire, DATE_SQLITE));
-    $db->close();
+    db\users\remember($username, $key, date_format($expire, DATE_SQLITE));
 }
 function logoff() {
     $_SESSION = array();
@@ -31,9 +29,7 @@ function logoff() {
         if (count($cookie) == 2) {
             $username = $parts[0];
             $key = $parts[1];
-            $db = new db;
-            $db->users->forget($username, $key);
-            $db->close();
+            db\users\forget($username, $key);
         }
         setcookie ('logged-in-cookie', '', $expire, '/', '', false, true);
     }
@@ -41,9 +37,7 @@ function logoff() {
 function authenticate() {
     if (isset($_SESSION['logged-in-username'])) {
         $username = $_SESSION['logged-in-username'];
-        $db = new db;
-        $user = $db->users->authenticate($username);
-        $db->close();
+        $user = db\users\authenticate($username);
         if ($user) {
             define('authenticated', true);
             define('admin', $user['admin'] === 1);
@@ -58,9 +52,7 @@ function authenticate() {
         if (count($parts) == 2) {
             $username = $parts[0];
             $key = $parts[1];
-            $db = new db;
-            $user = $db->users->remembered($username, $key);
-            $db->close();
+            $user = db\users\remembered($username, $key);
             if ($user) {
                 $_SESSION['logged-in-username'] = $username;
                 define('authenticated', true);

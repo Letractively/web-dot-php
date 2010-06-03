@@ -12,18 +12,14 @@ post('/admin/news', function() {
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
     $form->level->filter('int');
     if($form->validate()) {
-        $db = new db;
-        $db->news->add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
-        $db->close();
+        db\news\add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
         redirect('~/');
     }
 });
 
 get('/admin/teams', function() {
     if (!admin) redirect('~/unauthorized');
-    $db = new db;
     $view = new view('views/admin.teams.phtml');
-    $view->teams = $db->teams->all();
-    $db->close();
+    $view->teams = db\teams\all();
     echo $view;
 });

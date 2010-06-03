@@ -1,15 +1,18 @@
 <?php
-class chat extends dbo {
+namespace db\chat {
     function post($user, $message) {
-        $stm = $this->db->prepare('INSERT INTO chat (time, user, message) VALUES (:time, :user, :message)');
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $stm = $db->prepare('INSERT INTO chat (time, user, message) VALUES (:time, :user, :message)');
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
         $stm->bindValue(':message', $message, SQLITE3_TEXT);
         $stm->execute();
         $stm->close();
+        $db->close();
     }
     function latest($limit, &$last) {
-        $stm = $this->db->prepare('SELECT * FROM chat ORDER BY id DESC LIMIT :limit');
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $stm = $db->prepare('SELECT * FROM chat ORDER BY id DESC LIMIT :limit');
         $stm->bindValue(':limit', $limit, SQLITE3_INTEGER);
         $res = $stm->execute();
         $messages = array();
@@ -23,10 +26,12 @@ class chat extends dbo {
         }
         $res->finalize();
         $stm->close();
+        $db->close();
         return array_reverse($messages);
     }
     function poll(&$last) {
-        $stm = $this->db->prepare('SELECT * FROM chat WHERE id > :id ORDER BY id');
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $stm = $db->prepare('SELECT * FROM chat WHERE id > :id ORDER BY id');
         $stm->bindValue(':id', $last, SQLITE3_INTEGER);
         $res = $stm->execute();
         $messages = array();
@@ -36,6 +41,7 @@ class chat extends dbo {
         }
         $res->finalize();
         $stm->close();
+        $db->close();
         return $messages;
     }
 }

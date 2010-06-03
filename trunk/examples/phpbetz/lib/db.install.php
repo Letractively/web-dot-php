@@ -1,5 +1,5 @@
 <?php
-class install extends dbo {
+namespace db\install {
     function tables() {
         $sql =<<<'SQL'
         DROP TABLE IF EXISTS teams;
@@ -110,7 +110,9 @@ class install extends dbo {
             CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
         );
 SQL;
-        $this->db->exec($sql);
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+        $db->exec($sql);
+        $db->close();
     }
     function teams() {
         $sql =<<<'SQL'
@@ -147,7 +149,9 @@ SQL;
         INSERT INTO teams (name, abbr) VALUES ('Uruguay', 'URU');
         INSERT INTO teams (name, abbr) VALUES ('USA', 'USA');
 SQL;
-        $this->db->exec($sql);
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
     }
     function games() {
         $sql =<<<'SQL'
@@ -200,6 +204,8 @@ SQL;
         INSERT INTO games (home, road, time) VALUES ('Chile', 'Espanja', '2010-06-25T21:30:00');
         INSERT INTO games (home, road, time) VALUES ('Sveitsi', 'Honduras', '2010-06-25T21:30:00');
 SQL;
-        $this->db->exec($sql);
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
     }
 }
