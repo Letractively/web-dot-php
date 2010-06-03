@@ -1,8 +1,8 @@
 <?php
 class news extends dbo {
     function all() {
-        $res = $this->db->query('SELECT * FROM news ORDER BY time DESC');
         $news = array();
+        $res = $this->db->query('SELECT * FROM news ORDER BY time DESC');
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $news[] = $row;
         $res->finalize();
         return $news;

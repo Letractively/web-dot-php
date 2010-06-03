@@ -91,7 +91,8 @@ class users extends dbo {
         $stm->bindValue(':expire', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->execute();
         $stm->close();
-        if ($this->db->changes() > 0) return $this->authenticate($username);
+        $changes = $this->db->changes();
+        if ($changes > 0) return $this->authenticate($username);
         return false;
     }
 }

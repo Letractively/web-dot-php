@@ -77,8 +77,8 @@ function authenticate() {
     define('username', 'anonymous');
 }
 function weekday($date, $length = null) {
-    $wn = (int)date_format($date, 'w');
-    switch ($wn) {
+    $weekdaynum = (int)date_format($date, 'w');
+    switch ($weekdaynum) {
         case 0: $date = 'Sunnuntai'; break;
         case 1: $date = 'Maanantai'; break;
         case 2: $date = 'Tiistai'; break;
@@ -87,5 +87,6 @@ function weekday($date, $length = null) {
         case 5: $date = 'Perjantai'; break;
         case 6: $date = 'Lauantai'; break;
     }
+    if ($length == null) return $date;
     return substr($date, 0, $length);
 }
