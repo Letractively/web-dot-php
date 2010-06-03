@@ -28,9 +28,11 @@
                 <li><a href="<?php echo url('~/bets/games'); ?>"><span>Otteluveikkaus</span></a></li>
                 <li><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki &trade;</span></a></li>
                 <li><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
+                <li><a href="<?php echo url('~/points'); ?>"><span>Pistetilanne</span></a></li>
                 <li><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li>
                 <li><a href="<?php echo url('~/rules'); ?>"><span>Säännöt</span></a></li>
-                <li><a href="<?php echo url('~/chat'); ?>"><span>Chatti</span></a></li>
+                <li<?php if (!admin) echo ' class="last"'?><a href="<?php echo url('~/chat'); ?>"><span>Chatti</span></a></li>
+                <?php if (admin): ?>
                 <li class="last" >
                     <a href="#"><span>Ylläpito</span></a>
                     <ul>
@@ -41,6 +43,7 @@
                         <li><a href="<?php echo url('~/admin/news'); ?>"><span>Uutiset</span></a></li>
                     </ul>
                 </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

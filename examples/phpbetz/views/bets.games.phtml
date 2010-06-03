@@ -6,14 +6,15 @@
 <hr>
 <table id="bets" style="display: none;">
 <tr>
-    <th>Ottelu pelataan</th>
+    <th>Päivämäärä</th>
     <th colspan="5">Ottelu</th>
     <th>H-hetki</th>
     <th>Veikkaus</th>
 </tr>
-<?php foreach($games as $game): ?>
+<?php
+foreach($games as $game): $date = date_create($game['time']); ?>
 <tr>
-    <td class="time"><?php echo date_format(date_create($game['time']), 'l j.n H:i'); ?></td>
+    <td class="time"><?php echo weekday($date, 2) . ' ' . date_format($date, 'j.n H:i'); ?></td>
     <td class="home"><?php echo $game['home']; ?></td>
     <td class="f32">
         <div class="flag <?php echo $game['home_abbr']; ?>">&nbsp;</div>
@@ -23,7 +24,7 @@
         <div class="flag <?php echo $game['road_abbr']; ?>">&nbsp;</div>
     </td>
     <td class="road"><?php echo $game['road']; ?></td>
-    <td class="countdown"><span style="font-weight: bold;" class="counter"><?php echo date_format(date_create($game['time']), 'U'); ?>000</span></td>
+    <td class="countdown"><span style="font-weight: bold;" class="counter"><?php echo date_format($date, 'U'); ?>000</span></td>
     <td class="bet">
         <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
             <input  id="home-<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
@@ -89,23 +90,21 @@ function initialize() {
     });
 
     $('form').buttonset();
-    /*
     $('.counter').each(function() {
         var time = new Date(parseInt($(this).html()));
         $(this).countdown({
             until: time,
-            format: 'hm',
+            format: 'dhm',
             tickInterval: 10,
             onExpiry: function() {
             }
         });
     });
-    */
     $('#bets').toggle();
 
     $.unblockUI();
 }
-/*
+
 var newYear = new Date();
 newYear = new Date(newYear.getTime() + 50000);
 $('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {
@@ -115,6 +114,5 @@ $('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5
         $(this).button('disable');
     });
 }});
-*/
 </script>
 <?php block(); ?>

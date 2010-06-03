@@ -76,3 +76,16 @@ function authenticate() {
     define('admin', false);
     define('username', 'anonymous');
 }
+function weekday($date, $length = null) {
+    $wn = (int)date_format($date, 'w');
+    switch ($wn) {
+        case 0: $date = 'Sunnuntai'; break;
+        case 1: $date = 'Maanantai'; break;
+        case 2: $date = 'Tiistai'; break;
+        case 3: $date = 'Keskiviikko'; break;
+        case 4: $date = 'Torstai'; break;
+        case 5: $date = 'Perjantai'; break;
+        case 6: $date = 'Lauantai'; break;
+    }
+    return substr($date, 0, $length);
+}
