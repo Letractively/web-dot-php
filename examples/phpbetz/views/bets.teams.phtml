@@ -37,12 +37,16 @@ hr.thin {
         Veikkaa turnauksen voittajaa klikkaamalla joukkueen lippua.
     </p>
 </div>
-<div class="grid_3 omega team-bet" id="first-bet"></div>
+<div class="grid_3 omega team-bet" id="winner-bet">
+    <div class="f32">
+        <h4 class="flag <?php echo $winner_abbr; ?>"><?php echo $winner; ?></h4>
+    </div>
+</div>
 <div class="clear"></div>
-<form id="first" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
+<form id="winner" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="first-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
-    <label for="first-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
+    <input  id="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($winner === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
+    <label for="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
 <br>
@@ -53,11 +57,15 @@ hr.thin {
         Veikkaa turnauksen hopeamitalistia klikkaamalla joukkueen lippua.
     </p>
 </div>
-<div class="grid_3 omega team-bet" id="second-bet"></div>
+<div class="grid_3 omega team-bet" id="second-bet">
+    <div class="f32">
+        <h4 class="flag <?php echo $second_abbr; ?>"><?php echo $second; ?></h4>
+    </div>
+</div>
 <div class="clear"></div>
 <form id="second" method="post" action="<?php echo url('~/bets/teams/2'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
+    <input  id="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($second === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
     <label for="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
@@ -69,16 +77,26 @@ hr.thin {
         Veikkaa turnauksen pronssimitalisia klikkaamalla joukkueen lippua.
     </p>
 </div>
-<div class="grid_3 omega team-bet" id="third-bet"></div>
+<div class="grid_3 omega team-bet" id="third-bet">
+    <div class="f32">
+        <h4 class="flag <?php echo $third_abbr; ?>"><?php echo $third; ?></h4>
+    </div>
+</div>
 <div class="clear"></div>
 <form id="third" method="post" action="<?php echo url('~/bets/teams/3'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" class="flag <?php echo $team['abbr']; ?>">
+    <input  id="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($third === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
     <label for="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
 <?php block($scripts); ?>
 <script>
+function posted(data, status) {
+    if (status != 'success') {
+        alert('Kolmen kärki&trade; veikkauksen tallennuksessa tapahtui virhe. Yritä uudelleen.');
+    }
+}
+
 $('input:radio').each(function() {
     var input = $(this);
     input.button({
@@ -89,6 +107,7 @@ $('input:radio').each(function() {
     });
     var form = $(this.form);
     input.click(function() {
+        $.post(form.attr('action'), form.serialize(), posted);
         $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + input.attr('value') + '\']').button('disable');
         $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + form.data('value') + '\']').button('enable');
         form.data('value', input.attr('value'));
@@ -97,7 +116,13 @@ $('input:radio').each(function() {
 });
 
 $('label').qtip();
-$('#first').toggle();
+$('form:not(#winner) input:radio[value=\'<?php echo $winner; ?>\']').button('disable');
+$('form:not(#second) input:radio[value=\'<?php echo $second; ?>\']').button('disable');
+$('form:not(#third) input:radio[value=\'<?php echo $third; ?>\']').button('disable');
+$('#winner').data('value', '<?php echo $winner; ?>');
+$('#second').data('value', '<?php echo $second; ?>');
+$('#third').data('value', '<?php echo $third; ?>');
+$('#winner').toggle();
 $('#second').toggle();
 $('#third').toggle();
 </script>
