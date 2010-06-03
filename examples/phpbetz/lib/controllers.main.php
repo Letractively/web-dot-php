@@ -14,9 +14,7 @@ get('/rules', function() {
 get('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
     $last = 0;
-    $db = new db;
-    $messages = $db->chat->latest(50, $last);
-    $db->close();
+    $messages = db\chat\latest(50, $last);
     $view = new view('views/chat.phtml');
     $_SESSION['last-chat-message-id'] = $last;
     if (count($messages) > 0) {
@@ -32,18 +30,14 @@ post('/chat', function() {
     $form = new form($_POST);
     $form->message->filter('trim', minlength(1), specialchars(), 'links', 'smileys');
     if ($form->validate()) {
-        $db = new db;
-        $db->chat->post(username, $form->message->value);
-        $db->close();
+        db\chat\post(username, $form->message->value);
     }
 });
 
 get('/chat/poll', function() {
     if (!authenticated) return;
     $last = isset($_SESSION['last-chat-message-id']) ? $_SESSION['last-chat-message-id'] : 0;
-    $db = new db;
-    $messages = $db->chat->poll($last);
-    $db->close();
+    $messages = db\chat\poll($last);
     if (count($messages) === 0) return status(304);
     $_SESSION['last-chat-message-id'] = $last;
     $view = new view('views/chat.messages.phtml');

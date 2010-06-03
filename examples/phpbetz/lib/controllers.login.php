@@ -1,10 +1,8 @@
 <?php
 get('/', function() {
     if (authenticated) {
-        $db = new db;
         $view = new view('views/main.phtml');
-        $view->news = $db->news->all();
-        $db->close();
+        $view->news = db\news\all();
         echo $view;
     } else {
         $view = new view('views/login.phtml');
@@ -16,13 +14,10 @@ post('/', function() {
     $form = new form($_POST);
     $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', specialchars());
     $form->password->filter(length(6, 20), 'password');
-    $db = new db;
-    if ($form->validate() && $db->users->login($form->username, $form->password)) {
-        $db->close();
+    if ($form->validate() && db\users\login($form->username, $form->password)) {
         login($form->username->value, isset($_POST['remember']));
         redirect('~/');
     }
-    $db->close();
     $view = new view('views/login.phtml');
     $view->invalid = true;
     echo $view;
@@ -43,15 +38,11 @@ post('/registration', function() {
     $form->email->filter('trim', 'email', specialchars());
     $view = new view('views/registration.phtml');
     if ($form->validate()) {
-        $db = new db;
-        $db->users->register($form->username, password($form->password1), $form->email);
-        $changes = $db->changes();
+        $changes = db\users\register($form->username, password($form->password1), $form->email);
         if ($changes === 0) {
-            if ($db->users->username_taken($form->username)) $view->username_taken = true;
-            if ($db->users->email_taken($form->email)) $view->email_taken = true;
-            $db->close();
+            if (db\users\username_taken($form->username)) $view->username_taken = true;
+            if (db\users\email_taken($form->email)) $view->email_taken = true;
         } else {
-            $db->close();
             login($form->username->value, true);
             redirect('~/');
         }
@@ -81,11 +72,9 @@ get('/registration/google/confirm', function() {
         $form->username = $_SESSION['google-fname'];
         $form->email = $_SESSION['google-email'];
         unset($_SESSION['google-fname']);
-        $db = new db;
         $view = new view('views/registration.google.phtml');
         $view->form = $form;
-        if ($db->users->email_taken($form->email)) $view->email_taken = true;
-        $db->close();
+        if (db\users\email_taken($form->email)) $view->email_taken = true;
         echo $view;
     } else {
         redirect('~/');
@@ -102,15 +91,11 @@ post('/registration/google/confirm', function() {
     $view = new view('views/registration.google.phtml');
     $view->form = $form;
     if ($form->validate()) {
-        $db = new db;
-        $db->users->claim($form->username, $claim, $form->email);
-        $changes = $db->changes();
+        $changes = db\users\claim($form->username, $claim, $form->email);
         if ($changes === 0) {
-            if ($db->users->username_taken($form->username)) $view->username_taken = true;
-            if ($db->users->email_taken($form->email)) $view->email_taken = true;
-            $db->close();
+            if (db\users\username_taken($form->username)) $view->username_taken = true;
+            if (db\users\email_taken($form->email)) $view->email_taken = true;
         } else {
-            $db->close();
             unset($_SESSION['google-claim'], $_SESSION['google-email']);
             login($form->username->value, true);
             redirect('~/');
@@ -138,14 +123,11 @@ get('/login/google', function() {
         $form->openid_op_endpoint->filter('url');
         if ($form->validate() && openid_check($form->openid_op_endpoint)) {
             $claim = password($form->openid_claimed_id);
-            $db = new db;
-            $username = $db->users->claimed($claim);
+            $username = db\users\claimed($claim);
             if ($username !== false) {
-                $db->close();
                 login($username, true);
                 redirect('~/');
             }
-            $db->close();
             if ($login == 'login') {
                 flash('google-not-registered', true);
                 redirect('~/registration');
