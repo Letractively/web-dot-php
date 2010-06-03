@@ -23,7 +23,7 @@
         <div class="flag <?php echo $game['road_abbr']; ?>">&nbsp;</div>
     </td>
     <td class="road"><?php echo $game['road']; ?></td>
-    <td class="countdown"><span style="font-weight: bold;" class="counter"><?php echo date_timestamp_get(date_create($game['time'])) * 1000; ?></span></td>
+    <td class="countdown"><span style="font-weight: bold;" class="counter"><?php echo date_format(date_create($game['time']), 'U'); ?>000</span></td>
     <td class="bet">
         <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
             <input  id="home-<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
