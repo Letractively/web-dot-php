@@ -10,15 +10,14 @@ chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
 
 $.ajaxSetup({cache: false});
 
-setTimeout(function() {
+setInterval(function() {
     $.get(poll, function(data) {
         if (data.length == 0) return;
         var scroll = chat.data('jScrollPanePosition') == chat.data('jScrollPaneMaxScroll');
         chat.append(data).jScrollPane();
         if (scroll) chat[0].scrollTo(chat.data('jScrollPaneMaxScroll'));
     }, 'text');
-    setTimeout(arguments.callee, 1000);
-}, 1000);
+}, 1500);
 
 form.submit(function() {
     $.post(href, { message: message.val() });

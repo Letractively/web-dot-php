@@ -114,6 +114,58 @@ SQL;
         $db->exec($sql);
         $db->close();
     }
+    function views() {
+        $sql =<<<'SQL'
+        DROP VIEW IF EXISTS view_games;
+        CREATE VIEW view_games AS
+        SELECT
+            g.id AS id,
+            g.time AS time,
+            g.home AS home,
+            h.abbr AS home_abbr,
+            g.road AS road,
+            r.abbr AS road_abbr
+        FROM
+            games AS g
+        INNER JOIN
+            teams AS h
+        ON
+            g.home = h.name
+        INNER JOIN
+            teams AS r
+        ON
+            g.road = r.name;
+
+        DROP VIEW IF EXISTS view_singlebets;
+        CREATE VIEW view_singlebets AS
+        SELECT
+            s.user,
+            s.winner,
+            t.abbr AS winner_abbr,
+            s.second,
+            t2.abbr AS second_abbr,
+            s.third,
+            t3.abbr AS third_abbr,
+            s.scorer
+        FROM
+            singlebets s
+        LEFT OUTER JOIN
+            teams t
+        ON
+            s.winner = t.name
+        LEFT OUTER JOIN
+            teams t2
+        ON
+            s.second = t2.name
+        LEFT OUTER JOIN
+            teams t3
+        ON
+            s.third = t3.name;
+SQL;
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
+    }
     function teams() {
         $sql =<<<'SQL'
         INSERT INTO teams (name, abbr) VALUES ('Algeria', 'ALG');
