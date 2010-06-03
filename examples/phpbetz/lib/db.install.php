@@ -119,7 +119,7 @@ SQL;
         DROP VIEW IF EXISTS view_games;
         CREATE VIEW view_games AS
         SELECT
-            g.id AS id,
+            g.id   AS id,
             g.time AS time,
             g.home AS home,
             h.abbr AS home_abbr,
@@ -139,14 +139,14 @@ SQL;
         DROP VIEW IF EXISTS view_singlebets;
         CREATE VIEW view_singlebets AS
         SELECT
-            s.user,
-            s.winner,
-            t.abbr AS winner_abbr,
-            s.second,
-            t2.abbr AS second_abbr,
-            s.third,
-            t3.abbr AS third_abbr,
-            s.scorer
+            s.user   AS user,
+            s.winner AS winner,
+            t.abbr   AS winner_abbr,
+            s.second AS second,
+            t2.abbr  AS second_abbr,
+            s.third  AS third,
+            t3.abbr  AS third_abbr,
+            s.scorer AS scorer
         FROM
             singlebets s
         LEFT OUTER JOIN
