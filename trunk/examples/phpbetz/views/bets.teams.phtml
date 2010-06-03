@@ -38,9 +38,11 @@ hr.thin {
     </p>
 </div>
 <div class="grid_3 omega team-bet" id="winner-bet">
+    <?php if (isset($winner)): ?>
     <div class="f32">
         <h4 class="flag <?php echo $winner_abbr; ?>"><?php echo $winner; ?></h4>
     </div>
+    <?php endif; ?>
 </div>
 <div class="clear"></div>
 <form id="winner" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
@@ -58,9 +60,11 @@ hr.thin {
     </p>
 </div>
 <div class="grid_3 omega team-bet" id="second-bet">
+    <?php if (isset($second)): ?>
     <div class="f32">
         <h4 class="flag <?php echo $second_abbr; ?>"><?php echo $second; ?></h4>
     </div>
+    <?php endif; ?>
 </div>
 <div class="clear"></div>
 <form id="second" method="post" action="<?php echo url('~/bets/teams/2'); ?>" style="display: none;" class="f32">
@@ -78,9 +82,11 @@ hr.thin {
     </p>
 </div>
 <div class="grid_3 omega team-bet" id="third-bet">
+    <?php if (isset($third)): ?>
     <div class="f32">
         <h4 class="flag <?php echo $third_abbr; ?>"><?php echo $third; ?></h4>
     </div>
+    <?php endif; ?>
 </div>
 <div class="clear"></div>
 <form id="third" method="post" action="<?php echo url('~/bets/teams/3'); ?>" style="display: none;" class="f32">
