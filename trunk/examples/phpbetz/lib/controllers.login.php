@@ -159,10 +159,8 @@ get('/login/google', function() {
                     redirect('~/registration/google/confirm');
                 }
             }
-        } else {
-            if ($login == 'registration') {
-                redirect('~/registration');
-            }
+        } elseif ($login == 'registration') {
+            redirect('~/registration');
         }
     }
     redirect('~/');
