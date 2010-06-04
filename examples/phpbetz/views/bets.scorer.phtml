@@ -1,15 +1,49 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
 <?php block(); ?>
-<h1><?php echo $title; ?></h1>
+
+<div class="grid_6 alpha">
+    <h1><?php echo $title; ?></h1>
+</div>
+<div class="grid_3 omega team-bet" id="scorer-bet">
+    <?php if (isset($single['scorer'])): ?>
+        <h4><?php echo $single['scorer']; ?></h4>
+    <?php endif; ?>
+</div>
+<div class="clear"></div>
 <hr>
+<?php if (isset($saved)): ?>
+<div class="success">
+    Maalikuningas veikkauksesi on tallennettu.
+</div>
+<?php endif; ?>
+<?php if (isset($error)): ?>
+<div class="error">
+    Maalikuninkuusveikkauksesi on virheellinen. Syötä vähintään kolme merkkiä.
+</div>
+<?php endif; ?>
+<?php if (!isset($single['scorer'])): ?>
+<div class="notice">
+    Maalikuninkuus veikkaustasi ei ole vielä rekisteröity. Veikkaa maalikuningasta!
+</div>
+<?php endif; ?>
 <div id="scorer-form" class="ui-widget">
     <form id="form" method="POST" action="<?php echo url('~/bets/scorer'); ?>">
         <div class="grid_2 alpha"><label>Maalikuningas:</label></div>
-        <div class="grid_4"><input id="scorer" name="scorer" type="text" style="display: block; width: 100%;" /></div>
-        <div class="grid_3 omega"><input id="send" type="submit" value="&nbsp;Veikkaa maalikuningasta&nbsp;" /></div>
+        <div class="grid_4"><input id="scorer" name="scorer" type="text" value="<?php echo $form->scorer ?>" style="display: block; width: 100%;" /></div>
+        <div class="grid_3 omega">
+            <?php if (isset($single['scorer']) && strlen($single['scorer']) > 0): ?>
+                <input id="send" type="submit" value="&nbsp;&nbsp;&nbsp;Vaihda maalikuningas&nbsp;&nbsp;&nbsp;">
+            <?php else: ?>
+                <input id="send" type="submit" value="&nbsp;Veikkaa maalikuningasta&nbsp;">
+            <?php endif; ?>
+        </div>
     </form>
 </div>
+<div class="clear"></div>
+<br>
+<h2>Turnauksen maalintekijät</h2>
+<p>Turnauksessa ei ole tehty vielä yhtään maalia tai maaleja ei ole vielä rekisteröity hupilyöntijärjestelmään.</p>
 <?php block($scripts); ?>
 <script>
 $('#scorer').focus();
