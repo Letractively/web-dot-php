@@ -72,7 +72,7 @@ function authenticate() {
 
 function portlets() {
     view::register('single', db\bets\single(username));
-    view::register('upcoming', db\bets\games(username, 4));
+    view::register('upcoming', db\bets\games(username, 2));
 }
 
 function weekday($date, $length = null) {
