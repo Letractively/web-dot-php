@@ -1,7 +1,40 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
+<link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<table id="users" class="tablesorter">
+    <thead>
+    <tr>
+        <th>Nimi</th>
+        <th>Sähköposti</th>
+        <th>Ylläpitäjä</th>
+        <th>Aktiivinen</th>
+        <th>Maksanut</th>
+    </tr>
+    </thead>
+    <?php foreach($users as $user): ?>
+    <tr>
+        <td><?php echo $user['username']; ?></td>
+        <td><?php echo $user['email']; ?></td>
+        <td><?php echo $user['admin']; ?></td>
+        <td><?php echo $user['active']; ?></td>
+        <td>ei</td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+
 <?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
+<script src="<?php echo url('~/js/jquery.editinplace.js'); ?>"></script>
+<script>
+$(document).ready(function() {
+    $('#users').tablesorter();
+    $('.editable').editInPlace({
+        url: 'http://localhost',
+        params: 'name=david'
+    });
+});
+</script>
 <?php block(); ?>
