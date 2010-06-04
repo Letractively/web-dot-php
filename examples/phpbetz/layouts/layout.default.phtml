@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="<?php echo url('~/css/flags.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/960.css'); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/menu.css'); ?>">
-<link rel="stylesheet" href="<?php echo url('~/css/main.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/main.css?') . md5_file('css/main.css'); ?>">
 <?php if (isset($css)) echo $css; ?>
 </head>
 <body id="default">
@@ -138,7 +138,7 @@
 <script src="<?php echo url('~/js/jquery.menu.js'); ?>"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>
 <script src="<?php echo url('~/js/jquery.qtip.js'); ?>"></script>
-<script src="<?php echo url('~/js/main.js'); ?>"></script>
+<script src="<?php echo url('~/js/main.js') . md5_file('js/main.js'); ?>"></script>
 <?php if (isset($scripts)) echo $scripts; ?>
 </body>
 </html>
