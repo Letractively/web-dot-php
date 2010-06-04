@@ -58,11 +58,9 @@ body {
 #footer a {
     color: #808385;
 }
-
 #footer a:hover {
     color: #f0f0f0;
 }
-
 #footer .time {
     color: #808385;
 }
@@ -82,7 +80,7 @@ body {
 #chat img {
     margin-bottom: -4px;
 }
-input#message {
+input#message, input#scorer {
     margin-top: 2px;
     line-height: 23px;
     font-size: 1.25em;
@@ -115,10 +113,6 @@ input#message {
 }
 img.smiley {
     cursor: pointer;
-}
-
-label.ui-button {
-    
 }
 table#bets {
     width: 100%;
@@ -163,7 +157,17 @@ table#bets tr td.countdown {
     width: 125px;
     line-height: 18px;
 }
-
+#scorer-form div label {
+    line-height: 32px;
+    font-family: Georgia, serif;
+    font-size: 1.3em;
+}
+#scorer-bet h4 {
+    margin-top: 4px;
+    line-height: 32px;
+    background: url(../img/scorer.png) no-repeat;
+    padding-left: 40px;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

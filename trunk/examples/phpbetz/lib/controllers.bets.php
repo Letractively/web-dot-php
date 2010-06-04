@@ -61,7 +61,11 @@ post('/bets/teams/#position', function($position) {
 get('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/bets.scorer.phtml');
+    if (isset($_SESSION['saved'])) {
+        $view->saved = true;
+    }
     $view->title = 'Maalikuninkuus';
+    $view->form = new form();
     $view->menu = 'bets/scorer';
     echo $view;
 });
@@ -69,13 +73,18 @@ get('/bets/scorer', function() {
 post('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
     $form = new form($_POST);
-    $form->scorer->filter(minlength(1));
+    $form->scorer->filter('trim', specialchars(), minlength(3));
     $view = new view('views/bets.scorer.phtml');
     if ($form->validate()) {
         db\bets\scorer(username, $form->scorer);
-        $view->saved = true;
+        flash('saved', true);
+        redirect('~/bets/scorer');
+    } else {
+        $view->title = 'Maalikuninkuus';
+        $view->menu = 'bets/scorer';
+        $view->form = $form;
+        $view->error = true;
+        echo $view;
+
     }
-    $view->title = 'Maalikuninkuus';
-    $view->menu = 'bets/scorer';
-    echo $view;
 });

@@ -29,8 +29,10 @@ foreach($games as $game): $date = date_create($game['time']); ?>
         <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
             <input  id="home-<?php echo $game['id']; ?>" type="radio" name="score" value="1" <?php if ($game['score'] == '1') echo 'checked'; ?> class="flag <?php echo $game['home_abbr']; ?>">
             <label for="home-<?php echo $game['id']; ?>"><?php echo $game['home']; ?></label>
+            <?php if ($game['draw'] === 1): ?>
             <input  id="draw-<?php echo $game['id']; ?>" type="radio" name="score" value="X" <?php if ($game['score'] == 'X') echo 'checked'; ?>>
             <label for="draw-<?php echo $game['id']; ?>">Tasapeli</label>
+            <?php endif; ?>
             <input  id="road-<?php echo $game['id']; ?>" type="radio" name="score" value="2" <?php if ($game['score'] == '2') echo 'checked'; ?> class="flag <?php echo $game['road_abbr']; ?>">
             <label for="road-<?php echo $game['id']; ?>"><?php echo $game['road']; ?></label>
         </form>

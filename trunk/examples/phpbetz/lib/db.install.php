@@ -17,10 +17,12 @@ namespace db\install {
             home_goals      INTEGER,
             road            TEXT        NOT NULL,
             road_goals      INTEGER,
+            draw            INTERGER    NOT NULL,
             time            TEXT        NOT NULL,
             CONSTRAINT pk_games         PRIMARY KEY (id),
             CONSTRAINT fk_teams_home    FOREIGN KEY (home) REFERENCES teams (name),
-            CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name)
+            CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name),
+            CONSTRAINT df_draw          DEFAUTL 0
         );
 
         DROP TABLE IF EXISTS scorers;
@@ -121,6 +123,7 @@ SQL;
         SELECT
             g.id   AS id,
             g.time AS time,
+            g.draw AS draw,
             g.home AS home,
             h.abbr AS home_abbr,
             g.road AS road,
