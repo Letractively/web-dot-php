@@ -3,5 +3,15 @@
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<div id="scorer-form" class="ui-widget">
+    <form id="form" method="POST" action="<?php echo url('~/bets/scorer'); ?>">
+        <div class="grid_2 alpha"><label>Maalikuningas:</label></div>
+        <div class="grid_4"><input id="scorer" name="scorer" type="text" style="display: block; width: 100%;" /></div>
+        <div class="grid_3 omega"><input id="send" type="submit" value="&nbsp;Veikkaa maalikuningasta&nbsp;" /></div>
+    </form>
+</div>
 <?php block($scripts); ?>
+<script>
+$('#scorer').focus();
+</script>
 <?php block(); ?>

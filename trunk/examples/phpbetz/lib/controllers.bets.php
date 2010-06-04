@@ -65,3 +65,17 @@ get('/bets/scorer', function() {
     $view->menu = 'bets/scorer';
     echo $view;
 });
+
+post('/bets/scorer', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->scorer->filter(minlength(1));
+    $view = new view('views/bets.scorer.phtml');
+    if ($form->validate()) {
+        db\bets\scorer(username, $form->scorer);
+        $view->saved = true;
+    }
+    $view->title = 'Maalikuninkuus';
+    $view->menu = 'bets/scorer';
+    echo $view;
+});
