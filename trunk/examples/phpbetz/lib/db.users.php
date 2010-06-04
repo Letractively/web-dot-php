@@ -1,5 +1,14 @@
 <?php
 namespace db\users {
+    function all() {
+        $users = array();
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $res = $db->query('SELECT * FROM users ORDER BY username ASC');
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $row;
+        $res->finalize();
+        $db->close();
+        return $users;
+    }
     function login($username, $password) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         $stm = $db->prepare('SELECT COUNT(*) FROM users WHERE username = :username AND password = :password AND active = :active');

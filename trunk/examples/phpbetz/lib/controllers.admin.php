@@ -54,9 +54,10 @@ get('/admin/scorers', function() {
 
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
-    $view = new view('views/admin.games.phtml');
+    $view = new view('views/admin.users.phtml');
     $view->title = 'Käyttäjien ylläpito';
     $view->menu = 'admin/users';
+    $view->users = db\users\all();
     echo $view;
 });
 
