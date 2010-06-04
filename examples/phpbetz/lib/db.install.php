@@ -260,4 +260,10 @@ SQL;
         $db->exec($sql);
         $db->close();
     }
+    function admins() {
+        $sql = 'UPDATE users SET admin = 1 WHERE username IN (\'bungle\', \'matias\');';
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
+    }
 }

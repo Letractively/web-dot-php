@@ -367,9 +367,6 @@ namespace {
         $title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
         return $title;
     }
-    function title() {
-        return htmlspecialchars(implode(' - ', func_get_args()), ENT_QUOTES, 'UTF-8');
-    }
     function block(&$block = false) {
         if ($block === false) return ob_end_clean();
         ob_start(function($buffer) use (&$block) { $block = $buffer; });

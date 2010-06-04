@@ -2,6 +2,8 @@
 get('/', function() {
     if (authenticated) {
         $view = new view('views/main.phtml');
+        $view->title = 'Etusivu';
+        $view->menu = 'main';
         $view->news = db\news\all();
         echo $view;
     } else {

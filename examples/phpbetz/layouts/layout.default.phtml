@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <?php if (isset($meta)) echo $meta; ?>
-<title></title>
+<title><?php echo isset($title) ? $title . ' - World Cup 2010 -hupilyönti' : 'World Cup 2010 -hupilyönti'; ?></title>
 <link rel="shortcut icon" href="<?php echo url('~/favicon.ico', true); ?>">
 <link rel="stylesheet" href="<?php echo url('~/css/typography.css'); ?>">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/dark-hive/jquery-ui.css">
@@ -24,24 +24,26 @@
     <div id="navigation">
         <div id="menu">
             <ul class="menu">
-                <li><a href="<?php echo url('~/'); ?>" class="parent"><span>Etusivu</span></a></li>
-                <li><a href="<?php echo url('~/bets/games'); ?>"><span>Otteluveikkaus</span></a></li>
-                <li><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki &trade;</span></a></li>
-                <li><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
-                <li><a href="<?php echo url('~/points'); ?>"><span>Pistetilanne</span></a></li>
-                <li><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li>
-                <li><a href="<?php echo url('~/rules'); ?>"><span>Säännöt</span></a></li>
-                <li<?php if (!admin) echo ' class="last"'?>><a href="<?php echo url('~/chat'); ?>"><span>Chatti</span></a></li>
+                <li<?php if ($menu == 'main') echo ' class="current"' ?>><a href="<?php echo url('~/'); ?>" class="parent"><span>Etusivu</span></a></li>
+                <li<?php if ($menu == 'bets/games') echo ' class="current"' ?>><a href="<?php echo url('~/bets/games'); ?>"><span>Otteluveikkaus</span></a></li>
+                <li<?php if ($menu == 'bets/teams') echo ' class="current"' ?>><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki &trade;</span></a></li>
+                <li<?php if ($menu == 'bets/scorer') echo ' class="current"' ?>><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
+                <li<?php if ($menu == 'points') echo ' class="current"' ?>><a href="<?php echo url('~/points'); ?>"><span>Pistetilanne</span></a></li>
+                <li<?php if ($menu == 'stats') echo ' class="current"' ?>><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li>
+                <li<?php if ($menu == 'rules') echo ' class="current"' ?>><a href="<?php echo url('~/rules'); ?>"><span>Säännöt</span></a></li>
+                <li<?php if ($menu == 'chat') echo ' class="current' . (admin ?  '"' : ' last"'); ?>><a href="<?php echo url('~/chat'); ?>"><span>Kisachat</span></a></li>
                 <?php if (admin): ?>
-                <li class="last" >
+                <li class="current parent last" >
                     <a href="#"><span>Ylläpito</span></a>
-                    <ul>
-                        <li><a href="<?php echo url('~/admin/games'); ?>"><span>Ottelut</span></a></li>
-                        <li><a href="<?php echo url('~/admin/teams'); ?>"><span>Joukkueet</span></a></li>
-                        <li><a href="<?php echo url('~/admin/scorers'); ?>"><span>Maalintekijät</span></a></li>
-                        <li><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
-                        <li><a href="<?php echo url('~/admin/news'); ?>"><span>Uutiset</span></a></li>
-                    </ul>
+                    <div>
+                        <ul>
+                            <li<?php if ($menu == 'admin/news') echo ' class="current"' ?>><a href="<?php echo url('~/admin/news'); ?>"><span>Uutiset</span></a></li>
+                            <li<?php if ($menu == 'admin/games') echo ' class="current"' ?>><a href="<?php echo url('~/admin/games'); ?>"><span>Ottelut</span></a></li>
+                            <li<?php if ($menu == 'admin/teams') echo ' class="current"' ?>><a href="<?php echo url('~/admin/teams'); ?>"><span>Joukkueet</span></a></li>
+                            <li<?php if ($menu == 'admin/scorers') echo ' class="current"' ?>><a href="<?php echo url('~/admin/scorers'); ?>"><span>Maalintekijät</span></a></li>
+                            <li class="<?php if ($menu == 'admin/users') echo 'current"' ?> last"><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
+                        </ul>
+                    </div>
                 </li>
                 <?php endif; ?>
             </ul>
@@ -58,18 +60,40 @@
             <div class="block">
                 <h3 class="ui-corner-top">Paikalla</h3>
                 <div class="ui-corner-bottom">
-                    bungle<br />
+                    bungle<br>
                     matias
                 </div>
             </div>
             <div class="block-spacer"></div>
             <div class="block">
-                <h3 class="ui-corner-top">Seuraava ottelu</h3>
+                <h3 class="ui-corner-top">Seuraavat ottelut</h3>
                 <div class="ui-corner-bottom">
-                    Ruotsi - Suomi
+                    Saksa - Espanja<br>
+                    Chile - Norsunluurannikko<br>
+                    Italia - Sveitsi<br>
+                    USA - Ghana
                 </div>
             </div>
             <?php if (isset($right)) echo $right; ?>
+            <div class="block-spacer"></div>
+            <div class="block">
+                <h3 class="ui-corner-top">Kolmen kärki &trade;</h3>
+                <div class="ui-corner-bottom">
+                    <div class="f32">
+                        <h4 class="flag ITA" style="padding-left: 40px; line-height: 32px;">Italia</h4>
+                        <h4 class="flag ENG" style="padding-left: 40px; line-height: 32px;">Englanti</h4>
+                        <h4 class="flag NED" style="padding-left: 40px; line-height: 32px;">Hollanti</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="block-spacer"></div>
+            <div class="block">
+                <h3 class="ui-corner-top">Maalikuningas</h3>
+                <div class="ui-corner-bottom">
+                    Jari Litmanen
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
@@ -80,7 +104,7 @@
     <div id="footer">
         <div class="grid_12">
             <span>
-                Tekninen toteutus: <a href="http://www.php.net/">PHP</a>, <a href="http://code.google.com/p/web-dot-php/">web.php</a>, <a href="http://www.sqlite.org/">SQLite</a>, <a href="http://jquery.com/">jQuery</a> <a href="http://jqueryui.com/">UI</a>, <a href="http://apycom.com/">Apycom Menus</a>, <a href="http://960.gs/">960 Grid System</a>
+                Tekninen toteutus: <a href="http://www.php.net/">PHP</a>, <a href="http://code.google.com/p/web-dot-php/">web.php</a>, <a href="http://www.sqlite.org/">SQLite</a>, <a href="http://jquery.com/">jQuery</a> <a href="http://jqueryui.com/">UI</a>, <a href="http://960.gs/">960 Grid System</a>, <a href="http://apycom.com/">Apycom Menus</a>
             </span>
             <span style="float: right;">
                 Sivun suoritusaika: <span class="time"><?php echo number_format((microtime(true) - starttime) * 1000, 2, ',', ' '); ?></span> millisekuntia.
