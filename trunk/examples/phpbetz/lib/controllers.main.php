@@ -1,13 +1,25 @@
 <?php
+get('/points', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $view = new view('views/points.phtml');
+    $view->title = 'Pistetilanne';
+    $view->menu = 'points';
+    echo $view;
+});
+
 get('/stats', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/stats.phtml');
+    $view->title = 'Tilastot';
+    $view->menu = 'stats';
     echo $view;
 });
 
 get('/rules', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/rules.phtml');
+    $view->title = 'Säännöt';
+    $view->menu = 'rules';
     echo $view;
 });
 
@@ -16,6 +28,8 @@ get('/chat', function() {
     $last = 0;
     $messages = db\chat\latest(50, $last);
     $view = new view('views/chat.phtml');
+    $view->title = 'Kisachat';
+    $view->menu = 'chat';
     $_SESSION['last-chat-message-id'] = $last;
     if (count($messages) > 0) {
         $chat = new view('views/chat.messages.phtml');

@@ -2,6 +2,8 @@
 get('/bets/games', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/bets.games.phtml');
+    $view->title = 'Otteluveikkaus';
+    $view->menu = 'bets/games';
     $view->games = db\bets\games(username);
     echo $view;
 });
@@ -21,6 +23,8 @@ get('/bets/teams', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/bets.teams.phtml');
     $view->teams = db\teams\all();
+    $view->title = 'Kolmen kärki &trade;';
+    $view->menu = 'bets/teams';
     $single = db\bets\single(username);
     if ($single) {
         $view->winner = $single['winner'];
@@ -53,5 +57,10 @@ post('/bets/teams/#position', function($position) {
     }
 });
 
-
-
+get('/bets/scorer', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $view = new view('views/bets.scorer.phtml');
+    $view->title = 'Maalikuninkuus';
+    $view->menu = 'bets/scorer';
+    echo $view;
+});

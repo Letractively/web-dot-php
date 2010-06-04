@@ -10,3 +10,7 @@ get('/install', function() {
 get('/install/views', function() {
     db\install\views();
 });
+
+get('/install/admins', function() {
+    db\install\admins();
+});
