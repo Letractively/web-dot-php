@@ -23,12 +23,6 @@ if (authenticated) {
     require 'lib/controllers.bets.php';
 }
 if (admin) {
-    $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-    print_r(get_class_methods($db));
-    $db->close();
-    die;
-
-
     require 'lib/controllers.admin.php';
     require 'lib/controllers.install.php';
 }
