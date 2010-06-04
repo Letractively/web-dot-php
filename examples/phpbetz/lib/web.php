@@ -378,8 +378,8 @@ namespace {
         }
         function __construct($file) { $this->file = $file; }
         function __toString() {
-            extract((array)$this);
             extract(self::$globals);
+            extract((array)$this);
             start:
             ob_start();
             require $file;
