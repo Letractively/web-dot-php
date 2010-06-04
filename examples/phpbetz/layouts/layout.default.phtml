@@ -61,8 +61,7 @@
             <div class="block">
                 <h3 class="ui-corner-top">Paikalla</h3>
                 <div class="ui-corner-bottom">
-                    bungle<br>
-                    matias
+                    bungle, matias
                 </div>
             </div>
             <div class="block-spacer"></div>
@@ -77,25 +76,34 @@
             </div>
             <?php if (isset($right)) echo $right; ?>
             <?php if (!isset($hide_teams)): ?>
+            <?php print_r($upcoming); ?>
             <div class="block-spacer"></div>
+            <?php if ($single && isset($single['winner']) && isset($single['second']) && isset($single['third'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Kolmen kärki &trade;</h3>
                 <div class="ui-corner-bottom">
                     <div class="f32">
-                        <h4 class="flag ITA" style="padding-left: 40px; line-height: 32px;">Italia</h4>
-                        <h4 class="flag ENG" style="padding-left: 40px; line-height: 32px;">Englanti</h4>
-                        <h4 class="flag NED" style="padding-left: 40px; line-height: 32px;">Hollanti</h4>
+                    <?php
+                        echo "<h4 class='flag " . $single['winner_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['winner'] . "</h4>";
+                        echo "<h4 class='flag " . $single['second_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['second'] . "</h4>";
+                        echo "<h4 class='flag " . $single['third_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['third'] . "</h4>";
+                    ?>
                     </div>
                 </div>
             </div>
             <?php endif; ?>
+            <?php endif; ?>
+
             <div class="block-spacer"></div>
+            
+            <?php if (isset($single['scorer'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Maalikuningas</h3>
                 <div class="ui-corner-bottom">
-                    Jari Litmanen
+                    <?php echo $single['scorer']; ?>
                 </div>
             </div>
+            <?php endif; ?>
             
         </div>
     </div>
