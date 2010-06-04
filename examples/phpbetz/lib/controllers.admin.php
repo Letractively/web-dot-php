@@ -1,4 +1,12 @@
 <?php
+get('/admin', function() {
+    if (!admin) redirect('~/unauthorized');
+    $view = new view('views/admin.phtml');
+    $view->title = 'Ylläpito';
+    $view->menu = 'admin';
+    echo $view;
+});
+
 get('/admin/news', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
