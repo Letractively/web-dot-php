@@ -94,4 +94,15 @@ SQL;
         }
         $db->close();
     }
+    function started() {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $stm = $db->prepare('SELECT COUNT(*) FROM games WHERE time < :time');
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        $db->close();
+        return $row && $row[0] !== 0;
+    }
 }

@@ -14,7 +14,8 @@ namespace db\news {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $stm = $db->prepare('INSERT INTO news (time, slug, title, content, level, user) VALUES (:time, :slug, :title, :content, :level, :user)');
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
-        $stm->bindValue(':slug', $user, SQLITE3_TEXT);
+        $stm->bindValue(':slug', $slug, SQLITE3_TEXT);
+        $stm->bindValue(':user', $user, SQLITE3_TEXT);
         $stm->bindValue(':title', $title, SQLITE3_TEXT);
         $stm->bindValue(':content', $content, SQLITE3_TEXT);
         $stm->bindValue(':level', $level, SQLITE3_INTEGER);

@@ -35,6 +35,7 @@ function logoff() {
     }
 }
 function authenticate() {
+    define('started', db\bets\started());
     if (isset($_SESSION['logged-in-username'])) {
         $username = $_SESSION['logged-in-username'];
         $user = db\users\authenticate($username);
@@ -68,10 +69,12 @@ function authenticate() {
     define('admin', false);
     define('username', 'anonymous');
 }
+
 function portlets() {
     view::register('single', db\bets\single(username));
     view::register('upcoming', db\bets\games(username, 4));
 }
+
 function weekday($date, $length = null) {
     $weekdaynum = (int)date_format($date, 'w');
     switch ($weekdaynum) {
