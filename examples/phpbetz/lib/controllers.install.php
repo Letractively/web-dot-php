@@ -18,3 +18,7 @@ get('/install/admins', function() {
 get('/install/draw', function() {
     db\install\add_draw_to_games();
 });
+
+get('/install/paid', function() {
+    db\install\add_paid_to_users();
+});

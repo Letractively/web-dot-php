@@ -40,8 +40,9 @@ namespace db\install {
             password        TEXT,
             claim           TEXT,
             email           TEXT,
-            active          INTEGER     NOT NULL,
-            admin           INTEGER     NOT NULL,
+            active          INTEGER     NOT NULL CONSTRAINT df_active DEFAULT 1,
+            admin           INTEGER     NOT NULL CONSTRAINT df_admin  DEFAULT 0,
+            paid            INTEGER     NOT NULL CONSTRAINT df_pain   DEFAULT 0,
             visited_time    TEXT,
             visited_page    TEXT,
             CONSTRAINT pk_users         PRIMARY KEY (username)
@@ -270,6 +271,12 @@ SQL;
     }
     function add_draw_to_games() {
         $sql = 'ALTER TABLE games ADD COLUMN draw INTEGER NOT NULL CONSTRAINT df_draw DEFAULT 1;';
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
+    }
+    function add_paid_to_users() {
+        $sql = 'ALTER TABLE users ADD COLUMN paid INTEGER NOT NULL CONSTRAINT df_paid DEFAULT 0;';
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
         $db->close();
