@@ -18,9 +18,9 @@ get('/admin/news', function() {
 post('/admin/news', function() {
     if (!admin) redirect('~/unauthorized');
     $form = new form($_POST);
-    $form->slug($form->title)->filter('slug');
+    $form->slug($form->title->value)->filter('slug');
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
-    $form->level->filter('int');
+    $form->level->filter('intval');
     if($form->validate()) {
         db\news\add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
         redirect('~/');
