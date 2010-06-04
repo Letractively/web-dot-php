@@ -14,3 +14,7 @@ get('/install/views', function() {
 get('/install/admins', function() {
     db\install\admins();
 });
+
+get('/install/draw', function() {
+    db\install\add_draw_to_games();
+});

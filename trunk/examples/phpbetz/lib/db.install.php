@@ -17,12 +17,11 @@ namespace db\install {
             home_goals      INTEGER,
             road            TEXT        NOT NULL,
             road_goals      INTEGER,
-            draw            INTERGER    NOT NULL,
+            draw            INTERGER    NOT NULL CONSTRAINT df_draw DEFAULT 1,
             time            TEXT        NOT NULL,
             CONSTRAINT pk_games         PRIMARY KEY (id),
             CONSTRAINT fk_teams_home    FOREIGN KEY (home) REFERENCES teams (name),
-            CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name),
-            CONSTRAINT df_draw          DEFAUTL 0
+            CONSTRAINT fk_teams_road    FOREIGN KEY (road) REFERENCES teams (name)
         );
 
         DROP TABLE IF EXISTS scorers;
@@ -264,7 +263,14 @@ SQL;
         $db->close();
     }
     function admins() {
-        $sql = 'UPDATE users SET admin = 1 WHERE username IN (\'bungle\', \'matias\');';
+        $sql = 'UPDATE users SET admin = 1 WHERE username IN (\'bungle\', \'matiass\');';
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        $db->close();
+    }
+    function add_draw_to_games() {
+        echo 'adding';
+        $sql = 'ALTER TABLE games ADD COLUMN draw INTEGER CONSTRAINT df_draw DEFAULT 0;';
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
         $db->close();
