@@ -21,11 +21,13 @@ authenticate();
 if (authenticated) {
     require 'lib/controllers.main.php';
     require 'lib/controllers.bets.php';
+    portlets();
 }
 if (admin) {
     require 'lib/controllers.admin.php';
     require 'lib/controllers.install.php';
 }
 require 'lib/controllers.install.php';
+
 
 dispatch();
