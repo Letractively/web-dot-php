@@ -75,6 +75,7 @@
                 </div>
             </div>
             <?php if (isset($right)) echo $right; ?>
+            <?php if (!isset($hide_teams)): ?>
             <div class="block-spacer"></div>
             <div class="block">
                 <h3 class="ui-corner-top">Kolmen kärki &trade;</h3>
@@ -86,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="block-spacer"></div>
             <div class="block">
                 <h3 class="ui-corner-top">Maalikuningas</h3>
