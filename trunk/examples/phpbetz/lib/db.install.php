@@ -270,7 +270,7 @@ SQL;
     }
     function add_draw_to_games() {
         echo 'adding';
-        $sql = 'ALTER TABLE games ADD COLUMN draw INTEGER CONSTRAINT df_draw DEFAULT 0;';
+        $sql = 'ALTER TABLE games ADD COLUMN draw INTEGER CONSTRAINT df_draw DEFAULT 1;';
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
         $db->close();
