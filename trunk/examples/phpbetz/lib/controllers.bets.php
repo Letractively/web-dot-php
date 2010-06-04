@@ -25,6 +25,7 @@ get('/bets/teams', function() {
     $view->teams = db\teams\all();
     $view->title = 'Kolmen kärki &trade;';
     $view->menu = 'bets/teams';
+    $view->hide_teams = true;
     $single = db\bets\single(username);
     if ($single) {
         $view->winner = $single['winner'];
