@@ -13,6 +13,19 @@ session_start();
 require 'lib/utils.php';
 require 'lib/web.php';
 require 'lib/db.php';
-require 'lib/controllers.php';
+
+require 'lib/controllers.login.php';
+
 authenticate();
+
+if (authenticated) {
+    require 'lib/controllers.main.php';
+    require 'lib/controllers.bets.php';
+}
+if (admin) {
+    require 'lib/controllers.admin.php';
+    require 'lib/controllers.install.php';
+}
+require 'lib/controllers.install.php';
+
 dispatch();

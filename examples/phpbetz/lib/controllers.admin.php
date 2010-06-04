@@ -51,3 +51,11 @@ get('/admin/users', function() {
     $view->menu = 'admin/users';
     echo $view;
 });
+
+get('/admin/config', function() {
+    if (!admin) redirect('~/unauthorized');
+    $view = new view('views/admin.config.phtml');
+    $view->title = 'Konfiguraatio';
+    $view->menu = 'admin/config';
+    echo $view;
+});

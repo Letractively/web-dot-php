@@ -41,7 +41,8 @@
                             <li<?php if ($menu == 'admin/games') echo ' class="current"' ?>><a href="<?php echo url('~/admin/games'); ?>"><span>Ottelut</span></a></li>
                             <li<?php if ($menu == 'admin/teams') echo ' class="current"' ?>><a href="<?php echo url('~/admin/teams'); ?>"><span>Joukkueet</span></a></li>
                             <li<?php if ($menu == 'admin/scorers') echo ' class="current"' ?>><a href="<?php echo url('~/admin/scorers'); ?>"><span>Maalintekijät</span></a></li>
-                            <li class="<?php if ($menu == 'admin/users') echo 'current"' ?> last"><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
+                            <li<?php if ($menu == 'admin/users') echo ' class="current"' ?>><a href="<?php echo url('~/admin/users'); ?>"><span>Käyttäjät</span></a></li>
+                            <li class="<?php if ($menu == 'admin/config') echo 'current"' ?> last"><a href="<?php echo url('~/admin/config'); ?>"><span>Konfiguraatio</span></a></li>
                         </ul>
                     </div>
                 </li>
