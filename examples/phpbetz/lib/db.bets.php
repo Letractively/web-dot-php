@@ -1,6 +1,6 @@
 <?php
 namespace db\bets {
-    function games($user) {
+    function games($user, $limit = null) {
         $sql =<<< 'SQL'
     SELECT * FROM
         view_games AS g
@@ -8,12 +8,18 @@ namespace db\bets {
         gamebets AS b
     ON
         g.id = b.game AND b.user = :user
+    WHERE
+        time > :time
     ORDER BY
-        time, id;
+        time, id
 SQL;
+        if ($limit != null) {
+            $sql .= ' LIMIT ' . $limit;
+        }
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         $stm = $db->prepare($sql);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $res = $stm->execute();
         $games = array();
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $games[] = $row;
@@ -66,6 +72,23 @@ SQL;
             $stm = $db->prepare('INSERT INTO singlebets (user, ' . $position . ') VALUES (:user, :team)');
             $stm->bindValue(':user', $user, SQLITE3_TEXT);
             $stm->bindValue(':team', $team, SQLITE3_TEXT);
+            $stm->execute();
+            $stm->close();
+        }
+        $db->close();
+    }
+    function scorer($user, $scorer) {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $stm = $db->prepare('UPDATE singlebets SET scorer = :scorer WHERE user = :user');
+        $stm->bindValue(':scorer', $scorer, SQLITE3_TEXT);
+        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->execute();
+        $changes = $db->changes();
+        $stm->close();
+        if ($changes == 0) {
+            $stm = $db->prepare('INSERT INTO singlebets (user, scorer) VALUES (:user, :scorer)');
+            $stm->bindValue(':user', $user, SQLITE3_TEXT);
+            $stm->bindValue(':scorer', $scorer, SQLITE3_TEXT);
             $stm->execute();
             $stm->close();
         }

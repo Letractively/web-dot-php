@@ -102,7 +102,6 @@ function posted(data, status) {
         alert('Kolmen kärki&trade; veikkauksen tallennuksessa tapahtui virhe. Yritä uudelleen.');
     }
 }
-
 $('input:radio').each(function() {
     var input = $(this);
     input.button({
@@ -114,13 +113,14 @@ $('input:radio').each(function() {
     var form = $(this.form);
     input.click(function() {
         $.post(form.attr('action'), form.serialize(), posted);
-        $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + input.attr('value') + '\']').button('disable');
-        $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + form.data('value') + '\']').button('enable');
+        if (form.data('value') != input.attr('value')) {
+            $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + input.attr('value') + '\']').button('disable');
+            $('form:not(#' + form.attr('id') + ') input:radio[value=\'' + form.data('value') + '\']').button('enable');
+        }
         form.data('value', input.attr('value'));
         $('#' + form.attr('id') + '-bet').html('<div class="f32"><h4 class="flag ' + input.attr('title') + '">' + input.attr('value') + '</h4></div>');
     });
 });
-
 $('label').qtip();
 $('form:not(#winner) input:radio[value=\'<?php echo $winner; ?>\']').button('disable');
 $('form:not(#second) input:radio[value=\'<?php echo $second; ?>\']').button('disable');
