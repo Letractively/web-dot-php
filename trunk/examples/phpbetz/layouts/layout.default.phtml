@@ -88,15 +88,15 @@
             <?php if (isset($right)) echo $right; ?>
             <?php if (!isset($hide_teams)): ?>
             <div class="block-spacer"></div>
-            <?php if ($single && isset($single['winner']) && isset($single['second']) && isset($single['third'])): ?>
+            <?php if ($user && isset($user['winner']) && isset($user['second']) && isset($user['third'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Kolmen kärki &trade;</h3>
                 <div class="ui-corner-bottom">
                     <div class="f32">
                     <?php
-                        echo "<h4 class='flag " . $single['winner_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['winner'] . "</h4>";
-                        echo "<h4 class='flag " . $single['second_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['second'] . "</h4>";
-                        echo "<h4 class='flag " . $single['third_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $single['third'] . "</h4>";
+                        echo "<h4 class='flag " . $user['winner_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $user['winner'] . "</h4>";
+                        echo "<h4 class='flag " . $user['second_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $user['second'] . "</h4>";
+                        echo "<h4 class='flag " . $user['third_abbr'] . "' style='padding-left: 40px; line-height: 32px;'>" . $user['third'] . "</h4>";
                     ?>
                     </div>
                 </div>
@@ -106,11 +106,11 @@
 
             <div class="block-spacer"></div>
             
-            <?php if (isset($single['scorer'])): ?>
+            <?php if (isset($user['scorer_betted'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Maalikuningas</h3>
                 <div class="ui-corner-bottom">
-                    <?php echo $single['scorer']; ?>
+                    <?php echo isset($user['scorer']) ? $user['scorer'] : $user['scorer_betted']; ?>
                 </div>
             </div>
             <?php endif; ?>
