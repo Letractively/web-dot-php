@@ -12,10 +12,11 @@ require 'db.install.php';
 
 db\install\tables();
 db\install\views();
+db\install\triggers();
 db\install\teams();
 db\install\games();
 
 //db\install\views();
-db\install\admins();
+//db\install\admins();
 //db\install\add_draw_to_games();
 //db\install\add_paid_to_users();

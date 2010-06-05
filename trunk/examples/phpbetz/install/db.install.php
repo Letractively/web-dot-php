@@ -15,9 +15,14 @@ namespace db\install {
             id              INTEGER     NOT NULL,
             home            TEXT        NOT NULL,
             home_goals      INTEGER,
+            home_percent    REAL,
             road            TEXT        NOT NULL,
             road_goals      INTEGER,
-            draw            INTERGER    NOT NULL CONSTRAINT df_draw DEFAULT 1,
+            road_percent    REAL,
+            draw            INTERGER    NOT NULL CONSTRAINT df_draw   DEFAULT 1,
+            draw_percent    REAL,
+            score           TEXT,
+            points          REAL        NOT NULL CONSTRAINT df_points DEFAULT 0,
             time            TEXT        NOT NULL,
             CONSTRAINT pk_games         PRIMARY KEY (id),
             CONSTRAINT fk_teams_home    FOREIGN KEY (home) REFERENCES teams (name),
@@ -28,7 +33,6 @@ namespace db\install {
         CREATE TABLE scorers (
             name            TEXT        NOT NULL,
             team            TEXT        NOT NULL,
-            number          INTEGER,
             goals           INTEGER     NOT NULL,
             CONSTRAINT pk_scorers       PRIMARY KEY (name),
             CONSTRAINT fk_teams         FOREIGN KEY (team) REFERENCES teams (name)
@@ -41,9 +45,13 @@ namespace db\install {
             claim           TEXT,
             email           TEXT,
             winner          TEXT,
+            winner_points   INTEGER     NOT NULL CONSTRAINT df_winner_points DEFAULT 0,
             second          TEXT,
+            second_points   INTEGER     NOT NULL CONSTRAINT df_second_points DEFAULT 0,
             third           TEXT,
+            third_points    INTEGER     NOT NULL CONSTRAINT df_third_points  DEFAULT 0,
             scorer          TEXT,
+            scorer_points   INTEGER     NOT NULL CONSTRAINT df_scorer_points DEFAULT 0,
             active          INTEGER     NOT NULL CONSTRAINT df_active DEFAULT 1,
             admin           INTEGER     NOT NULL CONSTRAINT df_admin  DEFAULT 0,
             paid            INTEGER     NOT NULL CONSTRAINT df_pain   DEFAULT 0,
@@ -84,7 +92,7 @@ namespace db\install {
             game            INTEGER     NOT NULL,
             user            TEXT        NOT NULL,
             score           TEXT        NOT NULL,
-            points          REAL,
+            points          REAL        NOT NULL CONSTRAINT df_points DEFAULT 0,
             CONSTRAINT pk_gamebets      PRIMARY KEY (game, user),
             CONSTRAINT fk_games         FOREIGN KEY (game) REFERENCES games (id),
             CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
@@ -117,6 +125,168 @@ SQL;
         $db->exec($sql);
         $db->close();
     }
+    function triggers() {
+        $sql =<<< 'SQL'
+        DROP TRIGGER IF EXISTS trigger_games;
+        CREATE TRIGGER trigger_games AFTER UPDATE OF points ON games
+        BEGIN
+            UPDATE gamebets SET points = 0          WHERE game = new.id;
+            UPDATE gamebets SET points = new.points WHERE game = new.id AND score IS NOT NULL AND score = new.score;
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_teams;
+        CREATE TRIGGER trigger_teams AFTER UPDATE OF ranking ON teams
+        BEGIN
+            UPDATE users SET winner_points = 0 WHERE winner IS NOT NULL AND winner = new.name;
+            UPDATE users SET winner_points = 4 WHERE winner IS NOT NULL AND winner = new.name AND new.ranking = 1;
+            UPDATE users SET winner_points = 1 WHERE winner IS NOT NULL AND winner = new.name AND (new.ranking = 2 OR new.ranking = 3);
+
+            UPDATE users SET second_points = 0 WHERE second IS NOT NULL AND second = new.name;
+            UPDATE users SET second_points = 3 WHERE second IS NOT NULL AND second = new.name AND new.ranking = 2;
+            UPDATE users SET second_points = 1 WHERE second IS NOT NULL AND second = new.name AND (new.ranking = 1 OR new.ranking = 3);
+
+            UPDATE users SET third_points = 0  WHERE third  IS NOT NULL AND third = new.name;
+            UPDATE users SET third_points = 2  WHERE third  IS NOT NULL AND third = new.name  AND new.ranking = 3;
+            UPDATE users SET third_points = 1  WHERE third  IS NOT NULL AND third = new.name  AND (new.ranking = 1 OR new.ranking = 2);
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_gamebets_insert;
+        CREATE TRIGGER trigger_gamebets_insert AFTER INSERT ON gamebets
+        BEGIN
+            UPDATE games SET home_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = '1')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+
+            UPDATE games SET draw_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = 'X')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+
+            UPDATE games SET road_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = '2')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_gamebets_update;
+        CREATE TRIGGER trigger_gamebets_update AFTER UPDATE OF score ON gamebets
+        BEGIN
+            UPDATE games SET home_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = '1')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+
+            UPDATE games SET draw_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = 'X')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+
+            UPDATE games SET road_percent = (
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game AND score = '2')
+                /
+                (SELECT COUNT(game) + 0.0 FROM gamebets WHERE game IS NOT NULL AND game = new.game) * 100.0
+            )
+            WHERE id = new.game;
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_scorermap_insert;
+        CREATE TRIGGER trigger_scorermap_insert AFTER INSERT ON scorermap
+        BEGIN
+            UPDATE users SET scorer_points = 0 WHERE scorer = new.betted;
+            UPDATE users SET scorer_points = 3
+            WHERE
+                scorer = new.betted
+                AND
+                scorer IN (
+                SELECT
+                    sm.betted
+                FROM
+                    scorermap sm
+                INNER JOIN
+                    scorers s
+                ON
+                    sm.scorer = s.name
+                WHERE
+                    s.goals = (SELECT MAX(goals) FROM scorers)
+            );
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_scorermap_update;
+        CREATE TRIGGER trigger_scorermap_update AFTER UPDATE ON scorermap
+        BEGIN
+            UPDATE users SET scorer_points = 0 WHERE scorer = old.betted;
+            UPDATE users SET scorer_points = 3
+            WHERE
+                scorer = new.betted
+                AND
+                scorer IN (
+                SELECT
+                    sm.betted
+                FROM
+                    scorermap sm
+                INNER JOIN
+                    scorers s
+                ON
+                    sm.scorer = s.name
+                WHERE
+                    s.goals = (SELECT MAX(goals) FROM scorers)
+            );
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_scorers_insert;
+        CREATE TRIGGER trigger_scorers_insert AFTER INSERT ON scorers
+        BEGIN
+            UPDATE users SET scorer_points = 0;
+            UPDATE users SET scorer_points = 3
+            WHERE scorer IN (
+                SELECT
+                    sm.betted
+                FROM
+                    scorermap sm
+                INNER JOIN
+                    scorers s
+                ON
+                    sm.scorer = s.name
+                WHERE
+                    s.goals = (SELECT MAX(goals) FROM scorers)
+            );
+        END;
+
+        DROP TRIGGER IF EXISTS trigger_scorers_update;
+        CREATE TRIGGER trigger_scorers_update AFTER UPDATE OF goals ON scorers
+        BEGIN
+            UPDATE users SET scorer_points = 0;
+            UPDATE users SET scorer_points = 3
+            WHERE scorer IN (
+                SELECT
+                    sm.betted
+                FROM
+                    scorermap sm
+                INNER JOIN
+                    scorers s
+                ON
+                    sm.scorer = s.name
+                WHERE
+                    s.goals = (SELECT MAX(goals) FROM scorers)
+            );
+        END;
+SQL;
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        $db->exec($sql);
+        echo $db->lastErrorMsg();
+        $db->close();
+    }
     function views() {
         $sql =<<<'SQL'
         DROP VIEW IF EXISTS view_games;
@@ -126,9 +296,13 @@ SQL;
             g.time AS time,
             g.draw AS draw,
             g.home AS home,
+            g.home_percent AS home_percent,
             h.abbr AS home_abbr,
             g.road AS road,
-            r.abbr AS road_abbr
+            g.road_percent AS road_percent,
+            r.abbr AS road_abbr,
+            g.draw_percent AS road_percent,
+            g.points AS points
         FROM
             games AS g
         INNER JOIN
@@ -149,12 +323,20 @@ SQL;
             u.email           AS email,
             u.winner          AS winner,
             t.abbr            AS winner_abbr,
+            t.ranking         AS winner_ranking,
+            u.winner_points   AS winner_points,
             u.second          AS second,
             t2.abbr           AS second_abbr,
+            t2.ranking        AS second_ranking,
+            u.second_points   AS second_points,
             u.third           AS third,
             t3.abbr           AS third_abbr,
+            t3.ranking        AS third_ranking,
+            u.third_points    AS third_points,
             s.name            AS scorer,
             u.scorer          AS scorer_betted,
+            u.scorer_points   AS scorer_points,
+            s.goals           AS scorer_goals,
             u.active          AS active,
             u.admin           AS admin,
             u.paid            AS paid,
@@ -181,7 +363,11 @@ SQL;
         LEFT OUTER JOIN
             scorers s
         ON
-            sm.betted = s.name;
+            sm.scorer = s.name
+        LEFT OUTER JOIN
+            teams t4
+        ON
+            s.team = t4.name;
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
@@ -283,18 +469,6 @@ SQL;
     }
     function admins() {
         $sql = 'UPDATE users SET admin = 1 WHERE username IN (\'bungle\', \'matiass\');';
-        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $db->exec($sql);
-        $db->close();
-    }
-    function add_draw_to_games() {
-        $sql = 'ALTER TABLE games ADD COLUMN draw INTEGER NOT NULL CONSTRAINT df_draw DEFAULT 1;';
-        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $db->exec($sql);
-        $db->close();
-    }
-    function add_paid_to_users() {
-        $sql = 'ALTER TABLE users ADD COLUMN paid INTEGER NOT NULL CONSTRAINT df_paid DEFAULT 0;';
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
         $db->close();

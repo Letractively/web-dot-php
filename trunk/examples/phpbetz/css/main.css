@@ -168,6 +168,11 @@ table#bets tr td.countdown {
     background: url(../img/scorer.png) no-repeat;
     padding-left: 40px;
 }
+
+#points thead th {
+    text-align: center;
+    font-size: 0.85em;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

@@ -21,6 +21,7 @@ authenticate();
 if (authenticated) {
     require 'lib/controllers.main.php';
     require 'lib/controllers.bets.php';
+    require 'lib/controllers.stats.php';
 }
 
 if (admin) require 'lib/controllers.admin.php';
