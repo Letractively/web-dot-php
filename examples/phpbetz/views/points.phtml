@@ -1,7 +1,48 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
+<link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<table id="points" class="tablesorter">
+ <thead>
+   <tr>
+    <th>Nimi</th>
+    <th>1</th>
+    <th>2</th>
+    <th>3</th>
+    <th><img src="<?php echo url('~/img/scorer.png'); ?>" width="16" height="16"></th>
+    <th>Ottelu-<br>pisteet</th>
+    <th>Kolmen<br> kärki &trade;</th>
+    <th>Maali-<br>kuninkuus</th>
+    <th>Yhteensä</th>
+  </tr>
+</thead>
+<tbody>
+<?php foreach ($points as $point): ?>
+<tr>
+    <td><?php echo $point['username'] ?></td>
+    <td class="f32" style="line-height: 32px; width: 32px;">
+        <div class="<?php echo isset($point['winner_abbr']) ? "flag " . $point['winner_abbr'] : ''; ?>">&nbsp</div>
+    </td>
+    <td class="f32" style="line-height: 32px; width: 32px;">
+        <div class="<?php echo isset($point['second_abbr']) ? "flag " . $point['second_abbr'] : ''; ?>">&nbsp</div>
+    </td>
+    <td class="f32" style="line-height: 32px; width: 32px;">
+        <div class="<?php echo isset($point['third_abbr']) ? "flag " . $point['third_abbr'] : ''; ?>">&nbsp</div>
+    </td>
+    <td><?php echo isset($point['scorer']) ? $point['scorer'] : (isset($point['scorer_betted']) ? $point['scorer_betted'] : 'n/a') ?></td>
+    <td><?php echo $point['game_points'] ?></td>
+    <td><?php echo $point['team_points'] ?></td>
+    <td><?php echo $point['scorer_points'] ?></td>
+    <td><?php echo $point['total_points'] ?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
 <?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
+<script>
+$('#points').tablesorter();
+</script>
 <?php block(); ?>
