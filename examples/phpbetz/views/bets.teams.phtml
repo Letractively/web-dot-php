@@ -39,9 +39,9 @@ hr.thin {
     <?php endif; ?>
 </div>
 <div class="grid_3 omega team-bet" id="winner-bet">
-    <?php if (isset($winner)): ?>
+    <?php if (isset($user['winner'])): ?>
     <div class="f32">
-        <h4 class="flag <?php echo $winner_abbr; ?>"><?php echo $winner; ?></h4>
+        <h4 class="flag <?php echo $user['winner_abbr']; ?>"><?php echo $user['winner']; ?></h4>
     </div>
     <?php endif; ?>
 </div>
@@ -49,7 +49,7 @@ hr.thin {
 <?php if(!started):?>
 <form id="winner" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($winner === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
+    <input  id="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($user['winner'] === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
     <label for="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
@@ -65,9 +65,9 @@ hr.thin {
     <?php endif; ?>
 </div>
 <div class="grid_3 omega team-bet" id="second-bet">
-    <?php if (isset($second)): ?>
+    <?php if (isset($user['second'])): ?>
     <div class="f32">
-        <h4 class="flag <?php echo $second_abbr; ?>"><?php echo $second; ?></h4>
+        <h4 class="flag <?php echo $user['second_abbr']; ?>"><?php echo $user['second']; ?></h4>
     </div>
     <?php endif; ?>
 </div>
@@ -75,7 +75,7 @@ hr.thin {
 <?php if(!started): ?>
 <form id="second" method="post" action="<?php echo url('~/bets/teams/2'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($second === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
+    <input  id="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($user['second'] === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
     <label for="second-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
@@ -91,9 +91,9 @@ hr.thin {
     <?php endif; ?>
 </div>
 <div class="grid_3 omega team-bet" id="third-bet">
-    <?php if (isset($third)): ?>
+    <?php if (isset($user['third'])): ?>
     <div class="f32">
-        <h4 class="flag <?php echo $third_abbr; ?>"><?php echo $third; ?></h4>
+        <h4 class="flag <?php echo $user['third_abbr']; ?>"><?php echo $user['third']; ?></h4>
     </div>
     <?php endif; ?>
 </div>
@@ -101,7 +101,7 @@ hr.thin {
 <?php if(!started): ?>
 <form id="third" method="post" action="<?php echo url('~/bets/teams/3'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
-    <input  id="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($third === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
+    <input  id="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($user['third'] === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
     <label for="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
@@ -134,12 +134,12 @@ $('input:radio').each(function() {
     });
 });
 $('label').qtip();
-$('form:not(#winner) input:radio[value=\'<?php echo $winner; ?>\']').button('disable');
-$('form:not(#second) input:radio[value=\'<?php echo $second; ?>\']').button('disable');
-$('form:not(#third) input:radio[value=\'<?php echo $third; ?>\']').button('disable');
-$('#winner').data('value', '<?php echo $winner; ?>');
-$('#second').data('value', '<?php echo $second; ?>');
-$('#third').data('value', '<?php echo $third; ?>');
+$('form:not(#winner) input:radio[value=\'<?php echo $user['winner']; ?>\']').button('disable');
+$('form:not(#second) input:radio[value=\'<?php echo $user['second']; ?>\']').button('disable');
+$('form:not(#third) input:radio[value=\'<?php echo $user['third']; ?>\']').button('disable');
+$('#winner').data('value', '<?php echo $user['winner']; ?>');
+$('#second').data('value', '<?php echo $user['second']; ?>');
+$('#third').data('value', '<?php echo $user['third']; ?>');
 $('#winner').toggle();
 $('#second').toggle();
 $('#third').toggle();

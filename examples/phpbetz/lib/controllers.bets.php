@@ -26,19 +26,6 @@ get('/bets/teams', function() {
     $view->title = 'Kolmen kärki &trade;';
     $view->menu = 'bets/teams';
     $view->hide_teams = true;
-    $single = db\bets\single(username);
-    if ($single) {
-        $view->winner = $single['winner'];
-        $view->winner_abbr = $single['winner_abbr'];
-        $view->second = $single['second'];
-        $view->second_abbr = $single['second_abbr'];
-        $view->third = $single['third'];
-        $view->third_abbr = $single['third_abbr'];
-    } else {
-        $view->winner = null;
-        $view->second = null;
-        $view->third = null;
-    }
     echo $view;
 });
 

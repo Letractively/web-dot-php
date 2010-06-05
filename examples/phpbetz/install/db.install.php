@@ -40,12 +40,28 @@ namespace db\install {
             password        TEXT,
             claim           TEXT,
             email           TEXT,
+            winner          TEXT,
+            second          TEXT,
+            third           TEXT,
+            scorer          TEXT,
             active          INTEGER     NOT NULL CONSTRAINT df_active DEFAULT 1,
             admin           INTEGER     NOT NULL CONSTRAINT df_admin  DEFAULT 0,
             paid            INTEGER     NOT NULL CONSTRAINT df_pain   DEFAULT 0,
             visited_time    TEXT,
             visited_page    TEXT,
-            CONSTRAINT pk_users         PRIMARY KEY (username)
+            CONSTRAINT pk_users         PRIMARY KEY (username),
+            CONSTRAINT fk_teams_winner  FOREIGN KEY (winner) REFERENCES teams (name),
+            CONSTRAINT fk_teams_second  FOREIGN KEY (second) REFERENCES teams (name),
+            CONSTRAINT fk_teams_third   FOREIGN KEY (third)  REFERENCES teams (name)
+        );
+
+        DROP TABLE IF EXISTS scorermap;
+        CREATE TABLE scorermap (
+            scorer          TEXT NOT NULL,
+            betted          TEXT NOT NULL,
+            CONSTRAINT pk_scorermap PRIMARY KEY (scorer, betted),
+            CONSTRAINT fk_scorers FOREIGN KEY (scorer) REFERENCES scorer (name),
+            CONSTRAINT fk_users   FOREIGN KEY (betted) REFERENCES users (scorer)
         );
 
         DROP INDEX IF EXISTS idx_users_email;
@@ -72,21 +88,6 @@ namespace db\install {
             CONSTRAINT pk_gamebets      PRIMARY KEY (game, user),
             CONSTRAINT fk_games         FOREIGN KEY (game) REFERENCES games (id),
             CONSTRAINT fk_users         FOREIGN KEY (user) REFERENCES users (username)
-        );
-
-        DROP TABLE IF EXISTS singlebets;
-        CREATE TABLE singlebets (
-            user            TEXT        NOT NULL,
-            winner          TEXT,
-            second          TEXT,
-            third           TEXT,
-            scorer          TEXT,
-            CONSTRAINT pk_singlebets    PRIMARY KEY (user),
-            CONSTRAINT fk_users         FOREIGN KEY (user)   REFERENCES users (username),
-            CONSTRAINT fk_teams_winner  FOREIGN KEY (winner) REFERENCES teams (name),
-            CONSTRAINT fk_teams_second  FOREIGN KEY (second) REFERENCES teams (name),
-            CONSTRAINT fk_teams_third   FOREIGN KEY (third)  REFERENCES teams (name),
-            CONSTRAINT fk_scorers       FOREIGN KEY (scorer) REFERENCES scorers (name)
         );
 
         DROP TABLE IF EXISTS news;
@@ -139,31 +140,48 @@ SQL;
         ON
             g.road = r.name;
 
-        DROP VIEW IF EXISTS view_singlebets;
-        CREATE VIEW view_singlebets AS
+        DROP VIEW IF EXISTS view_users;
+        CREATE VIEW view_users AS
         SELECT
-            s.user   AS user,
-            s.winner AS winner,
-            t.abbr   AS winner_abbr,
-            s.second AS second,
-            t2.abbr  AS second_abbr,
-            s.third  AS third,
-            t3.abbr  AS third_abbr,
-            s.scorer AS scorer
+            u.username        AS username,
+            u.password        AS password,
+            u.claim           AS claim,
+            u.email           AS email,
+            u.winner          AS winner,
+            t.abbr            AS winner_abbr,
+            u.second          AS second,
+            t2.abbr           AS second_abbr,
+            u.third           AS third,
+            t3.abbr           AS third_abbr,
+            s.name            AS scorer,
+            u.scorer          AS scorer_betted,
+            u.active          AS active,
+            u.admin           AS admin,
+            u.paid            AS paid,
+            u.visited_time    AS visited_time,
+            u.visited_page    AS visited_page
         FROM
-            singlebets s
+            users u
         LEFT OUTER JOIN
             teams t
         ON
-            s.winner = t.name
+            u.winner = t.name
         LEFT OUTER JOIN
             teams t2
         ON
-            s.second = t2.name
+            u.second = t2.name
         LEFT OUTER JOIN
             teams t3
         ON
-            s.third = t3.name;
+            u.third = t3.name
+        LEFT OUTER JOIN
+            scorermap sm
+        ON
+            sm.betted = u.scorer
+        LEFT OUTER JOIN
+            scorers s
+        ON
+            sm.betted = s.name;
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);

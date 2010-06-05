@@ -29,18 +29,6 @@ SQL;
         return $games;
     }
 
-    function single($user) {
-        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-        $stm = $db->prepare('SELECT * FROM view_singlebets WHERE user = :user');
-        $stm->bindValue(':user', $user, SQLITE3_TEXT);
-        $res = $stm->execute();
-        $row = $res->fetchArray(SQLITE3_ASSOC);
-        $res->finalize();
-        $stm->close();
-        $db->close();
-        return $row;
-    }
-
     function game($game, $user, $score) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $stm = $db->prepare('INSERT OR REPLACE INTO gamebets (game, user, score) VALUES (:game, :user, :score)');
@@ -60,39 +48,34 @@ SQL;
     function third($user, $team) {
         team($user, $team, 'third');
     }
-    function team($user, $team, $position) {
+    function team($username, $team, $position) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $stm = $db->prepare('UPDATE singlebets SET ' . $position . ' = :team WHERE user = :user');
+        $stm = $db->prepare('UPDATE users SET ' . $position . ' = :team WHERE username = :username');
         $stm->bindValue(':team', $team, SQLITE3_TEXT);
-        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->execute();
-        $changes = $db->changes();
         $stm->close();
-        if ($changes == 0) {
-            $stm = $db->prepare('INSERT INTO singlebets (user, ' . $position . ') VALUES (:user, :team)');
-            $stm->bindValue(':user', $user, SQLITE3_TEXT);
-            $stm->bindValue(':team', $team, SQLITE3_TEXT);
-            $stm->execute();
-            $stm->close();
-        }
         $db->close();
     }
-    function scorer($user, $scorer) {
+    function scorer($username, $scorer) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $stm = $db->prepare('UPDATE singlebets SET scorer = :scorer WHERE user = :user');
+        $stm = $db->prepare('UPDATE users SET scorer = :scorer WHERE username = :username');
         $stm->bindValue(':scorer', $scorer, SQLITE3_TEXT);
-        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->execute();
-        $changes = $db->changes();
         $stm->close();
-        if ($changes == 0) {
-            $stm = $db->prepare('INSERT INTO singlebets (user, scorer) VALUES (:user, :scorer)');
-            $stm->bindValue(':user', $user, SQLITE3_TEXT);
-            $stm->bindValue(':scorer', $scorer, SQLITE3_TEXT);
-            $stm->execute();
-            $stm->close();
-        }
         $db->close();
+    }
+    function single($username) {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $stm = $db->prepare('SELECT * FROM view_users WHERE username = :username');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_ASSOC);
+        $res->finalize();
+        $stm->close();
+        $db->close();
+        return $row;
     }
     function started() {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);

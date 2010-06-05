@@ -43,7 +43,6 @@ function authenticate() {
             define('authenticated', true);
             define('admin', $user['admin'] === 1);
             define('username', $username);
-            view::register('user', $user);
             return;
         }
     }
@@ -59,7 +58,6 @@ function authenticate() {
                 define('authenticated', true);
                 define('admin', $user['admin'] === 1);
                 define('username', $username);
-                view::register('user', $user);
                 remember($username);
                 return;
             }
@@ -71,7 +69,7 @@ function authenticate() {
 }
 
 function portlets() {
-    view::register('single', db\bets\single(username));
+    view::register('user', db\bets\single(username));
     view::register('upcoming', db\bets\games(username, 2));
 }
 
