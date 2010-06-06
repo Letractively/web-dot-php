@@ -5,7 +5,7 @@ define('starttime', microtime(true));
 define('database', 'data/worldcup2010.sq3');
 define('secret', 'Replace this on a production server.');
 define('ajax', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-define('install', true);
+define('install', false);
 define('DATE_SQLITE', 'Y-m-d\TH:i:s');
 define('LOG_PATH', 'data');
 define('LOG_LEVEL', LOG_WARNING);
