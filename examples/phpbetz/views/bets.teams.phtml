@@ -30,6 +30,9 @@ hr.thin {
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<?php if (!started): ?>
+<div class="notice">Kolmen kärkeä&trade; voi veikata ja muuttaa ennen turnauksen ensimmäistä ottelua.</div>
+<?php endif; ?>
 <div class="grid_6 alpha">
     <h2>Turnauksen voittaja</h2>
     <?php if(!started): ?>
