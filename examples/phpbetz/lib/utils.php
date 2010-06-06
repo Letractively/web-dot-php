@@ -87,3 +87,9 @@ function weekday($date, $length = null) {
     if ($length == null) return $date;
     return substr($date, 0, $length);
 }
+
+function smileys_array() {
+    $smileys = array();
+    $smileys[] = array('src' => 'grin.gif', 'title' => 'grin', 'keys' => array(':-)'));
+
+}
