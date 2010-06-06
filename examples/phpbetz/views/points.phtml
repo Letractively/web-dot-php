@@ -31,9 +31,9 @@ foreach ($points as $point):
     <?php endif; ?>
     <td>
         <?php if ($point['username'] === username): ?>
-        <strong><?php echo $point['username']; ?>.<?php echo $point['rowspan']; ?></strong>
+        <strong><?php echo $point['username']; ?>.</strong>
         <?php else: ?>
-        <?php echo $point['username']; ?>.<?php echo $point['rowspan']; ?>
+        <?php echo $point['username']; ?>.
         <?php endif; ?>
     </td>
     <td class="f32">
