@@ -1,6 +1,6 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <?php block($css); ?>
-<link rel="stylesheet" href="<?php echo url('~/css/tablesorter/green/style.css'); ?>">
+<link rel="stylesheet" href="<?php echo url('~/css/tablesorter.css'); ?>">
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
@@ -20,18 +20,20 @@
     </tr>
 </thead>
 <tbody>
-<?php foreach ($points as $point): ?>
+<?php
+foreach ($points as $point):
+?>
 <tr>
     <?php if ($point['rowspan'] === 0): ?>
     <td class="position"><?php echo $point['position']; ?>.</td>
-    <?php elseif ($point['rowspan'] > 1): ?>
+    <?php elseif ($point['rowspan'] > 0 && $point['keyrow']): ?>
     <td class="position" rowspan="<?php echo $point['rowspan']; ?>"><h3><?php echo $point['position']; ?>.</h3></td>
     <?php endif; ?>
     <td>
         <?php if ($point['username'] === username): ?>
-        <strong><?php echo $point['username']; ?></strong>
+        <strong><?php echo $point['username']; ?>.<?php echo $point['rowspan']; ?></strong>
         <?php else: ?>
-        <?php echo $point['username']; ?>
+        <?php echo $point['username']; ?>.<?php echo $point['rowspan']; ?>
         <?php endif; ?>
     </td>
     <td class="f32">
