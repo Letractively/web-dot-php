@@ -18,34 +18,34 @@ require 'lib/utils.php';
 require 'lib/web.php';
 require 'lib/db.php';
 
-set_exception_handler(function(Exception $ex) {
-    @error(sprintf('%s [%s:%s]', $ex->getMessage(), $ex->getFile(), $ex->getLine()));
-    while(@ob_end_clean());
-    if (ajax) {
-        status(500);
-        exit;
-    } else {
-        @forward('/error');
-    }
-});
-
-set_error_handler(function($code, $message, $file, $line, $context) {
-    @error(sprintf('%s [%s:%s]', $message, $file, $line));
-    while(@ob_end_clean());
-    if (ajax) {
-        status(500);
-        exit;
-    } else {
-        @forward('/error');
-    }
-});
-
 if (install) {
     require 'lib/db.install.php';
     require 'lib/controllers.install.php';
 } else {
     require 'lib/controllers.login.php';
-    
+
+    set_exception_handler(function(Exception $ex) {
+        @error(sprintf('%s [%s:%s]', $ex->getMessage(), $ex->getFile(), $ex->getLine()));
+        while(@ob_end_clean());
+        if (ajax) {
+            status(500);
+            exit;
+        } else {
+            @forward('/error');
+        }
+    });
+
+    set_error_handler(function($code, $message, $file, $line, $context) {
+        @error(sprintf('%s [%s:%s]', $message, $file, $line));
+        while(@ob_end_clean());
+        if (ajax) {
+            status(500);
+            exit;
+        } else {
+            @forward('/error');
+        }
+    });
+
     authenticate();
 
     if (authenticated) {
