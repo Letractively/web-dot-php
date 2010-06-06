@@ -41,15 +41,37 @@ namespace db\stats {
                 u.scorer_points
             ORDER BY
                 total_points DESC,
-                username DESC
+                username ASC
 SQL;
         
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
         $res = $db->query($sql);
+        $i = 0;
+        $j = 0;
+        $total = -1;
+        $position = 0;
+        $rowspan = 0;
         $points = array();
-        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $points[] = $row;
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            if ($total != $row['total_points']) {
+                $total =  $row['total_points'];
+                if ($i != 0) {
+                    $points[$j]['rowspan'] = $rowspan;
+                }
+                $j = $i;
+                $rowspan = 0;
+                $position++;
+            }
+            $row['position'] = $position;
+            $row['rowspan'] = $rowspan;
+            $points[] = $row;
+            $rowspan++;
+            $i++;
+        }
+        $points[$j]['rowspan'] = $rowspan;
         $res->finalize();
         $db->close();
+        
         return $points;
     }
 }
