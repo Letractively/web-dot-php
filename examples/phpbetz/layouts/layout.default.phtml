@@ -29,7 +29,7 @@
                 <li<?php if ($menu == 'bets/teams') echo ' class="current"' ?>><a href="<?php echo url('~/bets/teams'); ?>"><span>Kolmen kärki &trade;</span></a></li>
                 <li<?php if ($menu == 'bets/scorer') echo ' class="current"' ?>><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
                 <li<?php if ($menu == 'points') echo ' class="current"' ?>><a href="<?php echo url('~/points'); ?>"><span>Pistetilanne</span></a></li>
-                <li<?php if ($menu == 'stats') echo ' class="current"' ?>><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li>
+                <!-- <li<?php if ($menu == 'stats') echo ' class="current"' ?>><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li> -->
                 <li<?php if ($menu == 'rules') echo ' class="current"' ?>><a href="<?php echo url('~/rules'); ?>"><span>Säännöt</span></a></li>
                 <li<?php if ($menu == 'chat') echo ' class="current' . (admin ?  '"' : ' last"'); ?>><a href="<?php echo url('~/chat'); ?>"><span>Kisachat</span></a></li>
                 <?php if (admin): ?>
@@ -51,13 +51,13 @@
         </div>
     </div>
 </div>
-
 <div id="container-main">
     <div id="main">
         <div id="main-left" class="grid_9">
             <?php echo $view; ?>
         </div>
         <div id="main-right" class="grid_3">
+            <!--
             <div class="block">
                 <h3 class="ui-corner-top">Paikalla</h3>
                 <div class="ui-corner-bottom">
@@ -65,6 +65,7 @@
                 </div>
             </div>
             <div class="block-spacer"></div>
+            -->
             <div class="block">
                 <h3 class="ui-corner-top">Seuraavat ottelut</h3>
                 <div class="ui-corner-bottom">
@@ -103,9 +104,7 @@
             </div>
             <?php endif; ?>
             <?php endif; ?>
-
             <div class="block-spacer"></div>
-            
             <?php if (isset($user['scorer_betted'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Maalikuningas</h3>
@@ -118,9 +117,7 @@
         </div>
     </div>
 </div>
-
 <div class="clear bottom-spacer"></div>
-
 <div id="container-bottom">
     <div id="footer">
         <div class="grid_12">
@@ -128,7 +125,7 @@
                 Tekninen toteutus: <a href="http://www.php.net/">PHP</a>, <a href="http://code.google.com/p/web-dot-php/">web.php</a>, <a href="http://www.sqlite.org/">SQLite</a>, <a href="http://jquery.com/">jQuery</a> <a href="http://jqueryui.com/">UI</a>, <a href="http://960.gs/">960 Grid System</a>, <a href="http://apycom.com/">Apycom Menus</a>
             </span>
             <span style="float: right;">
-                Sivun suoritusaika: <span class="time"><?php echo number_format((microtime(true) - starttime) * 1000, 2, ',', ' '); ?></span> millisekuntia.
+                Sivun suoritusaika: <span class="time"><?php echo number_format((microtime(true) - starttime), 2, ',', ' '); ?></span> sekuntia.
             </span>
         </div>
     </div>
