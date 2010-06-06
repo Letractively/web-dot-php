@@ -56,6 +56,7 @@ SQL;
             if ($total != $row['total_points']) {
                 $total =  $row['total_points'];
                 if ($i != 0) {
+                    $points[$j]['keyrow'] = true;
                     $points[$j]['rowspan'] = $rowspan;
                 }
                 $j = $i;
@@ -64,11 +65,13 @@ SQL;
             }
             $row['position'] = $position;
             $row['rowspan'] = $rowspan;
+            $row['keyrow'] = false;
             $points[] = $row;
             $rowspan++;
             $i++;
         }
         $points[$j]['rowspan'] = $rowspan;
+        $points[$j]['keyrow'] = true;
         $res->finalize();
         $db->close();
         
