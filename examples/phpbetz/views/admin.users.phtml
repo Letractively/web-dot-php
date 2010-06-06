@@ -14,13 +14,13 @@
         <th>Maksanut</th>
     </tr>
     </thead>
-    <?php foreach($users as $user): ?>
+    <?php foreach($users as $u): ?>
     <tr>
-        <td><?php echo $user['username']; ?></td>
-        <td><?php echo $user['email']; ?></td>
-        <td><?php echo $user['admin']; ?></td>
-        <td><?php echo $user['active']; ?></td>
-        <td><?php echo $user['paid']; ?></td>
+        <td><?php echo $u['username']; ?></td>
+        <td><?php echo $u['email']; ?></td>
+        <td><?php echo $u['admin']; ?></td>
+        <td><?php echo $u['active']; ?></td>
+        <td><?php echo $u['paid']; ?></td>
     </tr>
     <?php endforeach; ?>
 </table>
