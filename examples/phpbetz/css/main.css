@@ -168,10 +168,29 @@ table#bets tr td.countdown {
     background: url(../img/scorer.png) no-repeat;
     padding-left: 40px;
 }
-
 #points thead th {
     text-align: center;
     font-size: 0.85em;
+    line-height: 20px;
+    min-width: 32px;
+}
+#points thead th.left {
+    text-align: left;
+}
+#points thead th img {
+    padding-top: 5px;
+}
+#points tbody td {
+    text-align: center;
+    font-size: 0.85em;
+}
+#points tbody td.position {
+    padding-top: 8px;
+    vertical-align: top;
+}
+#points tbody td.f32 {
+    line-height: 32px;
+    width: 32px;
 }
 .error,
 .notice,
