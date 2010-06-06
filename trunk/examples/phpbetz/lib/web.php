@@ -81,7 +81,9 @@ namespace web {
             if ($matched) {
                 splats($path, $lastUrl);
                 params($path, $lastUrl);
-                return run($func, array_slice($params, 1));
+                run($func, array_slice($params, 1));
+                if ($exit) exit;
+                return;
             }
         }
         if ($exit) exit;
@@ -191,6 +193,24 @@ namespace {
             }
         }
         return call_user_func_array($func, $params);
+    }
+    function debug($message) {
+        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_DEBUG) return;
+        $date = date_create();
+        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
+        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[DEBUG]', trim($message) . PHP_EOL), 3, $file);
+    }
+    function warn($message) {
+        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_WARNING) return;
+        $date = date_create();
+        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
+        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[WARNING]', trim($message) . PHP_EOL), 3, $file);
+    }
+    function error($message) {
+        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_ERR) return;
+        $date = date_create();
+        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
+        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[ERROR]', trim($message) . PHP_EOL), 3, $file);
     }
     function url($url, $abs = false) {
         if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;

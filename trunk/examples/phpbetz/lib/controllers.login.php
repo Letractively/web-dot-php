@@ -1,4 +1,18 @@
 <?php
+route('/error', function() {
+    status(500);
+    if (defined('authenticated') && authenticated) {
+        $view = new view('views/error.main.phtml');
+        $view->title = 'Sivulla tapahtui virhe';
+        $view->menu = 'error';
+        echo $view;
+    } else {
+        $view = new view('views/error.login.phtml');
+        echo $view;
+
+    }
+});
+
 get('/', function() {
     if (authenticated) {
         $view = new view('views/main.phtml');
