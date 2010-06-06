@@ -284,7 +284,6 @@ SQL;
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         $db->exec($sql);
-        echo $db->lastErrorMsg();
         $db->close();
     }
     function views() {
