@@ -10,9 +10,14 @@ namespace db\news {
         return $news;
     }
 
-    function add($title, $content, $level, $user, $slug) {
+    function add($id, $title, $content, $level, $user, $slug) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $stm = $db->prepare('INSERT INTO news (time, slug, title, content, level, user) VALUES (:time, :slug, :title, :content, :level, :user)');
+        if (!isset($id)) {
+            $stm = $db->prepare('INSERT INTO news (time, slug, title, content, level, user) VALUES (:time, :slug, :title, :content, :level, :user)');
+        } else {
+            $stm = $db->prepare('UPDATE news SET time = :time, slug = :slug, title = :title, content = :content, level = :level, user = :user WHERE id = :id');
+            $stm->bindValue(':id', $id, SQLITE3_INTEGER);
+        }
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->bindValue(':slug', $slug, SQLITE3_TEXT);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
@@ -22,5 +27,17 @@ namespace db\news {
         $stm->execute();
         $stm->close();
         $db->close();
+    }
+    
+    function edit($id) {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        $stm = $db->prepare('SELECT * FROM news WHERE id = :id');
+        $stm->bindValue('id', $id, SQLITE3_INTEGER);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_ASSOC);
+        $res->finalize();
+        $stm->close();
+        $db->close();
+        return $row;
     }
 }

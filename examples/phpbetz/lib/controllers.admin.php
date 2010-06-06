@@ -21,10 +21,20 @@ post('/admin/news', function() {
     $form->slug($form->title->value)->filter('slug');
     $form->content->filter('trim', minlength(1), 'links', 'smileys');
     $form->level->filter('intval');
+    if (!isset($form->id->value)) $form->id->value = null; 
     if($form->validate()) {
-        db\news\add($form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
+        db\news\add($form->id->value, $form->title->value, $form->content->value, $form->level->value, username, $form->slug->value);
         redirect('~/');
     }
+});
+
+get('/admin/news/edit/:id', function($id) {
+    if (!admin) redirect('~/unauthorized');
+    $view = new view('views/admin.news.phtml');
+    $view->title = 'Uutisten ylläpito';
+    $view->menu = 'admin/news';
+    $view->news = db\news\edit($id);
+    echo $view;
 });
 
 get('/admin/teams', function() {
