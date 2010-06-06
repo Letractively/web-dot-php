@@ -192,6 +192,15 @@ table#bets tr td.countdown {
     line-height: 32px;
     width: 32px;
 }
+h4.upcoming {
+    padding-left: 0.5em;
+    line-height: 32px;
+}
+h4.scorer {
+    background: url(../img/scorer-big.png) no-repeat;
+    padding-left: 40px;
+    line-height: 32px;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

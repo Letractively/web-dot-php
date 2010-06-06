@@ -36,7 +36,7 @@
         <div class="grid_2 alpha"><label>Maalikuningas:</label></div>
         <div class="grid_4"><input id="scorer" name="scorer" type="text" value="<?php echo $form->scorer ?>" style="display: block; width: 100%;" /></div>
         <div class="grid_3 omega">
-            <?php if (isset($user['scorer']) && strlen($user['scorer']) > 0): ?>
+            <?php if ((isset($user['scorer']) && strlen($user['scorer']) > 0) || (isset($user['scorer_betted']) && strlen($user['scorer_betted']) > 0)): ?>
                 <input id="send" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Muuta veikkausta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
             <?php else: ?>
                 <input id="send" type="submit" value="&nbsp;Veikkaa maalikuningasta&nbsp;">
