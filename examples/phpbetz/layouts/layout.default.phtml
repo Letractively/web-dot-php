@@ -73,11 +73,11 @@
                             <tr>
                                 
                                 <td class="f32" style="width: 32px;">
-                                    <div class="flag <?php echo $game['home_abbr']; ?>">&nbsp;</div>
+                                    <div class="flag <?php echo $game['home_abbr']; ?>" title="<?php echo $game['home'];?>">&nbsp;</div>
                                 </td>
                                 <td class="dash">&ndash;</td>
                                 <td class="f32" style="width: 32px;">
-                                    <div class="flag <?php echo $game['road_abbr']; ?>">&nbsp;</div>
+                                    <div class="flag <?php echo $game['road_abbr']; ?>" title="<?php echo $game['road'];?>">&nbsp;</div>
                                 </td>
                                 <td>&nbsp;<?php echo weekday($date, 2) . ' ' . date_format($date, 'j.n H:i'); ?></td>
                             </tr>
