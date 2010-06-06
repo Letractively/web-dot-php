@@ -40,24 +40,25 @@ set_error_handler(function($code, $message, $file, $line, $context) {
     }
 });
 
-require 'lib/controllers.login.php';
-
-authenticate();
-
-if (authenticated) {
-    require 'lib/controllers.main.php';
-    require 'lib/controllers.bets.php';
-    require 'lib/controllers.stats.php';
-}
-
-if (admin) {
-    require 'lib/controllers.admin.php';
-}
-
 if (install) {
     require 'lib/db.install.php';
     require 'lib/controllers.install.php';
+} else {
+    require 'lib/controllers.login.php';
+    
+    authenticate();
+
+    if (authenticated) {
+        require 'lib/controllers.main.php';
+        require 'lib/controllers.bets.php';
+        require 'lib/controllers.stats.php';
+    }
+
+    if (admin) {
+        require 'lib/controllers.admin.php';
+    }
+    
+    portlets();
 }
 
-portlets();
 dispatch();
