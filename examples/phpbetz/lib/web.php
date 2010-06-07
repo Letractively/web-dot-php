@@ -372,11 +372,14 @@ namespace {
             ':snake:'      => sprintf($template, url('~/img/smileys/snake.gif'), 'snake'),
             ':exclaim:'    => sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim'),
             ':question:'   => sprintf($template, url('~/img/smileys/question.gif'), 'question'),
-            '(y)'          => sprintf($template, url('~/img/smileys/thumb.gif'), 'question'),
-            '(Y)'          => sprintf($template, url('~/img/smileys/thumb.gif'), 'question'),
+            '(y)'          => sprintf($template, url('~/img/smileys/thumbs.gif'), 'thumb'),
+            '(n)'          => sprintf($template, url('~/img/smileys/thumbs_down.gif'), 'thumb down'),
+            '(Y)'          => sprintf($template, url('~/img/smileys/thumbs.gif'), 'thumb'),
             '(b)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
             '(B)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
-            '(so)'          => sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball')
+            ':finger:'     => sprintf($template, url('~/img/smileys/finger.gif'), 'finger'),
+            '>:('          => sprintf($template, url('~/img/smileys/mad.gif'), 'mad'),
+            '(so)'         => sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball')
         );
         return str_replace(array_keys($smileys), array_values($smileys), $value);
     }
