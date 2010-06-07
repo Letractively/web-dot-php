@@ -45,7 +45,7 @@ namespace db\stats {
 SQL;
         
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
-        $db->exec('PRAGMA synchronous = NORMAL;');
+        $db->exec('PRAGMA synchronous = NORMAL');
         $res = $db->query($sql);
         $i = 0;
         $j = 0;
