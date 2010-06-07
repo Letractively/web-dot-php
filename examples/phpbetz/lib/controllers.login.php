@@ -163,3 +163,8 @@ get('/login/google', function() {
     }
     redirect('~/');
 });
+
+get('/logoff', function() {
+    logoff();
+    redirect('~/');
+});

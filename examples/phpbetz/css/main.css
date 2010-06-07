@@ -37,7 +37,17 @@ body {
 }
 #header #logo-text {
     float: left;
-    margin: 23px 23px 23px 10px;
+    margin: 32px 0 0 32px;
+}
+
+#user-buttons {
+    padding: 0 0 0 0;
+}
+.logoff-ui-img {
+    background-image: url(../img/logoff.png) !important;
+}
+.profile-ui-img {
+    background-image: url(../img/user.png) !important;
 }
 #navigation {
     background: #4A5155;
