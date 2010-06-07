@@ -59,6 +59,7 @@ post('/registration', function() {
             if (db\users\username_taken($form->username)) $view->username_taken = true;
             if (db\users\email_taken($form->email)) $view->email_taken = true;
         } else {
+            cache_delete('worldcup2010:points');
             login($form->username->value, true);
             redirect('~/');
         }
@@ -113,6 +114,7 @@ post('/registration/google/confirm', function() {
             if (db\users\email_taken($form->email)) $view->email_taken = true;
         } else {
             unset($_SESSION['google-claim'], $_SESSION['google-email']);
+            cache_delete('worldcup2010:points');
             login($form->username->value, true);
             redirect('~/');
         }
