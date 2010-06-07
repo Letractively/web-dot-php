@@ -41,7 +41,7 @@ namespace db\stats {
                 u.scorer_points
             ORDER BY
                 total_points DESC,
-                username ASC
+                LOWER(username) ASC
 SQL;
         
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
