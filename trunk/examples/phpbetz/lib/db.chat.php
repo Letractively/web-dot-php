@@ -2,7 +2,7 @@
 namespace db\chat {
     function post($user, $message) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $db->exec('PRAGMA synchronous = NORMAL;');
+        $db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('INSERT INTO chat (time, user, message) VALUES (:time, :user, :message)');
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
@@ -13,7 +13,7 @@ namespace db\chat {
     }
     function latest($limit, &$last) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-        $db->exec('PRAGMA synchronous = NORMAL;');
+        $db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('SELECT * FROM chat ORDER BY id DESC LIMIT :limit');
         $stm->bindValue(':limit', $limit, SQLITE3_INTEGER);
         $res = $stm->execute();
@@ -33,7 +33,7 @@ namespace db\chat {
     }
     function poll(&$last) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-        $db->exec('PRAGMA synchronous = NORMAL;');
+        $db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('SELECT * FROM chat WHERE id > :id ORDER BY id');
         $stm->bindValue(':id', $last, SQLITE3_INTEGER);
         $res = $stm->execute();
