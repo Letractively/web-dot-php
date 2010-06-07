@@ -11,7 +11,7 @@ define('LOG_LEVEL', LOG_WARNING);
 
 set_exception_handler(function(Exception $ex) {
     @error(sprintf('%s [%s:%s]', $ex->getMessage(), $ex->getFile(), $ex->getLine()));
-    while(@ob_end_clean());
+    while (ob_get_level() > 0) @ob_end_clean();
     if (ajax) {
         status(500);
         exit;
