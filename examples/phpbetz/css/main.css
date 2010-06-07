@@ -90,11 +90,14 @@ body {
 #chat img {
     margin-bottom: -4px;
 }
-input#message, input#scorer {
+input#message, input#scorer, input.large {
     margin-top: 2px;
     line-height: 23px;
     font-size: 1.25em;
     height: 23px;
+}
+input.large {
+    width: 25px;
 }
 .bottom-spacer {
     height: 51px;
