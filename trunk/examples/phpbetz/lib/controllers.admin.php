@@ -51,6 +51,7 @@ get('/admin/games', function() {
     $view = new view('views/admin.games.phtml');
     $view->title = 'Otteluiden ylläpito';
     $view->menu = 'admin/games';
+    $view->games = db\games\all();
     echo $view;
 });
 
