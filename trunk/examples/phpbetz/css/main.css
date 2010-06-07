@@ -211,6 +211,36 @@ h4.scorer {
     padding-left: 40px;
     line-height: 32px;
 }
+#winner .ui-button,
+#second .ui-button,
+#third .ui-button {
+    width: 44px;
+    height: 40px;
+    margin: 0.5em;
+}
+#winner .ui-icon,
+#second .ui-icon,
+#third .ui-icon {
+    width: 32px;
+    height: 32px;
+}
+#winner .ui-button-icon-only .ui-icon,
+#second .ui-button-icon-only .ui-icon,
+#third .ui-button-icon-only .ui-icon {
+    margin-top: -16px;
+    margin-left: -16px;
+}
+hr.thin {
+    height: 1px;
+}
+.team-bet {
+    align: right;
+    line-height: 50px;
+}
+.team-bet h4 {
+    padding-left: 40px;
+    line-height: 32px;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
