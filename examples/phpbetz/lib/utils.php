@@ -88,6 +88,21 @@ function weekday($date, $length = null) {
     return substr($date, 0, $length);
 }
 
+function cache_store($key, $var, $ttl) {
+    if (!function_exists('apc_store')) return false;
+    return apc_store($key, $var, $ttl);
+}
+
+function cache_fetch($key) {
+    if (!function_exists('apc_fetch')) return false;
+    return apc_fetch($key);
+}
+
+function cache_delete($key) {
+    if (!function_exists('apc_delete')) return false;
+    return apc_delete($key);
+}
+
 function smileys_array() {
     $smileys = array();
     $smileys[] = array('src' => 'grin.gif', 'title' => 'grin', 'keys' => array(':-)'));

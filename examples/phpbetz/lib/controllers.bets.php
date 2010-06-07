@@ -31,6 +31,7 @@ get('/bets/teams', function() {
 
 post('/bets/teams/#position', function($position) {
     if (!authenticated) return status(401);
+    cache_delete('worldcup2010:points');
     $form = new form($_POST);
     $form->team->filter('\db\teams\exists');
     $form->position($position)->filter(choice('1', '2', '3'), 'intval');
@@ -59,6 +60,7 @@ get('/bets/scorer', function() {
 
 post('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
+    cache_delete('worldcup2010:points');
     $form = new form($_POST);
     $form->scorer->filter('trim', specialchars(), minlength(3));
     $view = new view('views/bets.scorer.phtml');

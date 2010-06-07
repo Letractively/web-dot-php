@@ -4,7 +4,12 @@ get('/points', function() {
     $view = new view('views/points.phtml');
     $view->title = 'Pistetilanne';
     $view->menu = 'points';
-    $view->points = db\stats\points();
+    $points = cache_fetch('worldcup2010:points');
+    if ($points === false) {
+        $points = db\stats\points();
+        cache_store('worldcup2010:points', $points, 0);
+    }
+    $view->points = $points;
     echo $view;
 });
 
