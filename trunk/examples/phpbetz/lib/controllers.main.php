@@ -1,4 +1,13 @@
 <?php
+
+get('/profile', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $view = new view('views/profile.phtml');
+    $view->title = 'Käyttäjän tiedot';
+    $view->menu = 'profile';
+    echo $view;
+});
+
 get('/rules', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/rules.phtml');
