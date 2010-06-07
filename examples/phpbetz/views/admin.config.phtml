@@ -1,1 +1,6 @@
+<?php
+$db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
+print_r(get_class_methods($db));
+$db->close();
+?>
 <?php phpinfo(); ?>
