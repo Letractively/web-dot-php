@@ -88,7 +88,7 @@ function weekday($date, $length = null) {
     return substr($date, 0, $length);
 }
 
-function cache_store($key, $var, $ttl) {
+function cache_store($key, $var, $ttl = 0) {
     if (!function_exists('apc_store')) return false;
     return apc_store($key, $var, $ttl);
 }
