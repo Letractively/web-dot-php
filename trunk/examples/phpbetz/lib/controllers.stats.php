@@ -7,7 +7,7 @@ get('/points', function() {
     $points = cache_fetch('worldcup2010:points');
     if ($points === false) {
         $points = db\stats\points();
-        cache_store('worldcup2010:points', $points, 0);
+        cache_store('worldcup2010:points', $points);
     }
     $view->points = $points;
     echo $view;
