@@ -67,13 +67,11 @@ function authenticate() {
     define('admin', false);
     define('username', 'anonymous');
 }
-
 function portlets() {
     view::register('user', db\bets\single(username));
     view::register('pot', db\users\paid() * 15);
     view::register('upcoming', db\bets\games(username, 2));
 }
-
 function weekday($date, $length = null) {
     $weekdaynum = (int)date_format($date, 'w');
     switch ($weekdaynum) {
@@ -88,22 +86,18 @@ function weekday($date, $length = null) {
     if ($length == null) return $date;
     return substr($date, 0, $length);
 }
-
 function cache_store($key, $var, $ttl = 0) {
     if (!function_exists('apc_store')) return false;
     return apc_store($key, $var, $ttl);
 }
-
 function cache_fetch($key) {
     if (!function_exists('apc_fetch')) return false;
     return apc_fetch($key);
 }
-
 function cache_delete($key) {
     if (!function_exists('apc_delete')) return false;
     return apc_delete($key);
 }
-
 function smileys_array() {
     $smileys = array();
     $smileys[] = array('src' => 'grin.gif', 'title' => 'grin', 'keys' => array(':-)'));
@@ -121,23 +115,20 @@ function smileys_array() {
     $smileys[] = array('src' => 'tongue_wink.gif', 'title' => 'tongue wink', 'keys' => array(';-P'));
     $smileys[] = array('src' => 'rasberry.gif', 'title' => 'raspberry', 'keys' => array(':P'));
     $smileys[] = array('src' => 'blank.gif', 'title' => 'blank stare', 'keys' => array(':blank:', ':long:'));
-    $smileys[] = array('src' => 'mad.gif', 'title' => 'mad', 'keys' => array('>:(', ':mad:'));
-    $smileys[] = array('src' => 'angry.gif', 'title' => 'angry', 'keys' => array(':angry:', '>:-('));
-    $smileys[] = array('src' => 'beer.gif', 'title' => 'beer', 'keys' => array('(b)', '(B)'));
-    $smileys[] = array('src' => 'question.gif', 'title' => 'question', 'keys' => array(':question:'));
-    $smileys[] = array('src' => 'soccer.gif', 'title' => 'soccer ball', 'keys' => array('(so)'));
-    $smileys[] = array('src' => 'shock.gif', 'title' => 'shock', 'keys' => array(':ahhh:', ':shock:'));
     $smileys[] = array('src' => 'ohh.gif', 'title' => 'ohh', 'keys' => array(':ohh:'));
     $smileys[] = array('src' => 'grrr.gif', 'title' => 'grrr', 'keys' => array(':grrr:'));
-    $smileys[] = array('src' => 'ohoh.gif', 'title' => 'ohoh', 'keys' => array('8-/'));
     $smileys[] = array('src' => 'gulp.gif', 'title' => 'gulp', 'keys' => array(':gulp:'));
+    $smileys[] = array('src' => 'ohoh.gif', 'title' => 'ohoh', 'keys' => array('8-/'));
     $smileys[] = array('src' => 'downer.gif', 'title' => 'downer', 'keys' => array(':down:'));
     $smileys[] = array('src' => 'embarrassed.gif', 'title' => 'red face', 'keys' => array(':red:'));
     $smileys[] = array('src' => 'sick.gif', 'title' => 'sick', 'keys' => array(':sick:'));
     $smileys[] = array('src' => 'shuteye.gif', 'title' => 'shut eye', 'keys' => array(':shut:'));
     $smileys[] = array('src' => 'hmm.gif', 'title' => 'hmmm', 'keys' => array(':-/'));
+    $smileys[] = array('src' => 'mad.gif', 'title' => 'mad', 'keys' => array(':mad:', '>:('));
+    $smileys[] = array('src' => 'angry.gif', 'title' => 'angry', 'keys' => array(':angry:', '>:-('));
     $smileys[] = array('src' => 'zip.gif', 'title' => 'zipper', 'keys' => array(':zip:'));
     $smileys[] = array('src' => 'kiss.gif', 'title' => 'kiss', 'keys' => array(':kiss:'));
+    $smileys[] = array('src' => 'shock.gif', 'title' => 'shock', 'keys' => array(':ahhh:', ':shock:'));
     $smileys[] = array('src' => 'shade_smile.gif', 'title' => 'cool smile', 'keys' => array(':coolsmile:'));
     $smileys[] = array('src' => 'shade_smirk.gif', 'title' => 'cool smirk', 'keys' => array(':coolsmirk:'));
     $smileys[] = array('src' => 'shade_grin.gif', 'title' => 'cool grin', 'keys' => array(':coolgrin:'));
@@ -146,10 +137,22 @@ function smileys_array() {
     $smileys[] = array('src' => 'shade_cheese.gif', 'title' => 'cool mad', 'keys' => array(':coolcheese:'));
     $smileys[] = array('src' => 'vampire.gif', 'title' => 'vampire', 'keys' => array(':vampire:'));
     $smileys[] = array('src' => 'snake.gif', 'title' => 'snake', 'keys' => array(':snake:'));
-    $smileys[] = array('src' => 'exclaim.gif', 'title' => 'exclaim', 'keys' => array(':exclaim:'));
-    $smileys[] = array('src' => 'thumbs_down.gif', 'title' => 'thumbs down', 'keys' => array('(n)'));
-    $smileys[] = array('src' => 'thumbs.gif', 'title' => 'thumb', 'keys' => array('(y)', '(Y)'));
+    $smileys[] = array('src' => 'smoke.gif', 'title' => 'smoke', 'keys' => array(':smoke:'));
     $smileys[] = array('src' => 'finger.gif', 'title' => 'finger', 'keys' => array(':finger:'));
-
+    $smileys[] = array('src' => 'exclaim.gif', 'title' => 'exclaim', 'keys' => array(':exclaim:'));
+    $smileys[] = array('src' => 'question.gif', 'title' => 'question', 'keys' => array(':question:'));
+    $smileys[] = array('src' => 'thumbs.gif', 'title' => 'thumb', 'keys' => array('(y)', '(Y)'));
+    $smileys[] = array('src' => 'thumbs_down.gif', 'title' => 'thumbs down', 'keys' => array('(n)'));
+    $smileys[] = array('src' => 'beer.gif', 'title' => 'beer', 'keys' => array('(b)', '(B)'));
+    $smileys[] = array('src' => 'soccer.gif', 'title' => 'soccer ball', 'keys' => array('(so)'));
     return $smileys;
+}
+function smileys($value) {
+    $smileys = smileys_array();
+    $template = '<img src="%s" class="smiley" title="%s" alt="%s" width="19px" height="19px">';
+    foreach ($smileys as $smiley) {
+        $replace = sprintf($template, url('~/img/smileys') . '/' . $smiley['src'], $smiley['keys'][0], $smiley['title']);
+        $value = str_replace($smiley['keys'], $replace, $value);
+    }
+    return $value;
 }
