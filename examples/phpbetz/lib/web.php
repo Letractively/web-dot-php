@@ -326,67 +326,6 @@ namespace {
         $value = isset($value);
         return true;
     }
-    function smileys($value) {
-        $template = '<img src="%s" class="smiley" alt="%s" width="19" height="19">';
-        $smileys = array(
-            ':-)'          => sprintf($template, url('~/img/smileys/grin.gif'), 'grin'),
-            ':D'           => sprintf($template, url('~/img/smileys/lol.gif'), 'lol'),
-            ':-D'          => sprintf($template, url('~/img/smileys/lol.gif'), 'lol'),
-            ':lol:'        => sprintf($template, url('~/img/smileys/lol.gif'), 'lol'),
-            ':cheese:'     => sprintf($template, url('~/img/smileys/cheese.gif'), 'cheese'),
-            ':)'           => sprintf($template, url('~/img/smileys/smile.gif'), 'smile'),
-            ';-)'          => sprintf($template, url('~/img/smileys/wink.gif'), 'wink'),
-            ';)'           => sprintf($template, url('~/img/smileys/wink.gif'), 'wink'),
-            ':smirk:'      => sprintf($template, url('~/img/smileys/smirk.gif'), 'smirk'),
-            ':roll:'       => sprintf($template, url('~/img/smileys/rolleyes.gif'), 'rolleyes'),
-            ':-S'          => sprintf($template, url('~/img/smileys/confused.gif'), 'confused'),
-            ':wow:'        => sprintf($template, url('~/img/smileys/surprise.gif'), 'surprised'),
-            ':bug:'        => sprintf($template, url('~/img/smileys/bigsurprise.gif'), 'big surprise'),
-            ':-P'          => sprintf($template, url('~/img/smileys/tongue_laugh.gif'), 'tongue laugh'),
-            '%-P'          => sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye'),
-            '%P'           => sprintf($template, url('~/img/smileys/tongue_rolleye.gif'), 'tongue rolleye'),
-            ';-P'          => sprintf($template, url('~/img/smileys/tongue_wink.gif'), 'tongue wink'),
-            ':P'           => sprintf($template, url('~/img/smileys/rasberry.gif'), 'raspberry'),
-            ':blank:'      => sprintf($template, url('~/img/smileys/blank.gif'), 'blank stare'),
-            ':long:'       => sprintf($template, url('~/img/smileys/blank.gif'), 'long face'),
-            ':ohh:'        => sprintf($template, url('~/img/smileys/ohh.gif'), 'ohh'),
-            ':grrr:'       => sprintf($template, url('~/img/smileys/grrr.gif'), 'grrr'),
-            ':gulp:'       => sprintf($template, url('~/img/smileys/gulp.gif'), 'gulp'),
-            '8-/'          => sprintf($template, url('~/img/smileys/ohoh.gif'), 'oh oh'),
-            ':down:'       => sprintf($template, url('~/img/smileys/downer.gif'), 'downer'),
-            ':red:'        => sprintf($template, url('~/img/smileys/embarrassed.gif'), 'red face'),
-            ':sick:'       => sprintf($template, url('~/img/smileys/sick.gif'), 'sick'),
-            ':shut:'       => sprintf($template, url('~/img/smileys/shuteye.gif'), 'shut eye'),
-            ':-/'          => sprintf($template, url('~/img/smileys/hmm.gif'), 'hmmm'),
-            '>:('          => sprintf($template, url('~/img/smileys/mad.gif'), 'mad'),
-            ':mad:'        => sprintf($template, url('~/img/smileys/mad.gif'), 'mad'),
-            '>:-('         => sprintf($template, url('~/img/smileys/angry.gif'), 'angry'),
-            ':angry:'      => sprintf($template, url('~/img/smileys/angry.gif'), 'angry'),
-            ':zip:'        => sprintf($template, url('~/img/smileys/zip.gif'), 'zipper'),
-            ':kiss:'       => sprintf($template, url('~/img/smileys/kiss.gif'), 'kiss'),
-            ':ahhh:'       => sprintf($template, url('~/img/smileys/shock.gif'), 'shock'),
-            ':shock:'      => sprintf($template, url('~/img/smileys/shock.gif'), 'shock'),
-            ':coolsmile:'  => sprintf($template, url('~/img/smileys/shade_smile.gif'), 'cool smile'),
-            ':coolsmirk:'  => sprintf($template, url('~/img/smileys/shade_smirk.gif'), 'cool smirk'),
-            ':coolgrin:'   => sprintf($template, url('~/img/smileys/shade_grin.gif'), 'cool grin'),
-            ':coolhmm:'    => sprintf($template, url('~/img/smileys/shade_hmm.gif'), 'cool hmm'),
-            ':coolmad:'    => sprintf($template, url('~/img/smileys/shade_mad.gif'), 'cool mad'),
-            ':coolcheese:' => sprintf($template, url('~/img/smileys/shade_cheese.gif'), 'cool cheese'),
-            ':vampire:'    => sprintf($template, url('~/img/smileys/vampire.gif'), 'vampire'),
-            ':snake:'      => sprintf($template, url('~/img/smileys/snake.gif'), 'snake'),
-            ':exclaim:'    => sprintf($template, url('~/img/smileys/exclaim.gif'), 'exclaim'),
-            ':question:'   => sprintf($template, url('~/img/smileys/question.gif'), 'question'),
-            '(y)'          => sprintf($template, url('~/img/smileys/thumbs.gif'), 'thumb'),
-            '(n)'          => sprintf($template, url('~/img/smileys/thumbs_down.gif'), 'thumb down'),
-            '(Y)'          => sprintf($template, url('~/img/smileys/thumbs.gif'), 'thumb'),
-            '(b)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
-            '(B)'          => sprintf($template, url('~/img/smileys/beer.gif'), 'beer'),
-            ':finger:'     => sprintf($template, url('~/img/smileys/finger.gif'), 'finger'),
-            '>:('          => sprintf($template, url('~/img/smileys/mad.gif'), 'mad'),
-            '(so)'         => sprintf($template, url('~/img/smileys/soccer.gif'), 'soccer ball')
-        );
-        return str_replace(array_keys($smileys), array_values($smileys), $value);
-    }
     function slug($title, $delimiter = '-') {
         $title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
         $title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
