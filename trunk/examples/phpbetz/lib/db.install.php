@@ -122,6 +122,7 @@ namespace db\install {
         );
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
@@ -283,6 +284,7 @@ SQL;
         END;
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
@@ -369,6 +371,7 @@ SQL;
             s.team = t4.name;
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
@@ -408,6 +411,7 @@ SQL;
         INSERT INTO teams (name, abbr) VALUES ('USA', 'USA');
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
@@ -463,12 +467,14 @@ SQL;
         INSERT INTO games (home, road, time) VALUES ('Sveitsi', 'Honduras', '2010-06-25T21:30:00');
 SQL;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
     function admins() {
         $sql = 'UPDATE users SET admin = 1 WHERE username IN (\'bungle\', \'matiass\');';
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $db->exec($sql);
         $db->close();
     }
