@@ -23,7 +23,6 @@ if(isset($success)) {
     <?php if (isset($news['id'])) echo "<input type='hidden' name='id' value='" . $news['id'] . "' />"; ?>
     <input type="submit" value="Tallenna" />
 </form>
-
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.wysiwyg.js'); ?>"></script>
 <script>
