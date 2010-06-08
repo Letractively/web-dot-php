@@ -9,6 +9,7 @@
    <tr>
         <th><img src="<?php echo url('~/img/ranking.png'); ?>" width="16" height="16" title="Sijoitus" alt="Sijoitus"></th>
         <th>Nimi</th>
+        <th><img src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu"></th>
         <th><img src="<?php echo url('~/img/medal-gold.png'); ?>" width="16" height="16" title="Voittaja" alt="Voittaja"></th>
         <th><img src="<?php echo url('~/img/medal-silver.png'); ?>" width="16" height="16" title="Hopeamitalisti" alt="Hopeamitalisti"></th>
         <th><img src="<?php echo url('~/img/medal-bronze.png'); ?>" width="16" height="16" title="Pronssimitalisti" alt="Pronssimitalisti"></th>
@@ -31,6 +32,11 @@
         <?php if ($point['username'] === username): ?>
         <strong><?php echo $point['username']; ?></strong>
         <?php else: echo $point['username']; endif; ?>
+    </td>
+    <td>
+        <?php if ($point['paid'] === 1): ?>
+        <img src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu">
+        <?php endif; ?>
     </td>
     <td class="f32">
         <div class="<?php echo isset($point['winner_abbr']) ? "flag " . $point['winner_abbr'] : ''; ?>" title="<?php echo isset($point['winner']) ? $point['winner'] : ''; ?>">&nbsp;</div>
