@@ -63,6 +63,14 @@ get('/admin/scorers', function() {
     echo $view;
 });
 
+post('/admin/users/edit', function() {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    if (!isset($form->active->value)) $form->active->value = 0; else $form->active->value = 1;
+    if (!isset($form->paid->value)) $form->paid->value = 0; else $form->paid->value = 1;
+    db\users\edit($form->user->value, $form->active->value, $form->paid->value);
+});
+
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.users.phtml');

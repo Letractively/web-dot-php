@@ -4,9 +4,11 @@
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
-<table id="users" class="tablesorter">
+
+<table id="users" class="tablesorter" style="text-align: center;">
     <thead>
     <tr>
+        <th>&nbsp;</th>
         <th>Nimi</th>
         <th>Sähköposti</th>
         <th>Ylläpitäjä</th>
@@ -14,26 +16,60 @@
         <th>Maksanut</th>
     </tr>
     </thead>
+    <?php $i = 0; ?>
     <?php foreach($users as $u): ?>
+    <form method="post" action="<?php echo url('~/admin/users/edit'); ?>">    
     <tr>
+        <td><?php echo ++$i; ?></td>
         <td><?php echo $u['username']; ?></td>
         <td><?php echo $u['email']; ?></td>
-        <td><?php echo $u['admin']; ?></td>
-        <td><?php echo $u['active']; ?></td>
-        <td><?php echo $u['paid']; ?></td>
+        <td>
+        <?php if ($u['admin'] == '1'):
+            echo "<img src='" . url('~/img/tick.png') . "' alt='Kyllä' />";
+        endif; ?>
+        <td>       
+            <input id="active_<?php echo $u['username']; ?>" type="checkbox" name="active" <?php if ($u['active'] == '1') echo "checked='checked' "; ?>class="userlist">
+            <label for="active_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
+        </td>
+        <td>
+            <input id="paid_<?php echo $u['username']; ?>" type="checkbox" name="paid" class="userlist" <?php if ($u['paid'] == '1') echo "checked='checked' "; ?>>
+            <label for="paid_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
+            <input type="hidden" value="<?php echo $u['username']; ?>" name="user" />
+        </td>
     </tr>
+    </form>
     <?php endforeach; ?>
 </table>
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery.editinplace.js'); ?>"></script>
 <script>
+
+function posted(data, status) {
+    if (status != 'success') {
+        alert('Käyttäjän muokkaamisessa tapahtui virhe tallennuksessa tapahtui virhe. Yritä uudelleen.');
+    }
+}
+
+$('input:checkbox').each(function() {
+    var input = $(this);        
+    if (input.hasClass('userlist')) {
+        input.button({
+            icons: {
+                 primary: 'ui-icon-check'
+            },
+        });
+    }
+    var form = $(this.form);        
+    input.click(function() {
+        $.post(form.attr('action'), form.serialize(), posted);
+    }); 
+});
+
+$('form').buttonset();
+
 $(document).ready(function() {
     $('#users').tablesorter();
-    $('.editable').editInPlace({
-        url: 'http://localhost',
-        params: 'name=david'
-    });
 });
 </script>
 <?php block(); ?>
