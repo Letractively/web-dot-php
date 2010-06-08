@@ -256,6 +256,10 @@ div#pot.success h4 {
     line-height: 28px;
     margin: 0;
 }
+#seadragon {
+	width: 195px;
+	height: 130px;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

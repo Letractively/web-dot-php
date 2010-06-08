@@ -121,7 +121,13 @@
                 </div>
             </div>
             <?php endif; ?>
-            
+            <div class="block-spacer"></div>
+            <div class="block">
+                <h3 class="ui-corner-top">Turnauskaavio</h3>
+                <div class="ui-corner-bottom">
+                    <div id="seadragon"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -139,6 +145,7 @@
     </div>
 </div>
 </div>
+<script type="text/javascript" src="http://seadragon.com/ajax/0.8/seadragon-min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script src="<?php echo url('~/js/jquery.menu.js'); ?>"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>
@@ -149,13 +156,16 @@ $("#user-profile").button({
     icons: {
         primary: "profile-ui-img"
     }
-}); //.click( function() { window.location.href = '<?php echo url('~/profile') ?>'; });
+}); //.click( function() { window.location.href = '<?php echo url('~/profile'); ?>'; });
 $("#user-logoff").button({
     icons: {
         primary: "logoff-ui-img"
     }
-}).click( function() { window.location.href = '<?php echo url('~/logoff') ?>'; });
+}).click( function() { window.location.href = '<?php echo url('~/logoff'); ?>'; });
 $("#user-buttons").buttonset();
+Seadragon.Config.imagePath = '<?php echo url('~/img') . '/' ; ?>';
+var viewer = new Seadragon.Viewer("seadragon");
+viewer.openDzi('<?php echo url('~/img/charts/dzc_output.xml'); ?>');
 </script>
 <?php if (isset($scripts)) echo $scripts; ?>
 </body>
