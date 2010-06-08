@@ -257,8 +257,18 @@ div#pot.success h4 {
     margin: 0;
 }
 #seadragon {
-	width: 195px;
-	height: 130px;
+	width: 700px;
+	height: 450px;
+}
+.file {
+    padding-left: 40px;
+    line-height: 32px;
+}
+.excel {
+    background: url(../img/excel.png) no-repeat;
+}
+.file a {
+    color: black;
 }
 .error,
 .notice,
