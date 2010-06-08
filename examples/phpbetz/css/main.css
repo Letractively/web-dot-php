@@ -244,6 +244,18 @@ hr.thin {
     padding-left: 40px;
     line-height: 32px;
 }
+div#pot.success {
+    margin: 16px 12px 0 0;
+    float: right;
+    padding: 5px;
+}
+div#pot.success h4 {
+    background: url(../img/coins.png) no-repeat !important;
+    padding: 0 0 0 40px;
+    height: 32px;
+    line-height: 28px;
+    margin: 0;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

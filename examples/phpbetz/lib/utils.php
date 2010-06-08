@@ -70,6 +70,7 @@ function authenticate() {
 
 function portlets() {
     view::register('user', db\bets\single(username));
+    view::register('pot', db\users\paid() * 15);
     view::register('upcoming', db\bets\games(username, 2));
 }
 
