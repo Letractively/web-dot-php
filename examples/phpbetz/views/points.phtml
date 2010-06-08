@@ -35,7 +35,9 @@
     </td>
     <td>
         <?php if ($point['paid'] === 1): ?>
-        <img src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu">
+        <img style="padding-top: 5px;" src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu">
+        <?php else: ?>
+        &nbsp;
         <?php endif; ?>
     </td>
     <td class="f32">
