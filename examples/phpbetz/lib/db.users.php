@@ -1,11 +1,12 @@
 <?php
 namespace db\users {
-    function edit($username, $active, $paid) {
+    function edit($username, $active, $paid, $admin) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $stm = $db->prepare('UPDATE users SET active = :active, paid = :paid WHERE username = :username');
+        $stm = $db->prepare('UPDATE users SET active = :active, paid = :paid, admin = :admin WHERE username = :username');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->bindValue(':paid', $paid, SQLITE3_INTEGER);
         $stm->bindValue(':active', $active, SQLITE3_INTEGER);
+        $stm->bindValue(':admin', $admin, SQLITE3_INTEGER);
         $stm->execute();
         $stm->close();
         $db->close();

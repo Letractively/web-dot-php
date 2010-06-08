@@ -68,7 +68,10 @@ post('/admin/users/edit', function() {
     $form = new form($_POST);
     if (!isset($form->active->value)) $form->active->value = 0; else $form->active->value = 1;
     if (!isset($form->paid->value)) $form->paid->value = 0; else $form->paid->value = 1;
-    db\users\edit($form->user->value, $form->active->value, $form->paid->value);
+    if (!isset($form->admin->value)) $form->admin->value = 0; else $form->admin->value = 1;
+    //if (!isset($form->admin->value)) $form->admin->value = 0; else $form->admin->value = 1;
+    db\users\edit($form->user->value, $form->active->value, $form->paid->value, $form->admin->value);    
+    //echo "admin: " . $form->admin->value;
 });
 
 get('/admin/users', function() {

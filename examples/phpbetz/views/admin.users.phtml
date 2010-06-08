@@ -8,7 +8,6 @@
 <table id="users" class="tablesorter" style="text-align: center;">
     <thead>
     <tr>
-        <th>&nbsp;</th>
         <th>Nimi</th>
         <th>Sähköposti</th>
         <th>Ylläpitäjä</th>
@@ -17,18 +16,16 @@
     </tr>
     </thead>
     <?php $i = 0; ?>
-    <?php foreach($users as $u): ?>
+    <?php foreach($users as $u): $i++?>
     <form method="post" action="<?php echo url('~/admin/users/edit'); ?>">    
     <tr>
-        <td><?php echo ++$i; ?></td>
         <td><?php echo $u['username']; ?></td>
         <td><?php echo $u['email']; ?></td>
         <td>
-        <?php if ($u['admin'] == '1'):
-            echo "<img src='" . url('~/img/tick.png') . "' alt='Kyllä' />";
-        endif; ?>
+            <input id="admin_<?php echo $u['username']; ?>" type="checkbox" name="admin" <?php if (username == $u['username']) echo "disabled "; ?> <?php if ($u['admin'] == '1') echo "checked='checked' "; ?>class="userlist">
+            <label for="admin_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
         <td>       
-            <input id="active_<?php echo $u['username']; ?>" type="checkbox" name="active" <?php if ($u['active'] == '1') echo "checked='checked' "; ?>class="userlist">
+            <input id="active_<?php echo $u['username']; ?>" type="checkbox" name="active" <?php if (username == $u['username']) echo "disabled "; ?> <?php if ($u['active'] == '1') echo "checked='checked' "; ?>class="userlist">
             <label for="active_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
         </td>
         <td>
@@ -37,9 +34,17 @@
             <input type="hidden" value="<?php echo $u['username']; ?>" name="user" />
         </td>
     </tr>
+    <?php if (username == $u['username']): ?>
+          <input type="hidden" value="1" name="admin" />  
+          <input type="hidden" value="1" name="active" />
+    <?php endif; ?>
     </form>
+    <?php if (username == $u['username']): ?>
+          <input type="hidden" value="1" name="admin" />  
+    <?php endif; ?>
     <?php endforeach; ?>
 </table>
+<?php echo "Yhteensä $i rekisteröitynyttä."; ?>
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery.editinplace.js'); ?>"></script>
