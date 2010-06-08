@@ -4,6 +4,7 @@ namespace db\stats {
         $sql =<<< 'SQL'
         SELECT
             u.username               AS username,
+            u.paid                   AS paid,
             COALESCE(SUM(points), 0) AS game_points,
             u.winner                 AS winner,
             u.winner_abbr            AS winner_abbr,
