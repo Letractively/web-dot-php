@@ -267,6 +267,9 @@ div#pot.success h4 {
 .excel {
     background: url(../img/excel.png) no-repeat;
 }
+.pdf {
+    background: url(../img/pdf.png) no-repeat;
+}
 .file a {
     color: black;
 }
