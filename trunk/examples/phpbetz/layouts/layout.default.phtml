@@ -22,9 +22,13 @@
             <img id="logo" src="<?php echo url('~/img/logo.png'); ?>">
             <img id="logo-text" src="<?php echo url('~/img/logo-text.png'); ?>" width="490" height="44" >
         </div>
-        <div id="user-buttons" style="float: right;">
-            <button id="user-profile"><?php echo $user['username']; ?></button>
+        <div id="user-buttons" style="float: right; text-align: center;">
+            <button id="user-profile"><?php echo username; ?></button>
             <button id="user-logoff">Kirjaudu ulos</button>
+            <br>
+            <div id="pot" class="success ui-corner-top ui-corner-bottom">
+                <h4><?php echo $pot; ?> &euro;</h4>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
