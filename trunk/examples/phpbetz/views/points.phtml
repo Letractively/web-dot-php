@@ -46,10 +46,10 @@
         <?php echo isset($point['scorer']) ? $point['scorer'] : (isset($point['scorer_betted']) ? $point['scorer_betted'] : '&nbsp;') ?>
         <?php echo ($point['username'] === username) ? '</strong>' : ''; ?>
     </td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['game_points'] . '</strong>' : $point['game_points']; ?></td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['team_points'] . '</strong>' : $point['team_points']; ?></td>
+    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['game_points']   . '</strong>' : $point['game_points']; ?></td>
+    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['team_points']   . '</strong>' : $point['team_points']; ?></td>
     <td><?php echo ($point['username'] === username) ? '<strong>' . $point['scorer_points'] . '</strong>' : $point['scorer_points']; ?></td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['total_points'] . '</strong>' : $point['total_points']; ?></td>
+    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['total_points']  . '</strong>' : $point['total_points']; ?></td>
 </tr>
 <?php endforeach; ?>
 </tbody>
