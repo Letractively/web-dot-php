@@ -4,6 +4,11 @@
 <?php block(); ?>
 <h1>Joukkueet</h1>
 <hr>
+
+
+
+
+
 <table id="teams" class="tablesorter">
 <thead>
 <tr>
@@ -21,22 +26,27 @@
     <td width="40%" class="editable">
             <?php echo $team['name']; ?>
     </td>
-    <td class="editable"><?php echo $team['abbr']; ?></td>
-    <td class="editable"><?php echo $team['ranking']; ?></td>
+    <td><?php echo $team['abbr']; ?></td>
+    <td>
+        <form method="post" action="<?php echo url('~/bets/games/' . $team['name']); ?>" class="f16">
+        <table>
+        <tr>
+            <td><input type="text" class="large" value="<?php echo $team['ranking']; ?>"></td>
+            <td>&nbsp;</td>
+            <td><input type="submit" value="Tallenna" disabled></td>
+        </tr>
+        </table>
+        </form>
+    </td>
 </tr>
 <?php endforeach; ?>
 </tbody>
 </table>
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
-<script src="<?php echo url('~/js/jquery.editinplace.js'); ?>"></script>
 <script>
 $(document).ready(function() {
     $('#teams').tablesorter();
-    $('.editable').editInPlace({
-        url: 'http://localhost',
-        params: 'name=david'
-    });
 });
 </script>
 <?php block(); ?>

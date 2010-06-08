@@ -322,6 +322,10 @@ namespace {
         }
         return $value;
     }
+    function checkbox(&$value) {
+        $value = isset($value);
+        return true;
+    }
     function smileys($value) {
         $template = '<img src="%s" class="smiley" alt="%s" width="19" height="19">';
         $smileys = array(

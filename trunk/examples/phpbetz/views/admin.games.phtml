@@ -22,12 +22,12 @@
     <td class="bet">
         <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
         <table>
-        <tr>
-            <td><input type="text" class="large" size="1"></td>
+        <tr style="border: none;">
+            <td><input type="text" class="large" name="home_goals"></td>
             <td>&nbsp;</td>
-            <td class="dash">&ndash;</td>
+            <td>&ndash;</td>
             <td>&nbsp;</td>
-            <td><input type="text" class="large" size="1"></td>
+            <td><input type="text" class="large" name="road_goals"></td>
             <td>&nbsp;</td>
             <td><input type="submit" value="Tallenna" disabled></td>
         </tr>

@@ -28,7 +28,7 @@ post('/admin/news', function() {
     }
 });
 
-get('/admin/news/edit/:id', function($id) {
+get('/admin/news/#id', function($id) {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
     $view->title = 'Uutisten ylläpito';
@@ -63,17 +63,6 @@ get('/admin/scorers', function() {
     echo $view;
 });
 
-post('/admin/users/edit', function() {
-    if (!admin) redirect('~/unauthorized');
-    $form = new form($_POST);
-    if (!isset($form->active->value)) $form->active->value = 0; else $form->active->value = 1;
-    if (!isset($form->paid->value)) $form->paid->value = 0; else $form->paid->value = 1;
-    if (!isset($form->admin->value)) $form->admin->value = 0; else $form->admin->value = 1;
-    //if (!isset($form->admin->value)) $form->admin->value = 0; else $form->admin->value = 1;
-    db\users\edit($form->user->value, $form->active->value, $form->paid->value, $form->admin->value);    
-    //echo "admin: " . $form->admin->value;
-});
-
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.users.phtml');
@@ -82,7 +71,16 @@ get('/admin/users', function() {
     $view->users = db\users\all();
     echo $view;
 });
-
+post('/admin/users', function() {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->active->filter('checkbox');
+    $form->paid->filter('checkbox');
+    $form->admin->filter('checkbox');
+    if ($form->validate()) {
+        db\users\update($form->user->value, $form->active->value || username == $form->user->value, $form->paid->value, $form->admin->value || username == $form->user->value);
+    }
+});
 get('/admin/config', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.config.phtml');
