@@ -41,6 +41,7 @@
                 <li<?php if ($menu == 'bets/scorer') echo ' class="current"' ?>><a href="<?php echo url('~/bets/scorer'); ?>"><span>Maalikuninkuus</span></a></li>
                 <li<?php if ($menu == 'points') echo ' class="current"' ?>><a href="<?php echo url('~/points'); ?>"><span>Pistetilanne</span></a></li>
                 <!-- <li<?php if ($menu == 'stats') echo ' class="current"' ?>><a href="<?php echo url('~/stats'); ?>"><span>Tilastot</span></a></li> -->
+                <li<?php if ($menu == 'program') echo ' class="current"' ?>><a href="<?php echo url('~/program'); ?>"><span>Otteluohjelma</span></a></li>
                 <li<?php if ($menu == 'rules') echo ' class="current"' ?>><a href="<?php echo url('~/rules'); ?>"><span>Säännöt</span></a></li>
                 <li<?php if ($menu == 'chat') echo ' class="current' . (admin ?  '"' : ' last"'); ?>><a href="<?php echo url('~/chat'); ?>"><span>Kisachat</span></a></li>
                 <?php if (admin): ?>
@@ -121,13 +122,6 @@
                 </div>
             </div>
             <?php endif; ?>
-            <div class="block-spacer"></div>
-            <div class="block">
-                <h3 class="ui-corner-top">Turnauskaavio</h3>
-                <div class="ui-corner-bottom">
-                    <div id="seadragon"></div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -163,9 +157,6 @@ $("#user-logoff").button({
     }
 }).click( function() { window.location.href = '<?php echo url('~/logoff'); ?>'; });
 $("#user-buttons").buttonset();
-Seadragon.Config.imagePath = '<?php echo url('~/img') . '/' ; ?>';
-var viewer = new Seadragon.Viewer("seadragon");
-viewer.openDzi('<?php echo url('~/img/charts/dzc_output.xml'); ?>');
 </script>
 <?php if (isset($scripts)) echo $scripts; ?>
 </body>

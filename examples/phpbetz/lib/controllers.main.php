@@ -51,3 +51,11 @@ get('/chat/poll', function() {
     $view->messages = $messages;
     echo $view;
 });
+
+get('/program', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $view = new view('views/program.phtml');
+    $view->title = 'Otteluohjelma';
+    $view->menu = 'program';
+    echo $view;
+});

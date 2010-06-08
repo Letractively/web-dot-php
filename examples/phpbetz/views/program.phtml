@@ -1,0 +1,20 @@
+<?php $layout = 'layouts/layout.default.phtml'; ?>
+<h1><?php echo $title; ?></h1>
+<hr>
+<div id="seadragon"></div>
+<?php block($right); ?>
+<div class="block-spacer"></div>
+<div class="block">
+    <h3 class="ui-corner-top">Ladattava materiaali</h3>
+    <div class="ui-corner-bottom">
+        <h4 class="file excel"><a href="<?php echo url('~/files/score-sheet.xls'); ?>">Tulostaulukko</a></h4>
+    </div>
+</div>
+<?php block(); ?>
+<?php block($scripts); ?>
+<script>
+Seadragon.Config.imagePath = '<?php echo url('~/img') . '/' ; ?>';
+var viewer = new Seadragon.Viewer("seadragon");
+viewer.openDzi('<?php echo url('~/img/charts/dzc_output.xml'); ?>');
+</script>
+<?php block(); ?>
