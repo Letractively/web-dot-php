@@ -23,6 +23,7 @@ get('/chat', function() {
     $view = new view('views/chat.phtml');
     $view->title = 'Kisachat';
     $view->menu = 'chat';
+    $view->smileys = smileys_array();
     $_SESSION['last-chat-message-id'] = $last;
     if (count($messages) > 0) {
         $chat = new view('views/chat.messages.phtml');

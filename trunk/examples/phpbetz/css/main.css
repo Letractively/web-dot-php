@@ -270,6 +270,10 @@ div#pot.success h4 {
 .file a {
     color: black;
 }
+td.current-user {
+    background-color: #e6efc2 !important;
+    font-weight: bold;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
