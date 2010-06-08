@@ -164,7 +164,7 @@ namespace db\users {
     function paid() {
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        $stm = $db->prepare('SELECT COUNT(paid) FROM users WHERE paid > :paid');
+        $stm = $db->prepare('SELECT COUNT(paid) FROM users WHERE paid = :paid');
         $stm->bindValue(':paid', 1, SQLITE3_INTEGER);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);
