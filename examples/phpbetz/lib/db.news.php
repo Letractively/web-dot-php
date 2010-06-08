@@ -3,7 +3,7 @@ namespace db\news {
     function all() {
         $news = array();
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-        $db->exec('PRAGMA synchronous = NORMAL');
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $res = $db->query('SELECT * FROM news ORDER BY time DESC');
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $news[] = $row;
         $res->finalize();
@@ -13,7 +13,8 @@ namespace db\news {
 
     function add($id, $title, $content, $level, $user, $slug) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
-        $db->exec('PRAGMA synchronous = NORMAL');
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        //$db->exec('PRAGMA synchronous = NORMAL');
         if (!isset($id)) {
             $stm = $db->prepare('INSERT INTO news (time, slug, title, content, level, user) VALUES (:time, :slug, :title, :content, :level, :user)');
         } else {
@@ -33,7 +34,8 @@ namespace db\news {
     
     function edit($id) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
-        $db->exec('PRAGMA synchronous = NORMAL');
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('SELECT * FROM news WHERE id = :id');
         $stm->bindValue('id', $id, SQLITE3_INTEGER);
         $res = $stm->execute();
