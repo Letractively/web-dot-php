@@ -28,36 +28,28 @@
     <?php elseif ($point['rowspan'] > 0 && $point['keyrow']): ?>
     <td class="position" rowspan="<?php echo $point['rowspan']; ?>"><h3><?php echo $point['position']; ?>.</h3></td>
     <?php endif; ?>
-    <td>
-        <?php if ($point['username'] === username): ?>
-        <strong><?php echo $point['username']; ?></strong>
-        <?php else: echo $point['username']; endif; ?>
-    </td>
-    <td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['username']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>>
         <?php if ($point['paid'] === 1): ?>
         <img style="padding-top: 5px;" src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu">
         <?php else: ?>
         &nbsp;
         <?php endif; ?>
     </td>
-    <td class="f32">
+    <td class="f32<?php echo ($point['username'] === username) ? ' current-user' : ''; ?>">
         <div class="<?php echo isset($point['winner_abbr']) ? "flag " . $point['winner_abbr'] : ''; ?>" title="<?php echo isset($point['winner']) ? $point['winner'] : ''; ?>">&nbsp;</div>
     </td>
-    <td class="f32">
+    <td class="f32<?php echo ($point['username'] === username) ? ' current-user' : ''; ?>">
         <div class="<?php echo isset($point['second_abbr']) ? "flag " . $point['second_abbr'] : ''; ?>" title="<?php echo isset($point['second']) ? $point['second'] : ''; ?>">&nbsp;</div>
     </td>
-    <td class="f32">
+    <td class="f32<?php echo ($point['username'] === username) ? ' current-user' : ''; ?>">
         <div class="<?php echo isset($point['third_abbr']) ? "flag " . $point['third_abbr'] : ''; ?>" title="<?php echo isset($point['third']) ? $point['third'] : ''; ?>">&nbsp;</div>
     </td>
-    <td>
-        <?php echo ($point['username'] === username) ? '<strong>' : ''; ?>
-        <?php echo isset($point['scorer']) ? $point['scorer'] : (isset($point['scorer_betted']) ? $point['scorer_betted'] : '&nbsp;') ?>
-        <?php echo ($point['username'] === username) ? '</strong>' : ''; ?>
-    </td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['game_points']   . '</strong>' : $point['game_points']; ?></td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['team_points']   . '</strong>' : $point['team_points']; ?></td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['scorer_points'] . '</strong>' : $point['scorer_points']; ?></td>
-    <td><?php echo ($point['username'] === username) ? '<strong>' . $point['total_points']  . '</strong>' : $point['total_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo isset($point['scorer']) ? $point['scorer'] : (isset($point['scorer_betted']) ? $point['scorer_betted'] : '&nbsp;') ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['game_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['team_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['scorer_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['total_points']; ?></td>
 </tr>
 <?php endforeach; ?>
 </tbody>
