@@ -7,7 +7,7 @@ define('secret', 'Replace this on a production server.');
 define('ajax', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 define('DATE_SQLITE', 'Y-m-d\TH:i:s');
 define('LOG_PATH', 'data');
-define('LOG_LEVEL', LOG_WARNING);
+define('LOG_LEVEL', LOG_DEBUG);
 
 set_exception_handler(function(Exception $ex) {
     @error(sprintf('%s [%s:%s]', $ex->getMessage(), $ex->getFile(), $ex->getLine()));
