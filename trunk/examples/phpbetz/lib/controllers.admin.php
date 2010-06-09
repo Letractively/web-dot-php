@@ -6,7 +6,6 @@ get('/admin', function() {
     $view->menu = 'admin';
     echo $view;
 });
-
 get('/admin/news', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
@@ -14,7 +13,6 @@ get('/admin/news', function() {
     $view->menu = 'admin/news';
     echo $view;
 });
-
 post('/admin/news', function() {
     if (!admin) redirect('~/unauthorized');
     $form = new form($_POST);
@@ -27,7 +25,6 @@ post('/admin/news', function() {
         redirect('~/');
     }
 });
-
 get('/admin/news/#id', function($id) {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
@@ -36,7 +33,6 @@ get('/admin/news/#id', function($id) {
     $view->news = db\news\edit($id);
     echo $view;
 });
-
 get('/admin/teams', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.teams.phtml');
@@ -45,7 +41,6 @@ get('/admin/teams', function() {
     $view->teams = db\teams\all();
     echo $view;
 });
-
 get('/admin/games', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.games.phtml');
@@ -54,7 +49,6 @@ get('/admin/games', function() {
     $view->games = db\games\all();
     echo $view;
 });
-
 get('/admin/scorers', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.games.phtml');
@@ -62,7 +56,6 @@ get('/admin/scorers', function() {
     $view->menu = 'admin/scorers';
     echo $view;
 });
-
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.users.phtml');

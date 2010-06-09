@@ -1,18 +1,4 @@
 <?php
-route('/error', function() {
-    status(500);
-    if (defined('authenticated') && authenticated) {
-        $view = new view('views/error.main.phtml');
-        $view->title = 'Sivulla tapahtui virhe';
-        $view->menu = 'error';
-        echo $view;
-    } else {
-        $view = new view('views/error.login.phtml');
-        echo $view;
-
-    }
-});
-
 get('/', function() {
     if (authenticated) {
         $view = new view('views/main.phtml');
@@ -26,7 +12,6 @@ get('/', function() {
         echo $view;
     }
 });
-
 post('/', function() {
     $form = new form($_POST);
     $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', specialchars());
@@ -39,7 +24,6 @@ post('/', function() {
     $view->invalid = true;
     echo $view;
 });
-
 post('/login/google', function() {
     $_SESSION['login-google'] = 'login';
     $xrds = openid_discover('https://www.google.com/accounts/o8/id');
@@ -49,7 +33,6 @@ post('/login/google', function() {
         'openid.ui.icon' => 'true'
     ));
 });
-
 get('/login/google', function() {
     if (isset($_SESSION['login-google'])) {
         $login = $_SESSION['login-google'];
@@ -83,8 +66,26 @@ get('/login/google', function() {
     }
     redirect('~/');
 });
-
 get('/logoff', function() {
     logoff();
     redirect('~/');
+});
+get('/unauthorized', function() {
+    status(401);
+    logoff();
+    $view = new view('views/unauthorized.phtml');
+    echo $view;
+   
+});
+route('/error', function() {
+    status(500);
+    if (defined('authenticated') && authenticated) {
+        $view = new view('views/error.main.phtml');
+        $view->title = 'Sivulla tapahtui virhe';
+        $view->menu = 'error';
+        echo $view;
+    } else {
+        $view = new view('views/error.login.phtml');
+        echo $view;
+    }
 });

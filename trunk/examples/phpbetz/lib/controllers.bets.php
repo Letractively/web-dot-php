@@ -8,7 +8,6 @@ get('/bets/games', function() {
     $view->online = db\users\visited(username, 'Otteluveikkaus');
     echo $view;
 });
-
 post('/bets/games/#game', function($game) {
     if (!authenticated) return status(401);
     $form = new form($_POST);
@@ -20,7 +19,6 @@ post('/bets/games/#game', function($game) {
         status(500);
     }
 });
-
 get('/bets/teams', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/bets.teams.phtml');
@@ -31,10 +29,8 @@ get('/bets/teams', function() {
     $view->hide_teams = true;
     echo $view;
 });
-
 post('/bets/teams/#position', function($position) {
     if (!authenticated) return status(401);
-    cache_delete('worldcup2010:points');
     $form = new form($_POST);
     $form->team->filter('\db\teams\exists');
     $form->position($position)->filter(choice('1', '2', '3'), 'intval');
@@ -44,12 +40,12 @@ post('/bets/teams/#position', function($position) {
             case 2: db\bets\second(username, $form->team->value); break;
             case 3: db\bets\third(username, $form->team->value); break;
         }
+        cache_delete('worldcup2010:points');
         db\users\visited(username, 'Kolmen kärki &trade;');
     } else {
         status(500);
     }
 });
-
 get('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/bets.scorer.phtml');
@@ -64,12 +60,12 @@ get('/bets/scorer', function() {
 });
 post('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
-    cache_delete('worldcup2010:points');
     $form = new form($_POST);
     $form->scorer->filter('trim', specialchars(), minlength(3));
     $view = new view('views/bets.scorer.phtml');
     if ($form->validate()) {
         db\bets\scorer(username, $form->scorer);
+        cache_delete('worldcup2010:points');
         db\users\visited(username, 'Maalikuninkuus');
         flash('saved', true);
         redirect('~/bets/scorer');
@@ -79,6 +75,5 @@ post('/bets/scorer', function() {
         $view->form = $form;
         $view->error = true;
         echo $view;
-
     }
 });

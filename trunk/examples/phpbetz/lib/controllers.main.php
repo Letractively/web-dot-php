@@ -1,5 +1,4 @@
 <?php
-
 get('/profile', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/profile.phtml');
@@ -8,7 +7,6 @@ get('/profile', function() {
     $view->online = db\users\visited(username, 'Käyttäjän tiedot');
     echo $view;
 });
-
 get('/euro2008', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/euro2008.phtml');
@@ -25,7 +23,6 @@ get('/rules', function() {
     $view->online = db\users\visited(username, 'Säännöt');
     echo $view;
 });
-
 get('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
     $last = 0;
@@ -43,7 +40,6 @@ get('/chat', function() {
     }
     echo $view;
 });
-
 post('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
     $form = new form($_POST);
@@ -53,7 +49,6 @@ post('/chat', function() {
         db\users\visited(username, 'Kisachat');
     }
 });
-
 get('/chat/poll', function() {
     if (!authenticated) return;
     $last = isset($_SESSION['last-chat-message-id']) ? $_SESSION['last-chat-message-id'] : 0;
@@ -64,7 +59,6 @@ get('/chat/poll', function() {
     $view->messages = $messages;
     echo $view;
 });
-
 get('/program', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/program.phtml');

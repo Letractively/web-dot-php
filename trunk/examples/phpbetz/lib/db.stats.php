@@ -47,7 +47,6 @@ SQL;
         
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $res = $db->query($sql);
         $i = 0;
         $j = 0;
@@ -77,7 +76,6 @@ SQL;
         $points[$j]['keyrow'] = true;
         $res->finalize();
         $db->close();
-        
         return $points;
     }
 }

@@ -6,7 +6,6 @@ get('/install', function() {
     db\install\teams();
     db\install\games();
 });
-
 get('/install/admins', function() {
     db\install\admins();
 });
