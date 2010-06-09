@@ -56,4 +56,18 @@ if (authenticated) {
 
 if (admin) require 'lib/controllers.admin.php';
 
-dispatch();
+$dispatched = dispatch();
+
+if (!$dispatched) {
+    status(404);
+    if (authenticated) {
+        $view = new view('views/404.main.phtml');
+        $view->title = 'Sivua ei löytynyt';
+        $view->menu = '404';
+        echo $view;
+    } else {
+        $view = new view('views/404.login.phtml');
+        $view->title = 'Sivua ei löytynyt';
+        echo $view;
+    }
+}
