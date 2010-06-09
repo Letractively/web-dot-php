@@ -282,6 +282,12 @@ td.current-user {
     font-size: 0.85em;
     text-align: center;
 }
+#online td.username, #online th.username {
+    text-align: left;
+}
+#online td.idle, #online th.idle {
+    text-align: right;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
