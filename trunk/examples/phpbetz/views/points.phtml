@@ -46,10 +46,10 @@
         <div class="<?php echo isset($point['third_abbr']) ? "flag " . $point['third_abbr'] : ''; ?>" title="<?php echo isset($point['third']) ? $point['third'] : ''; ?>">&nbsp;</div>
     </td>
     <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo isset($point['scorer']) ? $point['scorer'] : (isset($point['scorer_betted']) ? $point['scorer_betted'] : '&nbsp;') ?></td>
-    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['game_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo number_format($point['game_points'], 2, ',', ''); ?></td>
     <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['team_points']; ?></td>
     <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['scorer_points']; ?></td>
-    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['total_points']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo number_format($point['total_points'], 2, ',', ''); ?></td>
 </tr>
 <?php endforeach; ?>
 </tbody>
