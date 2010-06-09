@@ -81,15 +81,16 @@ _gaq.push(['_trackPageview']);
             <?php echo $view; ?>
         </div>
         <div id="main-right" class="grid_3">
-            <!--
+            <?php if (isset($online)): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Paikalla</h3>
-                <div class="ui-corner-bottom">
-                    bungle, matias
+                <div class="ui-corner-bottom" style="font-size: 0.9em;">
+                    <?php echo implode(', ', $online); ?>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="block-spacer"></div>
-            -->
+            
             <div class="block">
                 <h3 class="ui-corner-top">Seuraavat ottelut</h3>
                 <div class="ui-corner-bottom">
