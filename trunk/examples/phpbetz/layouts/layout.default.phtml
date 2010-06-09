@@ -84,8 +84,22 @@ _gaq.push(['_trackPageview']);
             <?php if (isset($online)): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Paikalla</h3>
-                <div class="ui-corner-bottom" style="font-size: 0.9em;">
-                    <?php echo implode(', ', $online); ?>
+                <div class="ui-corner-bottom">
+                    <table id="online">
+                    <tr>
+                        <th>Nimi</th>
+                        <th>Sivu</th>
+                        <th>Poissa</th>
+                    </tr>
+                    <?php foreach($online as $o): $now = date_create(); ?>
+                    <tr>
+                        <td><?php echo $o['username']; ?></td>
+                        <td><?php echo $o['visited_page']; ?></td>
+                        <td><?php echo date_diff($now, date_create($o['visited_time']))->format('%m min %s s'); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    </table>
+                    
                 </div>
             </div>
             <?php endif; ?>
@@ -152,7 +166,6 @@ _gaq.push(['_trackPageview']);
     </div>
 </div>
 </div>
-<script type="text/javascript" src="http://seadragon.com/ajax/0.8/seadragon-min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script src="<?php echo url('~/js/jquery.menu.js'); ?>"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>

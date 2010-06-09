@@ -5,7 +5,7 @@ get('/profile', function() {
     $view = new view('views/profile.phtml');
     $view->title = 'Käyttäjän tiedot';
     $view->menu = 'profile';
-    $view->online = db\users\visited(username, 'profile');
+    $view->online = db\users\visited(username, 'Käyttäjän tiedot');
     echo $view;
 });
 
@@ -14,7 +14,7 @@ get('/euro2008', function() {
     $view = new view('views/euro2008.phtml');
     $view->title = 'Euro2008 lopputulokset';
     $view->menu = 'euro2008';
-    $view->online = db\users\visited(username, 'euro2008');
+    $view->online = db\users\visited(username, 'Euro2008');
     echo $view;
 });
 get('/rules', function() {
@@ -22,7 +22,7 @@ get('/rules', function() {
     $view = new view('views/rules.phtml');
     $view->title = 'Säännöt';
     $view->menu = 'rules';
-    $view->online = db\users\visited(username, 'rules');
+    $view->online = db\users\visited(username, 'Säännöt');
     echo $view;
 });
 
@@ -34,7 +34,7 @@ get('/chat', function() {
     $view->title = 'Kisachat';
     $view->menu = 'chat';
     $view->smileys = smileys_array();
-    $view->online = db\users\visited(username, 'chat');
+    $view->online = db\users\visited(username, 'Kisachat');
     $_SESSION['last-chat-message-id'] = $last;
     if (count($messages) > 0) {
         $chat = new view('views/chat.messages.phtml');
@@ -46,11 +46,11 @@ get('/chat', function() {
 
 post('/chat', function() {
     if (!authenticated) redirect('~/unauthorized');
-    db\users\visited(username, 'chat');
     $form = new form($_POST);
     $form->message->filter('trim', minlength(1), specialchars(), 'links', 'smileys');
     if ($form->validate()) {
         db\chat\post(username, $form->message->value);
+        db\users\visited(username, 'Kisachat');
     }
 });
 
@@ -70,6 +70,6 @@ get('/program', function() {
     $view = new view('views/program.phtml');
     $view->title = 'Otteluohjelma';
     $view->menu = 'program';
-    $view->online = db\users\visited(username, 'program');
+    $view->online = db\users\visited(username, 'Otteluohjelma');
     echo $view;
 });
