@@ -87,15 +87,15 @@ _gaq.push(['_trackPageview']);
                 <div class="ui-corner-bottom">
                     <table id="online">
                     <tr>
-                        <th>Nimi</th>
+                        <th class="username">Nimi</th>
                         <th>Sivu</th>
-                        <th>Poissa</th>
+                        <th class="idle">Poissa</th>
                     </tr>
                     <?php foreach($online as $o): $now = date_create(); ?>
                     <tr>
-                        <td><?php echo $o['username']; ?></td>
+                        <td class="username"><?php echo $o['username']; ?></td>
                         <td><?php echo $o['visited_page']; ?></td>
-                        <td><?php echo date_diff($now, date_create($o['visited_time']))->format('%m min %s s'); ?></td>
+                        <td class="idle"><?php echo date_diff($now, date_create($o['visited_time']))->format('%m min %S s'); ?></td>
                     </tr>
                     <?php endforeach; ?>
                     </table>
