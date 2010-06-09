@@ -277,6 +277,11 @@ td.current-user {
     background-color: #e6efc2 !important;
     font-weight: bold;
 }
+#online {
+    width: 100%;
+    font-size: 0.85em;
+    text-align: center;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

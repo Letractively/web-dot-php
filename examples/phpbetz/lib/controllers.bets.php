@@ -5,7 +5,7 @@ get('/bets/games', function() {
     $view->title = 'Otteluveikkaus';
     $view->menu = 'bets/games';
     $view->games = db\bets\games(username);
-    $view->online = db\users\visited(username, 'bets/games');
+    $view->online = db\users\visited(username, 'Otteluveikkaus');
     echo $view;
 });
 
@@ -15,7 +15,7 @@ post('/bets/games/#game', function($game) {
     $form->score->filter(choice('1', 'X', '2'));
     if ($form->validate()) {
         db\bets\game($game, username, $form->score->value);
-        db\users\visited(username, 'bets/games');
+        db\users\visited(username, 'Otteluveikkaus');
     } else {
         status(500);
     }
@@ -27,7 +27,7 @@ get('/bets/teams', function() {
     $view->teams = db\teams\all();
     $view->title = 'Kolmen kärki &trade;';
     $view->menu = 'bets/teams';
-    $view->online = db\users\visited(username, 'bets/games');
+    $view->online = db\users\visited(username, 'Kolmen kärki &trade;');
     $view->hide_teams = true;
     echo $view;
 });
@@ -44,7 +44,7 @@ post('/bets/teams/#position', function($position) {
             case 2: db\bets\second(username, $form->team->value); break;
             case 3: db\bets\third(username, $form->team->value); break;
         }
-        db\users\visited(username, 'bets/teams');
+        db\users\visited(username, 'Kolmen kärki &trade;');
     } else {
         status(500);
     }
@@ -59,7 +59,7 @@ get('/bets/scorer', function() {
     $view->title = 'Maalikuninkuus';
     $view->form = new form();
     $view->menu = 'bets/scorer';
-    $view->online = db\users\visited(username, 'bets/scorer');
+    $view->online = db\users\visited(username, 'Maalikuninkuus');
     echo $view;
 });
 
@@ -71,7 +71,7 @@ post('/bets/scorer', function() {
     $view = new view('views/bets.scorer.phtml');
     if ($form->validate()) {
         db\bets\scorer(username, $form->scorer);
-        db\users\visited(username, 'bets/scorer');
+        db\users\visited(username, 'Maalikuninkuus');
         flash('saved', true);
         redirect('~/bets/scorer');
     } else {
