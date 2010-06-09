@@ -62,7 +62,6 @@ get('/bets/scorer', function() {
     $view->online = db\users\visited(username, 'Maalikuninkuus');
     echo $view;
 });
-
 post('/bets/scorer', function() {
     if (!authenticated) redirect('~/unauthorized');
     cache_delete('worldcup2010:points');
