@@ -5,7 +5,6 @@ get('/registration', function() {
     $view->form = new form;
     echo $view;
 });
-
 post('/registration', function() {
     $form = new form($_POST);
     $form->username->filter('trim', length(2, 15), '/^[a-z0-9åäö_-]+$/ui', specialchars());
@@ -27,7 +26,6 @@ post('/registration', function() {
     $view->form = $form;
     echo $view;
 });
-
 post('/registration/google', function() {
     $_SESSION['login-google'] = 'registration';
     $xrds = openid_discover('https://www.google.com/accounts/o8/id');
@@ -42,7 +40,6 @@ post('/registration/google', function() {
         'openid.ax.type.firstname' => 'http://axschema.org/namePerson/first'
     ));
 });
-
 get('/registration/google/confirm', function() {
     if (isset($_SESSION['google-claim']) && isset($_SESSION['google-fname']) && isset($_SESSION['google-email'])) {
         $form = new form($_GET);
@@ -57,7 +54,6 @@ get('/registration/google/confirm', function() {
         redirect('~/');
     }
 });
-
 post('/registration/google/confirm', function() {
     if (!isset($_SESSION['google-claim']) || !isset($_SESSION['google-email'])) redirect('~/');
     $claim = $_SESSION['google-claim'];

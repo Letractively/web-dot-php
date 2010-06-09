@@ -13,7 +13,6 @@ get('/points', function() {
     $view->online = db\users\visited(username, 'Pistetilanne');
     echo $view;
 });
-
 get('/stats', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/stats.phtml');

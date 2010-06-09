@@ -18,7 +18,6 @@ SQL;
         }
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare($sql);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
@@ -30,11 +29,9 @@ SQL;
         $db->close();
         return $games;
     }
-
     function game($game, $user, $score) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('INSERT OR REPLACE INTO gamebets (game, user, score) VALUES (:game, :user, :score)');
         $stm->bindValue(':game', $game, SQLITE3_INTEGER);
         $stm->bindValue(':user', $user, SQLITE3_TEXT);
@@ -55,7 +52,6 @@ SQL;
     function team($username, $team, $position) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('UPDATE users SET ' . $position . ' = :team WHERE username = :username');
         $stm->bindValue(':team', $team, SQLITE3_TEXT);
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
@@ -66,7 +62,6 @@ SQL;
     function scorer($username, $scorer) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('UPDATE users SET scorer = :scorer WHERE username = :username');
         $stm->bindValue(':scorer', $scorer, SQLITE3_TEXT);
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
@@ -77,7 +72,6 @@ SQL;
     function single($username) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('SELECT * FROM view_users WHERE username = :username');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $res = $stm->execute();
@@ -90,7 +84,6 @@ SQL;
     function started() {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        //$db->exec('PRAGMA synchronous = NORMAL');
         $stm = $db->prepare('SELECT 1 FROM games WHERE time < :time LIMIT 1');
         $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
         $res = $stm->execute();

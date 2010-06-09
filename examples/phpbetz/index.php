@@ -22,7 +22,7 @@ set_exception_handler(function(Exception $ex) {
 
 set_error_handler(function($code, $message, $file, $line, $context) {
     @error(sprintf('%s [%s:%s]', $message, $file, $line));
-    while(@ob_end_clean());
+    while (ob_get_level() > 0) @ob_end_clean();
     if (ajax) {
         status(500);
         exit;
@@ -67,7 +67,6 @@ if (!$dispatched) {
         echo $view;
     } else {
         $view = new view('views/404.login.phtml');
-        $view->title = 'Sivua ei löytynyt';
         echo $view;
     }
 }
