@@ -19,6 +19,7 @@ get('/', function() {
         $view->title = 'Etusivu';
         $view->menu = 'main';
         $view->news = db\news\all();
+        $view->online = db\users\visited(username, 'news');
         echo $view;
     } else {
         $view = new view('views/login.phtml');

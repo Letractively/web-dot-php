@@ -189,7 +189,7 @@ namespace db\users {
         $res = $stm->execute();
         $users = array($username);
         while ($row = $res->fetchArray(SQLITE3_NUM)) {
-            $idle = date_diff(date_create($row[1]), $now);
+            $idle = date_diff($now, date_create($row[1]));
             $online = $row[0] . '&nbsp;(' . $idle->format('%R%I:%S') . '@' . $row[2] .  ')';
             error($online);
             $users[] = $online;
