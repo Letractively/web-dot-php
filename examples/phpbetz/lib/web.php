@@ -83,10 +83,11 @@ namespace web {
                 params($path, $lastUrl);
                 run($func, array_slice($params, 1));
                 if ($exit) exit;
-                return;
+                return true;
             }
         }
         if ($exit) exit;
+        return false;
     }
 }
 namespace {
@@ -108,13 +109,13 @@ namespace {
         web\routes($path, $func);
     }
     function dispatch() {
-        web\dispatch(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)));
+        return web\dispatch(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(WEB_URL_BASE)));
     }
     function pass($url = null, $exit = true) {
-        web\dispatch($url, $exit, true);
+        return web\dispatch($url, $exit, true);
     }
     function forward($url, $exit = true) {
-        web\dispatch($url, $exit);
+        return web\dispatch($url, $exit);
     }
     function status($code) {
         switch ($code) {
