@@ -8,6 +8,13 @@ get('/profile', function() {
     echo $view;
 });
 
+get('/euro2008', function() {
+    if (!authenticated) redirect('~/unauthorized');
+    $view = new view('views/euro2008.phtml');
+    $view->title = 'Euro2008 lopputulokset';
+    $view->menu = 'euro2008';
+    echo $view;
+});
 get('/rules', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/rules.phtml');
