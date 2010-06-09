@@ -183,7 +183,7 @@ namespace db\users {
         $stm->execute();
         $stm->close();
         $stm = $db->prepare('SELECT username, visited_time, visited_page FROM users WHERE visited_time > :time ORDER BY visited_time DESC');
-        $stm->bindValue(':time', date_format(date_create('10 minutes ago'), DATE_SQLITE), SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create('9 minutes ago'), DATE_SQLITE), SQLITE3_TEXT);
         $res = $stm->execute();
         $users = array();
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $row;
