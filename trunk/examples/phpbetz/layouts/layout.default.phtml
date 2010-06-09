@@ -95,7 +95,7 @@ _gaq.push(['_trackPageview']);
                     <tr>
                         <td class="username"><?php echo $o['username']; ?></td>
                         <td><?php echo $o['visited_page']; ?></td>
-                        <td class="idle"><?php echo date_diff($now, date_create($o['visited_time']))->format('%m min %S s'); ?></td>
+                        <td class="idle"><?php echo date_diff($now, date_create($o['visited_time']))->format('%i min %S s'); ?></td>
                     </tr>
                     <?php endforeach; ?>
                     </table>
