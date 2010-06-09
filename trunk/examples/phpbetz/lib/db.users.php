@@ -16,7 +16,7 @@ namespace db\users {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         //$db->exec('PRAGMA synchronous = NORMAL');
-        $res = $db->query('SELECT * FROM users ORDER BY username ASC');
+        $res = $db->query('SELECT * FROM users ORDER BY LOWER(username) ASC');
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $users[] = $row;
         $res->finalize();
         $db->close();
@@ -172,5 +172,30 @@ namespace db\users {
         $stm->close();
         $db->close();
         return ($row) ? $row[0] : 0;
+    }
+    function visited($username, $page) {
+        $now = date_create();
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $stm = $db->prepare('UPDATE users SET visited_time = :time, visited_page = :page WHERE username = :username');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format($now, DATE_SQLITE), SQLITE3_TEXT);
+        $stm->bindValue(':page', $page, SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+        $stm = $db->prepare('SELECT username, visited_time, visited_page FROM users WHERE username <> :username AND visited_time > :time ORDER BY visited_time DESC');
+        $stm->bindValue(':username', $username, SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create('10 minutes ago'), DATE_SQLITE), SQLITE3_TEXT);
+        $res = $stm->execute();
+        $users = array($username);
+        while ($row = $res->fetchArray(SQLITE3_NUM)) {
+            $idle = date_diff(date_create($row[1]), $now);
+            $online = $row[0] . '&nbsp;(' . $idle->format('%R%I:%S') . '@' . $row[2] .  ')';
+            error($online);
+            $users[] = $online;
+        }
+        $res->finalize();
+        $db->close();
+        return $users;
     }
 }
