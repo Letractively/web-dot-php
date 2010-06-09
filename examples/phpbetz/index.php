@@ -38,9 +38,14 @@ session_start();
 require 'lib/utils.php';
 require 'lib/web.php';
 require 'lib/db.php';
-require 'lib/controllers.login.php';
 
 authenticate();
+
+require 'lib/controllers.login.php';
+
+if (!started) {
+    require 'lib/controllers.registration.php';
+}
 
 if (authenticated) {
     require 'lib/controllers.main.php';

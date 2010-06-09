@@ -15,7 +15,7 @@
             <input id="password" name="password" maxlength="20" type="password">
             <input id="remember" name="remember" type="checkbox"><label for="remember" class="tip" title="Muista minut">m</label><br>
             <br>
-            <input type="submit" value="Kirjaudu sisään"> <a href="<?php echo url('~/registration'); ?>">Rekisteröidy</a>
+            <input type="submit" value="Kirjaudu sisään"><?php if (!started): ?> <a href="<?php echo url('~/registration'); ?>">Rekisteröidy</a><?php endif; ?>
         </form>
     </div>
     <div id="login-google-wrapper" style="float: right;">
