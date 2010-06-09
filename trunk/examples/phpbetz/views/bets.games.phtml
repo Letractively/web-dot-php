@@ -67,7 +67,6 @@ function posted(data, status) {
         alert('Otteluveikkauksen tallennuksessa tapahtui virhe. Yritä uudelleen.');
     }
 }
-
 function initialize() {
     $('input:radio').each(function() {
         var input = $(this);
@@ -91,7 +90,6 @@ function initialize() {
             $.post(form.attr('action'), form.serialize(), posted);
         });
     });
-
     $('form').buttonset();
     $('.counter').each(function() {
         var time = new Date(parseInt($(this).html()));
@@ -100,22 +98,13 @@ function initialize() {
             format: 'dhm',
             tickInterval: 10,
             onExpiry: function() {
+                $(this).html('<div style="font-weight: normal; text-align: center;">Ottelu on alkanut</div>');
+                $(this).parent().next().find('input:radio').button('disable');
             }
         });
     });
     $('#bets').toggle();
-
     $.unblockUI();
 }
-
-var newYear = new Date();
-newYear = new Date(newYear.getTime() + 50000);
-$('#defaultCountdown').countdown({until: newYear, format: 'hms', tickInterval: 5, onExpiry: function() {
-    $(this).parent('div').css('line-height', '29px');
-    $(this).parent('div').html('Ottelu on alkanut');
-    $('input:radio').each(function() {
-        $(this).button('disable');
-    });
-}});
 </script>
 <?php block(); ?>
