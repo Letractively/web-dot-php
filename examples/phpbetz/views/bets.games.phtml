@@ -4,6 +4,7 @@
 <?php block(); ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<div class="notice">Muistathan, että jatkopelejä lisätään järjestelmään, kun otteluparit selviävät. Onnea veikkauksiin!</div>
 <table id="bets" style="display: none;">
 <tr>
     <th>Päivämäärä</th>
@@ -11,7 +12,6 @@
     <th>H-hetki</th>
     <th>Veikkaus</th>
 </tr>
-<div class="notice">Muistathan, että jatkopelejä lisätään järjestelmään, kun otteluparit selviävät. Onnea veikkauksiin!</div>
 <?php foreach($games as $game): $date = date_create($game['time']); ?>
 <tr>
     <td class="time"><?php echo weekday($date, 2) . ' ' . date_format($date, 'j.n H:i'); ?></td>
