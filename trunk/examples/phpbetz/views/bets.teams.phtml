@@ -2,11 +2,13 @@
 <h1><?php echo $title; ?></h1>
 <hr>
 <?php if (!started): ?>
-<div class="notice">Kolmen kärkeä&trade; voi veikata ja muuttaa ennen turnauksen ensimmäistä ottelua.</div>
+<div class="notice">Kolmen kärkeä &trade; voi veikata ja muuttaa ennen turnauksen ensimmäistä ottelua.</div>
+<?php else: ?>
+<div class="notice">Kolmen kärki &trade; veikkaus on sulkeutunut, koska turnaus on alkanut. Alla näet veikkauksesi.</div>
 <?php endif; ?>
 <div class="grid_6 alpha">
     <h2>Turnauksen voittaja</h2>
-    <?php if(!started): ?>
+    <?php if (!started): ?>
     <p>
         Veikkaa turnauksen voittajaa klikkaamalla joukkueen lippua.
     </p>
@@ -20,7 +22,7 @@
     <?php endif; ?>
 </div>
 <div class="clear"></div>
-<?php if(!started):?>
+<?php if (!started):?>
 <form id="winner" method="post" action="<?php echo url('~/bets/teams/1'); ?>" style="display: none;" class="f32">
     <?php foreach($teams as $team): ?>
     <input  id="winner-<?php echo $team['abbr']; ?>" title="<?php echo $team['abbr']; ?>" type="radio" name="team" value="<?php echo $team['name']; ?>" <?php if ($user['winner'] === $team['name']) echo 'checked'; ?> class="flag <?php echo $team['abbr']; ?>">
@@ -79,13 +81,15 @@
     <label for="third-<?php echo $team['abbr']; ?>" title="<?php echo $team['name']; ?>" class="<?php echo $team['abbr']; ?>"><?php echo $team['name']; ?></label>
     <?php endforeach; ?>
 </form>
+<div id="counter" style="display: none;"></div>
 <?php endif; ?>
-<?php block($scripts); ?>
 <?php if (!started): ?>
+<?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
 <script>
 function posted(data, status) {
     if (status != 'success') {
-        alert('Kolmen kärki&trade; veikkauksen tallennuksessa tapahtui virhe. Yritä uudelleen.');
+        alert('Kolmen kärki &trade; veikkauksen tallennuksessa tapahtui virhe. Yritä uudelleen.');
     }
 }
 $('input:radio').each(function() {
@@ -117,6 +121,16 @@ $('#third').data('value', '<?php echo $user['third']; ?>');
 $('#winner').toggle();
 $('#second').toggle();
 $('#third').toggle();
+$('#counter').countdown({
+    until: new Date(parseInt('<?php echo date_format(date_create($start), 'U'); ?>000')),
+    format: 'dhm',
+    tickInterval: 10,
+    onExpiry: function() {
+        $('#winner input:radio').button('disable');
+        $('#second input:radio').button('disable');
+        $('#third input:radio').button('disable');
+    }
+});
 </script>
-<?php endif; ?>
 <?php block(); ?>
+<?php endif; ?>

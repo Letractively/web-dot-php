@@ -25,6 +25,7 @@ get('/bets/teams', function() {
     $view->teams = db\teams\all();
     $view->title = 'Kolmen kärki &trade;';
     $view->menu = 'bets/teams';
+    $view->start = db\games\start();
     $view->online = db\users\visited(username, 'Kolmen kärki &trade;');
     $view->hide_teams = true;
     echo $view;
@@ -55,6 +56,7 @@ get('/bets/scorer', function() {
     $view->title = 'Maalikuninkuus';
     $view->form = new form();
     $view->menu = 'bets/scorer';
+    $view->start = db\games\start();
     $view->online = db\users\visited(username, 'Maalikuninkuus');
     echo $view;
 });
