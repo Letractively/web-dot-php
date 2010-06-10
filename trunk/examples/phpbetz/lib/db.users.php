@@ -181,4 +181,13 @@ namespace db\users {
         $db->close();
         return $users;
     }
+    function deleteEeroV() {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $db->exec("DELETE FROM users WHERE username = 'EeroV' AND active = 0");
+        $db->exec("DELETE FROM remember WHERE user = 'EeroV'");
+        $db->exec("DELETE FROM gamebets WHERE user = 'EeroV'");
+        $db->exec("DELETE FROM chat WHERE user = 'EeroV'");
+        $db->close();
+    }
 }
