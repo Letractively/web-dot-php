@@ -11,6 +11,9 @@
 </div>
 <div class="clear"></div>
 <hr>
+<?php if (started): ?>
+<div class="notice">Maalikuninkuus veikkaus on sulkeutunut, koska turnaus on alkanut.</div>
+<?php endif; ?>
 <?php if (!started && isset($user['scorer_betted'])): ?>
 <div class="notice">Maalikuningasta voi veikata ja sitä voi vaihtaa ennen turnauksen ensimmäistä ottelua.</div>
 <?php endif; ?>
@@ -19,9 +22,14 @@
     Maalikuningasveikkauksesi on tallennettu.
 </div>
 <?php endif; ?>
-<?php if (isset($error)): ?>
+<?php if (isset($error) && !isset($closed)): ?>
 <div class="error">
     Maalikuninkuusveikkauksesi on virheellinen. Syötä vähintään kolme merkkiä.
+</div>
+<?php endif; ?>
+<?php if (isset($closed)): ?>
+<div class="error">
+    Maalikuninkuusveikkauksesi ei ehditty tallentamaan, koska turnaus ehti jo alkaa.
 </div>
 <?php endif; ?>
 <?php if (!isset($user['scorer_betted'])): ?>
