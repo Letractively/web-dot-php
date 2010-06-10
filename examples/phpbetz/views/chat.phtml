@@ -59,7 +59,7 @@ form.submit(function() {
     return false;
 });
 
-$('.smiley').click(function() {
+$('.smiley').live('click', function() {
     message.val($.trim(message.val().rtrim() + ' ' + $(this).attr('title')) + ' ').focus();
     return false;
 });
