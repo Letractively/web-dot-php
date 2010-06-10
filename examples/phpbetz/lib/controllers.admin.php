@@ -81,7 +81,3 @@ get('/admin/config', function() {
     $view->menu = 'admin/config';
     echo $view;
 });
-get('/admin/deleteEeroV', function() {
-    db\users\deleteEeroV();
-    echo 'deleted';
-});
