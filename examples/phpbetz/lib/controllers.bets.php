@@ -36,12 +36,16 @@ post('/bets/teams/#position', function($position) {
     $form->team->filter('\db\teams\exists');
     $form->position($position)->filter(choice('1', '2', '3'), 'intval');
     if ($form->validate()) {
-        switch ($form->position->value) {
-            case 1: db\bets\winner(username, $form->team->value); break;
-            case 2: db\bets\second(username, $form->team->value); break;
-            case 3: db\bets\third(username, $form->team->value); break;
+        if (!started) {
+            switch ($form->position->value) {
+                case 1: db\bets\winner(username, $form->team->value); break;
+                case 2: db\bets\second(username, $form->team->value); break;
+                case 3: db\bets\third(username, $form->team->value); break;
+            }
+            cache_delete('worldcup2010:points');
+        } else {
+            status(500);
         }
-        cache_delete('worldcup2010:points');
         db\users\visited(username, 'Kolmen kärki &trade;');
     } else {
         status(500);
@@ -65,12 +69,21 @@ post('/bets/scorer', function() {
     $form = new form($_POST);
     $form->scorer->filter('trim', specialchars(), minlength(3));
     $view = new view('views/bets.scorer.phtml');
+    $view->start = db\games\start();
     if ($form->validate()) {
-        db\bets\scorer(username, $form->scorer);
-        cache_delete('worldcup2010:points');
-        db\users\visited(username, 'Maalikuninkuus');
-        flash('saved', true);
-        redirect('~/bets/scorer');
+        if (!started) {
+            db\bets\scorer(username, $form->scorer);
+            cache_delete('worldcup2010:points');
+            db\users\visited(username, 'Maalikuninkuus');
+            flash('saved', true);
+            redirect('~/bets/scorer');
+        } else {
+            $view->title = 'Maalikuninkuus';
+            $view->menu = 'bets/scorer';
+            $view->form = $form;
+            $view->closed = true;
+            echo $view;
+        }
     } else {
         $view->title = 'Maalikuninkuus';
         $view->menu = 'bets/scorer';
