@@ -29,6 +29,7 @@
     Maalikuninkuusveikkaustasi ei ole vielä rekisteröity. Veikkaa maalikuningasta ennen turnauksen alkua! Voit vaihtaa veikkaustasi ennen turnauksen ensimmäistä peliä.
 </div>
 <?php endif; ?>
+<?php if (!started): ?>
 <div id="scorer-form" class="ui-widget">
     <form id="form" method="POST" action="<?php echo url('~/bets/scorer'); ?>">
         <div class="grid_2 alpha"><label>Maalikuningas:</label></div>
@@ -43,11 +44,25 @@
     </form>
 </div>
 <div class="clear"></div>
+<div id="counter" style="display: none;"></div>
 <br>
+<?php endif; ?>
 <h2>Turnauksen maalintekijät</h2>
 <p>Turnauksessa ei ole tehty vielä yhtään maalia tai maaleja ei ole vielä rekisteröity hupilyöntijärjestelmään.</p>
+<?php if (!started): ?>
 <?php block($scripts); ?>
+<script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
 <script>
 $('#scorer').focus();
+$('#counter').countdown({
+    until: new Date(parseInt('<?php echo date_format(date_create($start), 'U'); ?>000')),
+    format: 'dhm',
+    tickInterval: 10,
+    onExpiry: function() {
+        $('#scorer').attr('disabled', 'disabled');
+        $('#send').button('disable');
+    }
+});
 </script>
 <?php block(); ?>
+<?php endif; ?>

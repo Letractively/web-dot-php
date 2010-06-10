@@ -12,8 +12,7 @@
     <th>Veikkaus</th>
 </tr>
 <div class="notice">Muistathan, että jatkopelejä lisätään järjestelmään, kun otteluparit selviävät. Onnea veikkauksiin!</div>
-<?php
-foreach($games as $game): $date = date_create($game['time']); ?>
+<?php foreach($games as $game): $date = date_create($game['time']); ?>
 <tr>
     <td class="time"><?php echo weekday($date, 2) . ' ' . date_format($date, 'j.n H:i'); ?></td>
     <td class="home"><?php echo $game['home']; ?></td>
@@ -41,6 +40,7 @@ foreach($games as $game): $date = date_create($game['time']); ?>
 </tr>
 <?php endforeach; ?>
 </table>
+<?php if (count($games) > 0): ?>
 <?php block($scripts); ?>
 <script src="<?php echo url('~/js/jquery.blockui.js'); ?>"></script>
 <script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
@@ -108,3 +108,4 @@ function initialize() {
 }
 </script>
 <?php block(); ?>
+<?php endif ?>

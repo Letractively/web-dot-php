@@ -10,4 +10,11 @@ namespace db\games {
         $db->close();
         return $games;
     }
+    function start() {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $start = $db->querySingle('SELECT MIN(time) FROM games', false);
+        $db->close();
+        return $start;
+    }
 }
