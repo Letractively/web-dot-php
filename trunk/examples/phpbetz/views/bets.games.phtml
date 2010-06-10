@@ -95,7 +95,7 @@ function initialize() {
         var time = new Date(parseInt($(this).html()));
         $(this).countdown({
             until: time,
-            format: 'dhm',
+            format: 'DHM',
             tickInterval: 10,
             onExpiry: function() {
                 $(this).html('<div style="font-weight: normal; text-align: center;">Ottelu on alkanut</div>');
