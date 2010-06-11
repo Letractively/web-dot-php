@@ -13,10 +13,10 @@ post('/registration', function() {
     $form->email->filter('trim', 'email', specialchars());
     $view = new view('views/registration.phtml');
     if ($form->validate()) {
-        $changes = db\users\register($form->username, password($form->password1), $form->email);
+        $changes = db\users\register($form->username->value, password($form->password1->value), $form->email->value);
         if ($changes === 0) {
-            if (db\users\username_taken($form->username)) $view->username_taken = true;
-            if (db\users\email_taken($form->email)) $view->email_taken = true;
+            if (db\users\username_taken($form->username->value)) $view->username_taken = true;
+            if (db\users\email_taken($form->email->value)) $view->email_taken = true;
         } else {
             cache_delete('worldcup2010:points');
             login($form->username->value, true);
