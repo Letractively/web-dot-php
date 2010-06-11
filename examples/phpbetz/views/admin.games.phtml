@@ -7,7 +7,7 @@
     <th colspan="5">Ottelu</th>
     <th>Tulos</th>
 </tr>
-<?php foreach($games as $game): $date = date_create($game['time']); ?>
+<?php $now = date_create(); foreach($games as $game): $date = date_create($game['time']); ?>
 <tr>
     <td class="time"><?php echo weekday($date, 2) . ' ' . date_format($date, 'j.n H:i'); ?></td>
     <td class="home"><?php echo $game['home']; ?></td>
@@ -20,16 +20,16 @@
     </td>
     <td class="road"><?php echo $game['road']; ?></td>
     <td class="bet">
-        <form method="post" action="<?php echo url('~/bets/games/' . $game['id']); ?>" class="f16">
+        <form method="post" action="<?php echo url('~/admin/games/' . $game['id']); ?>">
         <table>
         <tr style="border: none;">
-            <td><input type="text" class="large" name="home_goals"></td>
+            <td><input type="text" class="large" name="home_goals" value="<?php echo $game['home_goals']; ?>"<?php if ($now < $date) echo ' disabled'; ?>></td>
             <td>&nbsp;</td>
             <td>&ndash;</td>
             <td>&nbsp;</td>
-            <td><input type="text" class="large" name="road_goals"></td>
+            <td><input type="text" class="large" name="road_goals" value="<?php echo $game['road_goals']; ?>"<?php if ($now < $date) echo ' disabled'; ?>></td>
             <td>&nbsp;</td>
-            <td><input type="submit" value="Tallenna" disabled></td>
+            <td><input type="submit" value="Tallenna"<?php if ($now < $date) echo ' disabled'; ?></td>
         </tr>
         </table>
         </form>
@@ -37,3 +37,20 @@
 </tr>
 <?php endforeach; ?>
 </table>
+<?php block($scripts); ?>
+<script>
+function posted(data, status) {
+    if (status != 'success') {
+        alert('Ottelun tallennuksessa tapahtui virhe. Yritä uudelleen.');
+    }
+}
+$('input:submit').each(function() {
+    var input = $(this);
+    var form = $(this.form);
+    input.click(function() {
+        $.post(form.attr('action'), form.serialize(), posted);
+        return false;
+    });
+});
+</script>
+<?php block(); ?>
