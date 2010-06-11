@@ -24,7 +24,7 @@ namespace db\users {
     function login($username, $password) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        $stm = $db->prepare('SELECT 1 FROM users WHERE username = :username AND password = :password AND active = :active');
+        $stm = $db->prepare('SELECT username FROM users WHERE LOWER(username) = LOWER(:username) AND password = :password AND active = :active');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->bindValue(':password', $password, SQLITE3_TEXT);
         $stm->bindValue(':active', 1, SQLITE3_INTEGER);
@@ -33,12 +33,12 @@ namespace db\users {
         $res->finalize();
         $stm->close();
         $db->close();
-        return $row !== false;
+        return $row !== false ? $row[0] : false;
     }
     function authenticate($username) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        $stm = $db->prepare('SELECT * FROM users WHERE username = :username AND active = :active');
+        $stm = $db->prepare('SELECT * FROM users WHERE LOWER(username) = LOWER(:username) AND active = :active');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->bindValue(':active', 1, SQLITE3_INTEGER);
         $res = $stm->execute();
@@ -49,6 +49,7 @@ namespace db\users {
         return $row;
     }
     function register($username, $password, $email) {
+        if (username_taken($username) || email_taken($email))  return 0;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $stm = $db->prepare('INSERT OR IGNORE INTO users (username, password, email, active, admin) VALUES (:username, :password, :email, :active, :admin)');
@@ -64,6 +65,7 @@ namespace db\users {
         return $changes;
     }
     function claim($username, $claim, $email) {
+        if (username_taken($username) || email_taken($email))  return 0;
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $stm = $db->prepare('INSERT OR IGNORE INTO users (username, claim, email, active, admin) VALUES (:username, :claim, :email, :active, :admin)');
@@ -94,7 +96,7 @@ namespace db\users {
     function username_taken($username) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        $stm = $db->prepare('SELECT 1 FROM users WHERE username = :username');
+        $stm = $db->prepare('SELECT 1 FROM users WHERE LOWER(username) = LOWER(:username)');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);
@@ -106,7 +108,7 @@ namespace db\users {
     function email_taken($email) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
-        $stm = $db->prepare('SELECT 1 FROM users WHERE email = :email');
+        $stm = $db->prepare('SELECT 1 FROM users WHERE LOWER(email) = LOWER(:email)');
         $stm->bindValue(':email', $email, SQLITE3_TEXT);
         $res = $stm->execute();
         $row = $res->fetchArray(SQLITE3_NUM);

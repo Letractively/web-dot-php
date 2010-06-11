@@ -64,10 +64,10 @@ post('/registration/google/confirm', function() {
     $view = new view('views/registration.google.phtml');
     $view->form = $form;
     if ($form->validate()) {
-        $changes = db\users\claim($form->username, $claim, $form->email);
+        $changes = db\users\claim($form->username->value, $claim, $form->email->value);
         if ($changes === 0) {
-            if (db\users\username_taken($form->username)) $view->username_taken = true;
-            if (db\users\email_taken($form->email)) $view->email_taken = true;
+            if (db\users\username_taken($form->username->value)) $view->username_taken = true;
+            if (db\users\email_taken($form->email->value)) $view->email_taken = true;
         } else {
             unset($_SESSION['google-claim'], $_SESSION['google-email']);
             cache_delete('worldcup2010:points');
