@@ -49,6 +49,16 @@ get('/admin/games', function() {
     $view->games = db\games\all();
     echo $view;
 });
+post('/admin/games/#id', function($id) {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->home_goals->filter('int', 'intval');
+    $form->road_goals->filter('int', 'intval');
+    if ($form->validate()) {
+        db\games\score($id, $form->home_goals->value, $form->road_goals->value);
+        cache_delete('worldcup2010:points');
+    }
+});
 get('/admin/scorers', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.games.phtml');
@@ -80,4 +90,9 @@ get('/admin/config', function() {
     $view->title = 'Konfiguraatio';
     $view->menu = 'admin/config';
     echo $view;
+});
+get('/admin/patches/view-games-1', function() {
+    if (!admin) redirect('~/unauthorized');
+    db\patches\view_games_1();
+    echo 'Patch "view_games_1" installed.';
 });

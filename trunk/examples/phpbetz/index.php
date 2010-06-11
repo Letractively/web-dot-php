@@ -54,7 +54,10 @@ if (authenticated) {
     if (!ajax) portlets();
 }
 
-if (admin) require 'lib/controllers.admin.php';
+if (admin) {
+    require 'lib/db.patches.php';
+    require 'lib/controllers.admin.php';
+}
 
 $dispatched = dispatch();
 
