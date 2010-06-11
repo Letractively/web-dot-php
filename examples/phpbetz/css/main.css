@@ -107,6 +107,7 @@ input.large {
     padding: 5px;
 }
 #chat {
+    font-size: 1.1em;
     overflow:  hidden !important;
 }
 #chat a {
