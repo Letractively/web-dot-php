@@ -39,10 +39,10 @@ function authenticate() {
     if (isset($_SESSION['logged-in-username'])) {
         $username = $_SESSION['logged-in-username'];
         $user = db\users\authenticate($username);
-        if ($user) {
+        if ($user !== false) {
             define('authenticated', true);
             define('admin', $user['admin'] === 1);
-            define('username', $username);
+            define('username', $user['username']);
             return;
         }
     }
@@ -53,11 +53,11 @@ function authenticate() {
             $username = $parts[0];
             $key = $parts[1];
             $user = db\users\remembered($username, $key);
-            if ($user) {
+            if ($user !== false) {
                 $_SESSION['logged-in-username'] = $username;
                 define('authenticated', true);
                 define('admin', $user['admin'] === 1);
-                define('username', $username);
+                define('username', $user['username']);
                 remember($username);
                 return;
             }
