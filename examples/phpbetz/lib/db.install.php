@@ -431,7 +431,7 @@ SQL;
         INSERT INTO games (home, road, time) VALUES ('Hollanti', 'Tanska', '2010-06-14T14:30:00');
         INSERT INTO games (home, road, time) VALUES ('Japani', 'Kamerun', '2010-06-14T17:00:00');
         INSERT INTO games (home, road, time) VALUES ('Italia', 'Paraguay', '2010-06-14T21:30:00');
-        INSERT INTO games (home, road, time) VALUES ('Uusi-Seelanti', 'Slovakia', '2010-06-15T21:30:00');
+        INSERT INTO games (home, road, time) VALUES ('Uusi-Seelanti', 'Slovakia', '2010-06-15T14:30:00');
         INSERT INTO games (home, road, time) VALUES ('Norsunluurannikko', 'Portugali', '2010-06-15T17:00:00');
         INSERT INTO games (home, road, time) VALUES ('Brasilia', 'Pohjois-Korea', '2010-06-15T21:30:00');
         INSERT INTO games (home, road, time) VALUES ('Honduras', 'Chile', '2010-06-16T14:30:00');
