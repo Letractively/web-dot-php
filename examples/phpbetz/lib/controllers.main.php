@@ -1,12 +1,4 @@
 <?php
-get('/profile', function() {
-    if (!authenticated) redirect('~/unauthorized');
-    $view = new view('views/profile.phtml');
-    $view->title = 'Käyttäjän tiedot';
-    $view->menu = 'profile';
-    $view->online = db\users\visited(username, 'Käyttäjän tiedot');
-    echo $view;
-});
 get('/euro2008', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/euro2008.phtml');

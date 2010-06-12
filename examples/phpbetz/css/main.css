@@ -289,6 +289,18 @@ td.current-user {
 #online td.idle, #online th.idle {
     text-align: right;
 }
+td.correct {
+    background: #E6EFC2 !important;
+}
+td.wrong {
+    background: #FBE3E4 !important;
+}
+div.strong {
+    font-weight: bold;
+}
+#points a {
+    color: #204a87;
+}
 .error,
 .notice,
 .success    { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }

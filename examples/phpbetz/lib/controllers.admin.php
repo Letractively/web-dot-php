@@ -96,3 +96,8 @@ get('/admin/patches/view-games-1', function() {
     db\patches\view_games_1();
     echo 'Patch "view_games_1" installed.';
 });
+get('/admin/patches/view-games-2', function() {
+    if (!admin) redirect('~/unauthorized');
+    db\patches\view_games_2();
+    echo 'Patch "view_games_2" installed.';
+});

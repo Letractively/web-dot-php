@@ -296,6 +296,7 @@ SQL;
             g.id AS id,
             g.time AS time,
             g.draw AS draw,
+            g.draw_percent AS draw_percent,
             g.score AS score,
             g.home AS home,
             g.home_goals AS home_goals,
@@ -305,7 +306,6 @@ SQL;
             g.road_goals AS road_goals,
             g.road_percent AS road_percent,
             r.abbr AS road_abbr,
-            g.draw_percent AS road_percent,
             g.points AS points
         FROM
             games AS g

@@ -95,7 +95,7 @@ _gaq.push(['_trackPageview']);
                     <tr>
                         <td class="username"><?php echo $o['username']; ?></td>
                         <td><?php echo $o['visited_page']; ?></td>
-                        <td class="idle"><?php echo date_diff($now, date_create($o['visited_time']))->format('%i min %S s'); ?></td>
+                        <td class="idle"><?php echo date_diff($now, date_create($o['visited_time']))->format('%i&nbsp;min&nbsp;%S&nbsp;s'); ?></td>
                     </tr>
                     <?php endforeach; ?>
                     </table>
@@ -104,7 +104,6 @@ _gaq.push(['_trackPageview']);
             </div>
             <?php endif; ?>
             <div class="block-spacer"></div>
-            
             <div class="block">
                 <h3 class="ui-corner-top">Seuraavat ottelut</h3>
                 <div class="ui-corner-bottom">
@@ -176,7 +175,7 @@ $("#user-profile").button({
     icons: {
         primary: "profile-ui-img"
     }
-}); //.click( function() { window.location.href = '<?php echo url('~/profile'); ?>'; });
+}).click( function() { window.location.href = '<?php echo url('~/points') . '/' . username; ?>'; });
 $("#user-logoff").button({
     icons: {
         primary: "logoff-ui-img"

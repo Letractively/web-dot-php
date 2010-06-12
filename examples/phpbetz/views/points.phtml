@@ -24,11 +24,11 @@
 <?php foreach ($points as $point): ?>
 <tr>
     <?php if ($point['rowspan'] === 0): ?>
-    <td class="position"><?php echo $point['position']; ?>.</td>
+    <td class="position"><h3><?php echo $point['position']; ?>.</h3></td>
     <?php elseif ($point['rowspan'] > 0 && $point['keyrow']): ?>
     <td class="position" rowspan="<?php echo $point['rowspan']; ?>"><h3><?php echo $point['position']; ?>.</h3></td>
     <?php endif; ?>
-    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><?php echo $point['username']; ?></td>
+    <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>><a href="<?php echo url('~/points') . '/' . urlencode($point['username']); ?>"><?php echo $point['username']; ?></a></td>
     <td<?php echo ($point['username'] === username) ? ' class="current-user"' : ''; ?>>
         <?php if ($point['paid'] === 1): ?>
         <img style="padding-top: 5px;" src="<?php echo url('~/img/coins-small.png'); ?>" width="16" height="16" title="Maksu vastaanotettu" alt="Maksu vastaanotettu">
