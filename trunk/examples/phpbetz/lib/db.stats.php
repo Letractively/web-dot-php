@@ -105,6 +105,8 @@ SQL;
             g.id = b.game AND b.user = :user
         WHERE
             g.time < :time
+        ORDER BY
+            time
 SQL;
 
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
