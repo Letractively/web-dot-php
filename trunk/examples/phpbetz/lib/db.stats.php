@@ -19,7 +19,7 @@ namespace db\stats {
             u.scorer                 AS scorer,
             u.scorer_betted          AS scorer_betted,
             u.scorer_points          AS scorer_points,
-            COALESCE(SUM(points), 0) + u.winner_points + u.second_points + u.third_points + u.scorer_points AS total_points
+            COALESCE(ROUND(SUM(points), 2), 0) + u.winner_points + u.second_points + u.third_points + u.scorer_points AS total_points
             FROM
                 view_users u
             LEFT OUTER JOIN
@@ -51,25 +51,25 @@ SQL;
         $i = 0;
         $j = 0;
         $total = -1;
-        $position = 0;
-        $rowspan = 0;
+        $position = 1;
+        $rowspan = 1;
         $points = array();
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $points[$i] = $row;
             if ($total != $row['total_points']) {
-                $total =  $row['total_points'];
-                if ($i != 0) {
-                    $points[$j]['keyrow'] = true;
-                    $points[$j]['rowspan'] = $rowspan;
-                }
+                $total = $row['total_points'];
+                $points[$j]['keyrow'] = true;
+                $points[$j]['rowspan'] = $rowspan;
+                $points[$i]['position'] = $position;
                 $j = $i;
-                $rowspan = 0;
+                $rowspan = 1;
                 $position++;
+            } else {
+                $points[$i]['position'] = $position;
+                $points[$i]['rowspan'] = $rowspan;
+                $points[$i]['keyrow'] = false;
+                $rowspan++;
             }
-            $row['position'] = $position;
-            $row['rowspan'] = $rowspan;
-            $row['keyrow'] = false;
-            $points[] = $row;
-            $rowspan++;
             $i++;
         }
         $points[$j]['rowspan'] = $rowspan;
