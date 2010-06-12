@@ -117,11 +117,11 @@ input.large {
 #chat .date {
     color: #BABDB6;
 }
-#chat .nick {
+#chat .nick a {
     color: #204a87;
     font-weight:bold;
 }
-#chat .mynick {
+#chat .mynick a {
     color: #ce5c00;
     font-weight: bold;
 }
