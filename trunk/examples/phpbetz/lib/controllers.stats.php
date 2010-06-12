@@ -13,6 +13,26 @@ get('/points', function() {
     $view->online = db\users\visited(username, 'Pistetilanne');
     echo $view;
 });
+get('/points/:username', function($username) {
+    if (!authenticated) redirect('~/unauthorized');
+    $username = urldecode($username);
+    $view = new view('views/points.user.phtml');
+    $view->title = username === $username ? 'Omat pisteet' : "Pistetilanne ($username)";
+    $view->title_games = username === $username ? 'Omat otteluveikkaukset' : "Otteluveikkaukset";
+    $view->menu = 'points';
+    $points = cache_fetch('worldcup2010:points');
+    if ($points === false) {
+        $points = db\stats\points();
+        cache_store('worldcup2010:points', $points);
+    }
+    $points = array_filter($points, function($point) use ($username) {
+        return $point['username'] === $username;
+    });
+    $view->points = $points;
+    $view->games = db\stats\games($username);
+    $view->online = db\users\visited(username, $view->title);
+    echo $view;
+});
 get('/stats', function() {
     if (!authenticated) redirect('~/unauthorized');
     $view = new view('views/stats.phtml');

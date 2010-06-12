@@ -41,18 +41,18 @@ namespace web {
     function routes($path = null, $func = null) {
         static $routes = array();
         if ($path == null) return $routes;
-        $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\*/', '/\\\\\:[\w-]+/', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('(.+)', '([\w-]+)', '(\d+)', '($1$3)'),
+        $pattern = sprintf('/^%s$/ui', preg_replace(
+            array('/\\\\\*/', '/\\\\\:[\w-]+/ui', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('(.+)', '([\wåäö-]+)', '(\d+)', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         $routes[] = array($pattern, $func, $path);
     }
     function params($path = null, $url = null) {
         static $params = array();
         if ($path == null && $url == null) return $params;
-        $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\*/', '/\\\\\:([\w-]+)/', '/#([\w-]+)/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('.+', '(?<$1>[\w-]+)', '(?<$1>\d+)', '$1$3'),
+        $pattern = sprintf('/^%s$/ui', preg_replace(
+            array('/\\\\\*/', '/\\\\\:([\w-]+)/ui', '/#([\w-]+)/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('.+', '(?<$1>[\wåäö-]+)', '(?<$1>\d+)', '$1$3'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $params)) {
             $params = array_slice($params, 1);
@@ -61,9 +61,9 @@ namespace web {
     function splats($path = null, $url = null) {
         static $splats = array();
         if ($path == null && $url == null) return $splats;
-        $pattern = sprintf('/^%s$/i', preg_replace(
-            array('/\\\\\*/', '/\\\\\:[\w-]+/', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('(.+)', '[\w-]+', '\d+', '($1$3)'),
+        $pattern = sprintf('/^%s$/ui', preg_replace(
+            array('/\\\\\*/', '/\\\\\:[\w-]+/ui', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
+            array('(.+)', '[\wåäö-]+', '\d+', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $splats)) {
             $splats = array_slice($splats, 1);
@@ -71,7 +71,7 @@ namespace web {
     }
     function dispatch($url = null, $exit = false, $pass = false) {
         static $i = 0, $lastUrl;
-        if ($url != null) $lastUrl = trim($url, '/');
+        if ($url != null) $lastUrl = trim(urldecode($url), '/');
         $routes = routes();
         $count = count($routes);
         for ($i = $pass ? $i + 1 : 0; $i < $count; $i++) {

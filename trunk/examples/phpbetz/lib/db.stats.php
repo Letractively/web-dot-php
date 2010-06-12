@@ -78,4 +78,46 @@ SQL;
         $db->close();
         return $points;
     }
+    function games($user) {
+        $sql =<<< 'SQL'
+        SELECT
+            g.id AS id,
+            g.time AS time,
+            g.home AS home,
+            g.home_abbr AS home_abbr,
+            g.home_goals AS home_goals,
+            g.home_percent AS home_percent,
+            g.road AS road,
+            g.road_abbr AS road_abbr,
+            g.road_goals AS road_goals,
+            g.road_percent AS road_percent,
+            g.draw AS draw,
+            g.draw_percent AS draw_percent,
+            g.score AS score,
+            g.points AS points,
+            b.score AS bet_score,
+            b.points AS bet_points
+        FROM
+            view_games g
+        LEFT OUTER JOIN
+            gamebets b
+        ON
+            g.id = b.game AND b.user = :user
+        WHERE
+            g.time < :time
+SQL;
+
+        $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $stm = $db->prepare($sql);
+        $stm->bindValue(':user', $user, SQLITE3_TEXT);
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
+        $res = $stm->execute();
+        $games = array();
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) $games[] = $row;
+        $res->finalize();
+        $stm->close();
+        $db->close();
+        return $games;
+    }
 }
