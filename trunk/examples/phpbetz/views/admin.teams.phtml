@@ -1,47 +1,46 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
-<?php block($css); ?>
-<link rel="stylesheet" href="<?php echo url('~/css/tablesorter.css'); ?>">
-<?php block(); ?>
 <h1>Joukkueet</h1>
 <hr>
-<table id="teams" class="tablesorter">
-<thead>
+<table id="bets" class="tablesorter">
 <tr>
-    <th colspan="2">Joukkue</th>
-    <th>Lyhenne</th>
-    <th>Sijoitus</th>
+    <th style="text-align: left;">Joukkue</th>
+    <th style="text-align: center;">Lyhenne</th>
+    <th style="text-align: center;">Sijoitus</th>
 </tr>
-</thead>
-<tbody>
 <?php foreach($teams as $team): ?>
-<tr class="f32">
-    <td  style="width: 32px; line-height: 32px; ">
-        <div class="flag <?php echo $team['abbr']; ?>">&nbsp;</div>
+<tr>
+    <td class="f32" style="width: 32px; line-height: 32px; ">
+        <div class="flag <?php echo $team['abbr']; ?>" style="padding-left: 40px;"><?php echo $team['name']; ?></div>
     </td>
-    <td width="40%" class="editable">
-            <?php echo $team['name']; ?>
-    </td>
-    <td><?php echo $team['abbr']; ?></td>
-    <td>
-        <form method="post" action="<?php echo url('~/bets/games/' . $team['name']); ?>" class="f16">
+    <td style="text-align: center;"><?php echo $team['abbr']; ?></td>
+    <td class="bet">
+        <form method="post" action="<?php echo url('~/admin/teams/' . urlencode($team['name'])); ?>">
         <table>
-        <tr>
-            <td><input type="text" class="large" value="<?php echo $team['ranking']; ?>"></td>
+        <tr style="border: none;">
+            <td><input type="text" name="ranking" class="large" value="<?php echo $team['ranking']; ?>"></td>
             <td>&nbsp;</td>
-            <td><input type="submit" value="Tallenna" disabled></td>
+            <td><input type="submit" value="Tallenna"></td>
         </tr>
         </table>
         </form>
     </td>
 </tr>
 <?php endforeach; ?>
-</tbody>
 </table>
 <?php block($scripts); ?>
-<script src="<?php echo url('~/js/jquery.tablesorter.js'); ?>"></script>
 <script>
-$(document).ready(function() {
-    $('#teams').tablesorter();
+function posted(data, status) {
+    if (status != 'success') {
+        alert('Joukkueen tallennuksessa tapahtui virhe. Yritä uudelleen.');
+    }
+}
+$('input:submit').each(function() {
+    var input = $(this);
+    var form = $(this.form);
+    input.click(function() {
+        $.post(form.attr('action'), form.serialize(), posted);
+        return false;
+    });
 });
 </script>
 <?php block(); ?>
