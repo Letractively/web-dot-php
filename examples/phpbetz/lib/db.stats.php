@@ -40,6 +40,8 @@ namespace db\stats {
                 u.scorer,
                 u.scorer_betted,
                 u.scorer_points
+            HAVING
+                u.active = 1
             ORDER BY
                 total_points DESC,
                 LOWER(username) ASC

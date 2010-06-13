@@ -2,6 +2,7 @@
 namespace db\users {
     function update($username, $active, $paid, $admin) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $stm = $db->prepare('UPDATE users SET active = :active, paid = :paid, admin = :admin WHERE username = :username');
         $stm->bindValue(':username', $username, SQLITE3_TEXT);
         $stm->bindValue(':paid', $paid ? 1 : 0, SQLITE3_INTEGER);
