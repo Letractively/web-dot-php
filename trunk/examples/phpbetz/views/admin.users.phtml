@@ -23,7 +23,7 @@
             <input id="admin_<?php echo $u['username']; ?>" type="checkbox" name="admin" <?php if (username == $u['username']) echo "disabled "; ?> <?php if ($u['admin'] == 1) echo "checked"; ?>>
             <label for="admin_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
         <td>       
-            <input id="active_<?php echo $u['username']; ?>" type="checkbox" name="active" <?php if (username == $u['username']) echo "disabled "; ?> <?php if ($u['active'] == 1) echo "checked"; ?>>
+            <input id="active_<?php echo $u['username']; ?>" type="checkbox" name="active" <?php if (username == $u['username'] || $u['paid'] === 1) echo "disabled "; ?> <?php if ($u['active'] == 1) echo "checked"; ?>>
             <label for="active_<?php echo $u['username']; ?>" style='width: 30px;'>&nbsp;</label>
         </td>
         <td>
