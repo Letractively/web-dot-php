@@ -9,7 +9,7 @@ get('/admin', function() {
 get('/admin/news', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
-    $view->title = 'Uutisten ylläpito';
+    $view->title = 'Uutiset';
     $view->menu = 'admin/news';
     echo $view;
 });
@@ -28,7 +28,7 @@ post('/admin/news', function() {
 get('/admin/news/#id', function($id) {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.news.phtml');
-    $view->title = 'Uutisten ylläpito';
+    $view->title = 'Uutinen';
     $view->menu = 'admin/news';
     $view->news = db\news\edit($id);
     echo $view;
@@ -36,15 +36,25 @@ get('/admin/news/#id', function($id) {
 get('/admin/teams', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.teams.phtml');
-    $view->title = 'Joukkueiden ylläpito';
+    $view->title = 'Joukkueet';
     $view->menu = 'admin/news';
     $view->teams = db\teams\all();
     echo $view;
 });
+post('/admin/teams/:team', function($team) {
+    if (!admin) redirect('~/unauthorized');
+    $team = urldecode($team);
+    $form = new form($_POST);
+    $form->ranking->filter('int', 'intval');
+    if ($form->validate()) {
+        db\teams\ranking($team, $form->ranking->value);
+        cache_delete('worldcup2010:points');
+    }
+});
 get('/admin/games', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.games.phtml');
-    $view->title = 'Otteluiden ylläpito';
+    $view->title = 'Ottelut';
     $view->menu = 'admin/games';
     $view->games = db\games\all();
     echo $view;
@@ -62,14 +72,14 @@ post('/admin/games/#id', function($id) {
 get('/admin/scorers', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.games.phtml');
-    $view->title = 'Maalintekijöiden ylläpito';
+    $view->title = 'Maalintekijät';
     $view->menu = 'admin/scorers';
     echo $view;
 });
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
     $view = new view('views/admin.users.phtml');
-    $view->title = 'Käyttäjien ylläpito';
+    $view->title = 'Käyttäjät';
     $view->menu = 'admin/users';
     $view->users = db\users\all();
     echo $view;
