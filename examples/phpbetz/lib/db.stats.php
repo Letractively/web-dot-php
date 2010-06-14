@@ -46,7 +46,6 @@ namespace db\stats {
                 total_points DESC,
                 LOWER(username) ASC
 SQL;
-        
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $res = $db->query($sql);
@@ -123,5 +122,64 @@ SQL;
         $stm->close();
         $db->close();
         return $games;
+    }
+    function scorers() {
+        $sql =<<< 'SQL'
+        SELECT
+            s.name AS scorer,
+            t.name AS team,
+            t.abbr AS team_abbr,
+            s.goals AS goals,
+            GROUP_CONCAT(u.username, ',') AS users
+        FROM
+            scorers s
+        INNER JOIN
+            teams t
+        ON
+            s.team = t.name
+        LEFT OUTER JOIN
+            scorermap m
+        ON
+            s.name = m.scorer
+        LEFT OUTER JOIN
+            users u
+        ON
+            u.scorer = m.betted
+        GROUP BY
+            s.name
+SQL;
+        $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $res = $db->query($sql);
+        $i = 0;
+        $j = 0;
+        $goals = -1;
+        $position = 1;
+        $rowspan = 1;
+        $scorers = array();
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            $row['users'] = explode(',', $row['users']);
+            $scorers[$i] = $row;
+            if ($goals != $row['goals']) {
+                $goals = $row['goals'];
+                $scorers[$j]['keyrow'] = true;
+                $scorers[$j]['rowspan'] = $rowspan;
+                $scorers[$i]['position'] = $position;
+                $j = $i;
+                $rowspan = 1;
+                $position++;
+            } else {
+                $scorers[$i]['position'] = $position - 1;
+                $scorers[$i]['rowspan'] = $rowspan;
+                $scorers[$i]['keyrow'] = false;
+                $rowspan++;
+            }
+            $i++;
+        }
+        $scorers[$j]['rowspan'] = $rowspan;
+        $scorers[$j]['keyrow'] = true;
+        $res->finalize();
+        $db->close();
+        return $scorers;
     }
 }

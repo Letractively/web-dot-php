@@ -39,7 +39,7 @@ _gaq.push(['_trackPageview']);
             <button id="user-logoff">Kirjaudu ulos</button>
             <br>
             <div id="pot" class="success ui-corner-top ui-corner-bottom">
-                <h4><?php echo $pot; ?> &euro;</h4>
+                <h4><?php echo isset($pot) ? $pot : 0; ?> &euro;</h4>
             </div>
         </div>
         <div class="clear"></div>
@@ -103,6 +103,7 @@ _gaq.push(['_trackPageview']);
                 </div>
             </div>
             <?php endif; ?>
+            <?php if (isset($upcoming)): ?>
             <div class="block-spacer"></div>
             <div class="block">
                 <h3 class="ui-corner-top">Seuraavat ottelut</h3>
@@ -123,10 +124,10 @@ _gaq.push(['_trackPageview']);
                     </table>
                 </div>
             </div>
+            <?php endif; ?>
             <?php if (isset($right)) echo $right; ?>
-            <?php if (!isset($hide_teams)): ?>
+            <?php if (!isset($hide_teams) && isset($user) && $user && isset($user['winner']) && isset($user['second']) && isset($user['third'])): ?>
             <div class="block-spacer"></div>
-            <?php if ($user && isset($user['winner']) && isset($user['second']) && isset($user['third'])): ?>
             <div class="block">
                 <h3 class="ui-corner-top">Kolmen kärki &trade;</h3>
                 <div class="ui-corner-bottom">
@@ -138,9 +139,8 @@ _gaq.push(['_trackPageview']);
                 </div>
             </div>
             <?php endif; ?>
-            <?php endif; ?>
-            <div class="block-spacer"></div>
             <?php if ((isset($user['scorer']) && strlen($user['scorer']) > 0) || (isset($user['scorer_betted']) && strlen($user['scorer_betted']) > 0)): ?>
+            <div class="block-spacer"></div>
             <div class="block">
                 <h3 class="ui-corner-top">Maalikuningas</h3>
                 <div class="ui-corner-bottom">
