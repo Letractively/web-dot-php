@@ -176,8 +176,10 @@ SQL;
             }
             $i++;
         }
-        $scorers[$j]['rowspan'] = $rowspan;
-        $scorers[$j]['keyrow'] = true;
+        if (count($scorers) > 0) {
+            $scorers[$j]['rowspan'] = $rowspan;
+            $scorers[$j]['keyrow'] = true;
+        }
         $res->finalize();
         $db->close();
         return $scorers;
