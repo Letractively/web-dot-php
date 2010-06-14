@@ -99,6 +99,10 @@ input#message, input#scorer, input.large {
 input.large {
     width: 25px;
 }
+select.large {
+    width: 150px;
+    height: 29px;
+}
 .bottom-spacer {
     height: 51px;
 }

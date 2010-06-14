@@ -29,5 +29,7 @@ namespace db\teams {
         $stm->bindValue(':ranking', $ranking, SQLITE3_INTEGER);
         $stm->bindValue(':team', $team, SQLITE3_TEXT);
         $stm->execute();
+        $stm->close();
+        $db->close();
     }
 }

@@ -71,10 +71,58 @@ post('/admin/games/#id', function($id) {
 });
 get('/admin/scorers', function() {
     if (!admin) redirect('~/unauthorized');
-    $view = new view('views/admin.games.phtml');
+    $view = new view('views/admin.scorers.phtml');
     $view->title = 'Maalintekijät';
     $view->menu = 'admin/scorers';
+    $view->teams = db\teams\all();
+    $view->scorers = db\scorers\all();
+    $view->userscorers = db\scorers\users();
     echo $view;
+});
+post('/admin/scorers', function() {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->scorer->filter('trim', specialchars(), minlength(3));
+    $form->team->filter('db\teams\exists');
+    $form->goals->filter('int', 'intval');
+    if ($form->validate()) {
+        $changes = db\scorers\add($form->scorer->value, $form->team->value, $form->goals->value);
+        if ($changes > 0) {
+            cache_delete('worldcup2010:points');
+            cache_delete('worldcup2010:scorers');
+            redirect('~/admin/scorers');
+        }
+    }
+    $view = new view('views/admin.scorers.phtml');
+    $view->error = true;
+    $view->title = 'Maalintekijät';
+    $view->menu = 'admin/scorers';
+    $view->teams = db\teams\all();
+    $view->scorers = db\scorers\all();
+    $view->userscorers = db\scorers\users();
+    echo $view;
+});
+post('/admin/scorers/map', function() {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->scorer->filter('trim', specialchars(), minlength(3));
+    $form->betted->filter('trim', specialchars(), minlength(3));
+    if ($form->validate()) {
+        db\scorers\map($form->scorer->value, $form->betted->value);
+        cache_delete('worldcup2010:points');
+        cache_delete('worldcup2010:scorers');
+    }
+});
+post('/admin/scorers/:scorer', function($scorer) {
+    if (!admin) redirect('~/unauthorized');
+    $scorer = urldecode($scorer);
+    $form = new form($_POST);
+    $form->goals->filter('int', 'intval');
+    if ($form->validate()) {
+        db\scorers\goals($scorer, $form->goals->value);
+        cache_delete('worldcup2010:points');
+        cache_delete('worldcup2010:scorers');
+    }
 });
 get('/admin/users', function() {
     if (!admin) redirect('~/unauthorized');
@@ -101,6 +149,7 @@ get('/admin/config', function() {
     $view->menu = 'admin/config';
     echo $view;
 });
+/*
 get('/admin/patches/view-games-1', function() {
     if (!admin) redirect('~/unauthorized');
     db\patches\view_games_1();
@@ -121,3 +170,4 @@ get('/admin/patches/game-1', function() {
     db\patches\game_1();
     echo 'Patch "game_1" installed.';
 });
+*/

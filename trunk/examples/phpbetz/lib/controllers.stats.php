@@ -10,6 +10,13 @@ get('/points', function() {
         cache_store('worldcup2010:points', $points);
     }
     $view->points = $points;
+    $scorers = cache_fetch('worldcup2010:scorers');
+    if ($scorers === false) {
+        $scorers = db\stats\scorers();
+        cache_store('worldcup2010:scorers', $scorers);
+    }
+    $view->scorers = $scorers;
+    $view->points = $points;
     $view->online = db\users\visited(username, 'Pistetilanne');
     echo $view;
 });
@@ -29,6 +36,13 @@ get('/points/:username', function($username) {
         return $point['username'] === $username;
     });
     $view->points = $points;
+    $scorers = cache_fetch('worldcup2010:scorers');
+    if ($scorers === false) {
+        $scorers = db\stats\scorers();
+        cache_store('worldcup2010:scorers', $scorers);
+    }
+    $view->scorers = $scorers;
+    $view->pointsuser = $username;
     $view->games = db\stats\games($username);
     $view->online = db\users\visited(username, $view->title);
     echo $view;

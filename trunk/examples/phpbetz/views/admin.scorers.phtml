@@ -1,3 +1,110 @@
 <?php $layout = 'layouts/layout.default.phtml'; ?>
 <h1><?php echo $title; ?></h1>
 <hr>
+<table id="bets" class="tablesorter">
+<tr>
+    <th style="text-align: left;">Pelaaja</th>
+    <th style="text-align: center;">Joukkue</th>
+    <th style="text-align: center;">Maalit</th>
+</tr>
+<form method="post" action="<?php echo url('~/admin/scorers'); ?>">
+<tr>
+    <td><input type="text" name="scorer" class="large" style="width: 400px;"></td>
+    <td style="text-align: center;">
+        <select class="large" name="team">
+            <?php foreach ($teams as $team): ?>
+            <option value="<?php echo $team['name'] ?>"><?php echo $team['name'] ?></option>
+            <?php endforeach; ?>
+        </select>
+    </td>
+    <td>
+        <table width="100%">
+        <tr style="border: none;">
+            <td>&nbsp;</td>
+            <td><input type="text" name="goals" class="large"></td>
+            <td>&nbsp;</td>
+            <td style="text-align: right;"><input style="width: 87px;" type="submit" value="Lisää"></td>
+        </tr>
+        </table>
+    </td>
+</tr>
+</form>
+<?php foreach($scorers as $scorer): ?>
+<tr>
+    <td class="f32" style="width: 32px; line-height: 32px;" colspan="2">
+        <div class="flag <?php echo $scorer['team_abbr']; ?>" style="padding-left: 40px;"><?php echo $scorer['name']; ?></div>
+    </td>
+    <td class="bet">
+        <form method="post" action="<?php echo url('~/admin/scorers/' . urlencode($scorer['name'])); ?>">
+        <table>
+        <tr style="border: none;">
+            <td>&nbsp;</td>
+            <td><input type="text" name="goals" class="large" value="<?php echo $scorer['goals']; ?>"></td>
+            <td>&nbsp;</td>
+            <td><input class="goal" type="submit" value="Tallenna"></td>
+        </tr>
+        </table>
+        </form>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+<br>
+<h2>Veikkaajien maalintekijät</h2>
+<hr class="thin">
+<table id="bets" class="tablesorter">
+<tr>
+    <th style="text-align: left;">Veikkaus</th>
+    <th style="text-align: center;">Pelaaja</th>
+</tr>
+<?php foreach($userscorers as $userscorer): ?>
+<tr>
+    <?php if (isset($userscorer['scorer'])): ?>
+    <td class="f32" style="width: 100%; line-height: 32px;">
+        <div class="flag <?php echo $userscorer['team_abbr']; ?>" style="padding-left: 40px;"><?php echo $userscorer['scorer_betted']; ?></div>
+    </td>
+    <?php else: ?>
+    <td style="width: 100%; line-height: 32px;">
+        <div><?php echo $userscorer['scorer_betted']; ?></div>
+    </td>
+    <?php endif; ?>
+    <td class="bet">
+        <form method="post" action="<?php echo url('~/admin/scorers/map'); ?>">
+        <input name="betted" type="hidden" value="<?php echo $userscorer['scorer_betted']; ?>">
+        <table>
+        <tr style="border: none;">
+            <td>&nbsp;</td>
+            <td>
+                <select class="large" name="scorer">
+                    <option value="">Valitse...</option>
+                    <?php foreach ($scorers as $scorer): ?>
+                    <option value="<?php echo $scorer['name'] ?>" <?php if ($userscorer['scorer'] === $scorer['name']) echo 'selected'; ?>><?php echo $scorer['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+            <td>&nbsp;</td>
+            <td><input class="goal" type="submit" value="Tallenna"></td>
+        </tr>
+        </table>
+        </form>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+<?php block($scripts); ?>
+<script>
+function posted(data, status) {
+    if (status != 'success') {
+        alert('Joukkueen tallennuksessa tapahtui virhe. Yritä uudelleen.');
+    }
+}
+$('input.goal:submit').each(function() {
+    var input = $(this);
+    var form = $(this.form);
+    input.click(function() {
+        $.post(form.attr('action'), form.serialize(), posted);
+        return false;
+    });
+});
+</script>
+<?php block(); ?>

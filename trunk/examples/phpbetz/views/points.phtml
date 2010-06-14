@@ -54,3 +54,34 @@
 <?php endforeach; ?>
 </tbody>
 </table>
+<br>
+<h2>Turnauksen maalintekijät</h2>
+<hr>
+<table id="points" class="tablesorter">
+ <thead>
+   <tr>
+        <th><img src="<?php echo url('~/img/ranking.png'); ?>" width="16" height="16" title="Sijoitus" alt="Sijoitus"></th>
+        <th>Pelaaja</th>
+        <th>Joukkue</th>
+        <th>Maalit</th>
+        <th>Veikanneet</th>
+    </tr>
+</thead>
+<tbody>
+<?php foreach ($scorers as $scorer): ?>
+<tr>
+    <?php if ($scorer['rowspan'] === 0): ?>
+    <td class="position" style="width: 44px;"><h3><?php echo $scorer['position']; ?>.</h3></td>
+    <?php elseif ($scorer['rowspan'] > 0 && $scorer['keyrow']): ?>
+    <td class="position" style="width: 44px;" rowspan="<?php echo $scorer['rowspan']; ?>"><h3><?php echo $scorer['position']; ?>.</h3></td>
+    <?php endif; ?>
+    <td<?php echo in_array(username, $scorer['users']) ? ' class="current-user"' : ''; ?> style="width: 125px;"><?php echo $scorer['scorer']; ?></td>
+    <td class="f32<?php if (in_array(username, $scorer['users'])) echo ' current-user'; ?>" style="width: 125px; text-align: left;">
+        <div style="padding-left: 40px;" class="flag <?php echo $scorer['team_abbr']; ?>"><?php echo $scorer['team']; ?></div>
+    </td>
+    <td<?php echo in_array(username, $scorer['users']) ? ' class="current-user"' : ''; ?> style="width: 44px;"><?php echo $scorer['goals']; ?></td>
+    <td<?php echo in_array(username, $scorer['users']) ? ' class="current-user"' : ''; ?> style="font-size: 0.85em;"><?php echo implode(', ', $scorer['users']); ?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
