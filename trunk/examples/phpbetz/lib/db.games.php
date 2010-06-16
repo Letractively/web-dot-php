@@ -17,6 +17,19 @@ namespace db\games {
         $db->close();
         return $start;
     }
+    function started($id) {
+        $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $stm = $db->prepare('SELECT id FROM games WHERE id = :id AND time <= :time');
+        $stm->bindValue(':id', $id, SQLITE3_INTEGER);
+        $stm->bindValue(':time', date_format(date_create(), DATE_SQLITE), SQLITE3_TEXT);
+        $res = $stm->execute();
+        $row = $res->fetchArray(SQLITE3_NUM);
+        $res->finalize();
+        $stm->close();
+        $db->close();
+        return $row !== false;
+    }
     function score($id, $home_goals, $road_goals) {
         $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
