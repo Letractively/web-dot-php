@@ -16,7 +16,6 @@ get('/points', function() {
         cache_store('worldcup2010:scorers', $scorers);
     }
     $view->scorers = $scorers;
-    $view->points = $points;
     $view->online = db\users\visited(username, 'Pistetilanne');
     echo $view;
 });
