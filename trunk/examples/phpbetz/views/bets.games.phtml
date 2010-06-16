@@ -1,4 +1,7 @@
-<?php $layout = 'layouts/layout.default.phtml'; ?>
+<?php
+$layout = 'layouts/layout.default.phtml';
+$gcount = count($games);
+?>
 <?php block($css); ?>
 <link rel="stylesheet" href="<?php echo url('~/css/countdown.css'); ?>">
 <?php block(); ?>
@@ -40,11 +43,14 @@
 </tr>
 <?php endforeach; ?>
 </table>
-<?php if (count($games) > 0): ?>
+<?php if ($gcount > 0): ?>
 <?php block($scripts); ?>
+<?php if ($gcount > 34): ?>
 <script src="<?php echo url('~/js/jquery.blockui.js'); ?>"></script>
+<?php endif; ?>
 <script src="<?php echo url('~/js/jquery.countdown.js'); ?>"></script>
 <script>
+<?php if ($gcount > 34): ?>
 $.blockUI({
     message: '<h2>Ladataan otteluita...</h2>(jQuery UI:n bugi hidastaa lataamista)',
     css: {
@@ -59,8 +65,10 @@ $.blockUI({
     fadeIn: 0,
     fadeOut: 200
 });
-
 setTimeout(initialize, 50);
+<?php else: ?>
+initialize();
+<?php endif; ?>
 
 function posted(data, status) {
     if (status != 'success') {
@@ -104,7 +112,9 @@ function initialize() {
         });
     });
     $('#bets').toggle();
+    <?php if ($gcount > 34): ?>
     $.unblockUI();
+    <?php endif; ?>
 }
 </script>
 <?php block(); ?>
