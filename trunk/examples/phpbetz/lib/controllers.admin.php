@@ -56,8 +56,33 @@ get('/admin/games', function() {
     $view = new view('views/admin.games.phtml');
     $view->title = 'Ottelut';
     $view->menu = 'admin/games';
+    $view->form = new form;
+    $view->teams = db\teams\all();
     $view->games = db\games\all();
     echo $view;
+});
+post('/admin/games', function() {
+    if (!admin) redirect('~/unauthorized');
+    $form = new form($_POST);
+    $form->date->filter('/^20[1-9]\d-[01]\d-[0-3]\d$/');
+    $form->time->filter('/^[0-2]\d:[0-5]\d:[0-5]\d$/');
+    $form->home->filter('db\teams\exists', notequal($form->road->value));
+    $form->road->filter('db\teams\exists', notequal($form->home->value));
+    $form->draw->filter('checkbox');
+    if ($form->validate()) {
+        $time = sprintf('%sT%s', $form->date->value, $form->time->value);
+        db\games\add($time, $form->home->value, $form->road->value, $form->draw->value);
+        redirect('~/admin/games');
+    } else {
+        $view = new view('views/admin.games.phtml');
+        $view->title = 'Ottelut';
+        $view->menu = 'admin/games';
+        $view->form = $form;
+        $view->error = true;
+        $view->teams = db\teams\all();
+        $view->games = db\games\all();
+        echo $view;
+    }
 });
 post('/admin/games/#id', function($id) {
     if (!admin) redirect('~/unauthorized');

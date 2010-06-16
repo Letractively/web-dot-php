@@ -10,6 +10,19 @@ namespace db\games {
         $db->close();
         return $games;
     }
+    function add($time, $home, $road, $draw) {
+        $games = array();
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $stm = $db->prepare('INSERT INTO games (home, road, draw, time) VALUES (:home, :road, :draw, :time)');
+        $stm->bindValue(':home', $home, SQLITE3_TEXT);
+        $stm->bindValue(':road', $road, SQLITE3_TEXT);
+        $stm->bindValue(':draw', $draw ? 1 : 0, SQLITE3_INTEGER);
+        $stm->bindValue(':time', $time, SQLITE3_TEXT);
+        $stm->execute();
+        $stm->close();
+        $db->close();
+    }
     function start() {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);

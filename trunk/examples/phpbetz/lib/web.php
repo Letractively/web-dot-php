@@ -272,6 +272,9 @@ namespace {
     function equal($exact) {
         return function($value) use ($exact) { return $value === $exact; };
     }
+    function notequal($exact) {
+        return function($value) use ($exact) { return $value !== $exact; };
+    }
     function length($min, $max) {
         return function($value) use ($min, $max) {
             $len = strlen($value);
