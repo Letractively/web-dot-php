@@ -43,7 +43,7 @@ namespace web {
         if ($path == null) return $routes;
         $pattern = sprintf('/^%s$/ui', preg_replace(
             array('/\\\\\*/', '/\\\\\:[\w-]+/ui', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('(.+)', '([\wåäö+-\s]+)', '(\d+)', '($1$3)'),
+            array('(.+)', '([^\/]+)', '(\d+)', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         $routes[] = array($pattern, $func, $path);
     }
@@ -52,7 +52,7 @@ namespace web {
         if ($path == null && $url == null) return $params;
         $pattern = sprintf('/^%s$/ui', preg_replace(
             array('/\\\\\*/', '/\\\\\:([\w-]+)/ui', '/#([\w-]+)/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('.+', '(?<$1>[\wåäö+-\s]+)', '(?<$1>\d+)', '$1$3'),
+            array('.+', '(?<$1>[^\/]+)', '(?<$1>\d+)', '$1$3'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $params)) {
             $params = array_slice($params, 1);
@@ -63,7 +63,7 @@ namespace web {
         if ($path == null && $url == null) return $splats;
         $pattern = sprintf('/^%s$/ui', preg_replace(
             array('/\\\\\*/', '/\\\\\:[\w-]+/ui', '/#[\w-]+/', '/([\w-]+)(\\\\(\|[\w-]+)+)/'),
-            array('(.+)', '[\wåäö+-\s]+', '\d+', '($1$3)'),
+            array('(.+)', '[^\/]+', '\d+', '($1$3)'),
             preg_quote(trim($path, '/'), '/')));
         if ((bool) preg_match($pattern, $url, $splats)) {
             $splats = array_slice($splats, 1);
