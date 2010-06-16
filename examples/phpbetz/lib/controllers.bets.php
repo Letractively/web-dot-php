@@ -12,9 +12,8 @@ post('/bets/games/#game', function($game) {
     if (!authenticated) return status(401);
     $form = new form($_POST);
     $form->score->filter(choice('1', 'X', '2'));
-    if ($form->validate()) {
+    if ($form->validate() && !db\games\started($game)) {
         db\bets\game($game, username, $form->score->value);
-        db\users\visited(username, 'Otteluveikkaus');
     } else {
         status(500);
     }
@@ -46,7 +45,6 @@ post('/bets/teams/#position', function($position) {
         } else {
             status(500);
         }
-        db\users\visited(username, 'Kolmen kärki &trade;');
     } else {
         status(500);
     }
