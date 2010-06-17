@@ -4,7 +4,7 @@ namespace db\scorers {
         $db = new \SQLite3(database, SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
         $scorers = array();
-        $res = $db->query('SELECT s.name AS name, s.goals AS goals, t.name AS team, t.abbr AS team_abbr FROM scorers s INNER JOIN teams t ON s.team = t.name ORDER BY goals DESC, team');
+        $res = $db->query('SELECT s.name AS name, s.goals AS goals, t.name AS team, t.abbr AS team_abbr FROM scorers s INNER JOIN teams t ON s.team = t.name ORDER BY goals DESC, team, name');
         while ($row = $res->fetchArray(SQLITE3_ASSOC)) $scorers[] = $row;
         $res->finalize();
         $db->close();
