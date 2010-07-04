@@ -147,8 +147,11 @@ SQL;
             u.scorer = m.betted
         GROUP BY
             s.name
+        HAVING
+            goals > 0
         ORDER BY
             goals DESC, team, scorer
+
 SQL;
         $db = new \SQLite3(database, \SQLITE3_OPEN_READONLY);
         if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
