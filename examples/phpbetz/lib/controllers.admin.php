@@ -195,9 +195,9 @@ get('/admin/patches/game-1', function() {
     db\patches\game_1();
     echo 'Patch "game_1" installed.';
 });
-*/
 get('/admin/patches/delete-games-66', function() {
     if (!admin) redirect('~/unauthorized');
     db\patches\delete_games_66();
     echo 'Patch "delete-games-66" installed.';
 });
+*/
