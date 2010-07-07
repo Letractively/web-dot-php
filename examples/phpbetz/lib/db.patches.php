@@ -76,5 +76,14 @@ SQL;
         $db->exec("UPDATE games SET time = '2010-06-15T14:30:00' WHERE id = 12");
         $db->close();
     }
+    function delete_games_66() {
+        $sql =<<<'SQL'
+        DELETE FROM games WHERE id = 66
+SQL;
+        $db = new \SQLite3(database, SQLITE3_OPEN_READWRITE);
+        if (method_exists($db, 'busyTimeout')) $db->busyTimeout(10000);
+        $db->exec($sql);
+        $db->close();
+    }
 
 }
