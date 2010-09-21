@@ -21,7 +21,6 @@
       * [API#pass pass]
       * [API#forward forward]
       * [API#redirect redirect]
-      * [API#run run]
       * [API#url url]
       * [API#session session]
       * [API#flash flash]
