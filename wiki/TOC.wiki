@@ -12,6 +12,7 @@
       * [Introduction#Helpers Helpers and Globals]
       * [Introduction#Fragments Fragments]
     * [Introduction#Forms Forms]
+      * [Introduction#Filters Filters]
   * [API API documentation]
     * [API#Functions Functions]
       * [API#get get]
