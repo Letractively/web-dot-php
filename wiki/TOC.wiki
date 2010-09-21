@@ -9,6 +9,8 @@
       * [Introduction#Creating_a_View Creating a View]
       * [Introduction#Layouts Layouts]
       * [Introduction#Blocks Blocks]
+      * [Introduction#Helpers Helpers and Globals]
+      * [Introduction#Fragments Fragments]
     * [Introduction#Forms Forms]
   * [API API documentation]
     * [API#Functions Functions]
