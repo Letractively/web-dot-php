@@ -7,7 +7,7 @@
 
 ==get==
 
-get - Add a HTTP GET request route to routes array with specific path and the controller function
+get - Matches path with a HTTP GET request and executes passed function if a match is found
 
 ===Description===
 
