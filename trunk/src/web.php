@@ -207,28 +207,26 @@ namespace {
         }
         return true;
     }
-    function equal($exact) {
-        return function($value) use ($exact) { return $value === $exact; };
+    function equal($exact, $strict = true) {
+        return function($value) use ($exact, $strict) { return $strict ? $value === $exact : $value == $exact; };
     }
-    function notequal($exact) {
-        return function($value) use ($exact) { return $value !== $exact; };
+    function notequal($exact, $strict = true) {
+        return function($value) use ($exact, $strict) { return $strict ? $value !== $exact : $value != $exact; };
     }
-    function length($min, $max) {
-        return function($value) use ($min, $max) {
-            $len = strlen($value);
+    function length($min, $max, $charset = 'UTF-8') {
+        return function($value) use ($min, $max, $charset) {
+            $len = iconv_strlen($value, $charset);
             return $len >= $min && $len <= $max;
         };
     }
-    function minlength($min) {
-        return function($value) use ($min) {
-            $len = strlen($value);
-            return $len >= $min;
+    function minlength($min, $charset = 'UTF-8') {
+        return function($value) use ($min, $charset) {
+            return iconv_strlen($value, $charset) >= $min;
         };
     }
-    function maxlength($max) {
-        return function($value) use ($max) {
-            $len = strlen($value);
-            return $len <= $max;
+    function maxlength($max, $charset = 'UTF-8') {
+        return function($value) use ($max, $charset) {
+            return iconv_strlen($value, $charset) <= $max;
         };
     }
     function between($min, $max) {
