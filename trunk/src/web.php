@@ -319,6 +319,7 @@ namespace log {
             });
         }
         $trace = debug_backtrace();
-        $messages .= sprintf('%s %7s %-20s %s', date_create()->format('Y-m-d H:i:s'), level($level), basename($trace[1]['file']) . ':' . $trace[1]['line'], trim($message) . PHP_EOL);
+        list($usec, $sec) = explode(' ', microtime());
+        $messages .= sprintf('%s %7s %-20s %s', date('Y-m-d H:i:s.', $sec) . substr($usec, 2, 3) , level($level), basename($trace[1]['file']) . ':' . $trace[1]['line'], trim($message) . PHP_EOL);
     }
 }
