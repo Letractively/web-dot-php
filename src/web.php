@@ -293,24 +293,32 @@ namespace {
         }
     }
 }
-// Logging (this needs to be refactored and moved elsewhere):
+// Logging
 namespace log {
-    function debug($message) {
-        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_DEBUG) return;
-        $date = date_create();
-        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
-        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[DEBUG]', trim($message) . PHP_EOL), 3, $file);
+    function debug($message) { append($message, LOG_DEBUG); }
+    function info($message) { append($message, LOG_INFO); }
+    function warn($message) { append($message, LOG_WARNING); }
+    function error($message) { append($message, LOG_ERR); }
+    function write($message, $level) { append($message, $level); }
+    function level($level) {
+        if ($level > LOG_INFO) return 'DEBUG';
+        if ($level > LOG_WARNING) return 'INFO';
+        return $level > LOG_ERR ? 'WARNING' : 'ERROR';
     }
-    function warn($message) {
-        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_WARNING) return;
-        $date = date_create();
-        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
-        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[WARNING]', trim($message) . PHP_EOL), 3, $file);
-    }
-    function error($message) {
-        if (!defined('LOG_LEVEL') || !defined('LOG_PATH') || LOG_LEVEL < LOG_ERR) return;
-        $date = date_create();
-        $file = rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_format($date, 'Y-m-d') . '.log';
-        error_log(sprintf('%s %-9s %s', date_format($date, 'Y-m-d H:i:s'), '[ERROR]', trim($message) . PHP_EOL), 3, $file);
+    function append($message, $level) {
+        if (!defined('LOG_PATH')) return;
+        defined('LOG_FILE') or define('LOG_FILE', 'Y-m-d.\l\o\g');
+        defined('LOG_LEVEL') or define('LOG_LEVEL', LOG_WARNING);
+        if (LOG_LEVEL < $level) return;
+        static $messages = null;
+        if ($messages === null) {
+            register_shutdown_function(function() use (&$messages) {
+                // Alternative to error_log:
+                //file_put_contents(rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE), $messages, FILE_APPEND | LOCK_EX);
+                error_log($messages, 3, rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE));
+            });
+        }
+        $trace = debug_backtrace();
+        $messages .= sprintf('%s %7s %-20s %s', date_create()->format('Y-m-d H:i:s'), level($level), basename($trace[1]['file']) . ':' . $trace[1]['line'], trim($message) . PHP_EOL);
     }
 }
