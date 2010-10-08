@@ -1,25 +1,4 @@
 <?php
-namespace web {
-    // Initialization:
-    $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
-    $base = substr($base, 0, strrpos($base, '/') + 1);
-    $path = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen($base)), '/');
-    $root = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
-    $port = $_SERVER['SERVER_PORT'];
-    if (($root[4] === 's' && $port !== '443') || $port !== '80') $root .= ":$port";
-    define('WEB_URL_ROOT', $root);
-    define('WEB_URL_BASE', $base);
-    define('WEB_URL_PATH', $path);
-    register_shutdown_function(function() {
-        if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
-        $flash =& $_SESSION['web.php:flash'];
-        foreach($flash as $key => $hops) {
-            if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
-            else $flash[$key]--;
-        }
-        if (count($flash) === 0) unset($flash);
-    });
-}
 namespace {
     function get($path, $func) {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') route($path, $func);
@@ -36,9 +15,14 @@ namespace {
         if (strcasecmp($_POST['_method'], 'DELETE') === 0) route($path, $func);
     }
     function route($path, $func) {
+        static $url = null;
+        if ($url == null) {
+            $url = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
+            $url = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($url, 0, strrpos($url, '/')))), '/');
+        }
         $pattern = '/^' . str_replace(array('@', '#'), array('([^\/]+)' ,'(\d+)'), preg_quote(trim($path, '/'), '/')) . '$/ui';
         $params = array();
-        $matched = (bool) preg_match($pattern, WEB_URL_PATH, $params);
+        $matched = (bool) preg_match($pattern, $url, $params);
         if (!$matched) return;
         array_pop($params);
         if (is_string($func)) {
@@ -102,28 +86,31 @@ namespace {
             default: return;
         }
         $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-        header(trim(sprintf('%s %u %s', $protocol, $code, $msg)));
+        header(sprintf('%s %u %s', $protocol, $code, $msg));
+    }
+    function url($url, $abs = false) {
+        if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
+        static $base = null, $path = null, $root = null;
+        if ($base == null) {
+            $base = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
+            $base = substr($base, 0, strrpos($base, '/'));
+        }
+        if ($path == null) {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+            $path = substr($path, 0, strrpos($path, '/'));
+        }
+        if (!$abs) return strpos($url, '~/') === 0 ? $base . '/' . substr($url, 2) : $url;
+        if ($root == null) {
+            $root = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
+            $port = $_SERVER['SERVER_PORT'];
+            if (($root[4] === 's' && $port !== '443') || $port !== '80') $root .= ":$port";
+        }
+        if (strpos($url, '~/') === 0) return $root . $base . '/' . substr($url, 2);
+        return strpos($url, '/') === 0 ? $root . $url : $root . $path . '/' . $url;
     }
     function redirect($url, $code = 301, $exit = true) {
         header('Location: ' . url($url, true), true, $code);
         if ($exit) exit;
-    }
-    function url($url, $abs = false) {
-        if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
-        if (strpos($url, '~/') === 0) $url = WEB_URL_BASE . '/' . substr($url, 2);
-        elseif (strpos($url, '/') !== 0) $url = WEB_URL_PATH . '/' . $url;
-        $parts = explode('/', $url);
-        $url = array();
-        for ($i=0; $i < count($parts); $i++) {
-            if ($parts[$i] === '' || $parts[$i] === '.') continue;
-            if ($parts[$i] === '..') {
-                array_pop($url);
-                continue;
-            }
-            array_push($url, $parts[$i]);
-        }
-        $url = implode('/', $url);
-        return ($abs) ? WEB_URL_ROOT . '/'. $url : '/' . $url;
     }
     function flash($name, $value, $hops = 1) {
         $_SESSION[$name] = $value;
@@ -171,7 +158,6 @@ namespace {
             $fragment->removeAttribute('fragment');
             $fragments[$name] = simplexml_import_dom($fragment)->asXML();;
         }
-
         return $fragments;
     }
     // Filters:
@@ -207,11 +193,15 @@ namespace {
         }
         return true;
     }
+    function not($filter) {
+        return function($value) use ($filter) {
+            $value = is_callable($filter) ? $filter($value) : $filter;
+            if ($value !== null && is_bool($value)) return !$value;
+            return;
+        };
+    }
     function equal($exact, $strict = true) {
         return function($value) use ($exact, $strict) { return $strict ? $value === $exact : $value == $exact; };
-    }
-    function notequal($exact, $strict = true) {
-        return function($value) use ($exact, $strict) { return $strict ? $value !== $exact : $value != $exact; };
     }
     function length($min, $max, $charset = 'UTF-8') {
         return function($value) use ($min, $max, $charset) {
@@ -292,6 +282,15 @@ namespace {
             return strval($this->value);
         }
     }
+    register_shutdown_function(function() {
+        if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
+        $flash =& $_SESSION['web.php:flash'];
+        foreach($flash as $key => $hops) {
+            if ($hops === 0)  unset($_SESSION[$key], $flash[$key]);
+            else $flash[$key]--;
+        }
+        if (count($flash) === 0) unset($flash);
+    });
 }
 // Logging
 namespace log {
