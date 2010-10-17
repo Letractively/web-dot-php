@@ -153,10 +153,12 @@ namespace {
         $xpath = new DOMXpath($doc);
         $elements = $xpath->query('//*[@fragment]');
         $fragments = array();
+        $fragments['meta'] = get_meta_tags($file);
+        $fragments['title'] = $doc->getElementsByTagName('title')->item(0)->textContent;
         foreach ($elements as $fragment) {
             $name = $fragment->getAttribute('fragment');
             $fragment->removeAttribute('fragment');
-            $fragments[$name] = simplexml_import_dom($fragment)->asXML();;
+            $fragments[$name] = simplexml_import_dom($fragment)->asXML();
         }
         return $fragments;
     }
@@ -194,11 +196,12 @@ namespace {
         return true;
     }
     function not($filter) {
-        return function($value) use ($filter) {
-            $value = is_callable($filter) ? $filter($value) : $filter;
+        if (is_callable($filter)) return function($value) use ($filter) {
+            $value = $filter($value);
             if ($value !== null && is_bool($value)) return !$value;
             return;
         };
+        return is_bool($filter) ? !$filter : null;
     }
     function equal($exact, $strict = true) {
         return function($value) use ($exact, $strict) { return $strict ? $value === $exact : $value == $exact; };
@@ -312,9 +315,7 @@ namespace log {
         static $messages = null;
         if ($messages === null) {
             register_shutdown_function(function() use (&$messages) {
-                // Alternative to error_log:
-                //file_put_contents(rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE), $messages, FILE_APPEND | LOCK_EX);
-                error_log($messages, 3, rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE));
+                file_put_contents(rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE), $messages, FILE_APPEND | LOCK_EX);
             });
         }
         $trace = debug_backtrace();
