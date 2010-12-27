@@ -7,12 +7,12 @@ namespace {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') route($path, $func);
     }
     function put($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method'])) return;
-        if (strcasecmp($_POST['_method'], 'PUT') === 0) route($path, $func);
+        if ($_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method']) || $_POST['_method'] !== 'PUT') return;
+        route($path, $func);
     }
     function delete($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method'])) return;
-        if (strcasecmp($_POST['_method'], 'DELETE') === 0) route($path, $func);
+        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method']) || $_POST['_method'] !==  'DELETE') return;
+        route($path, $func);
     }
     function route($path, $func) {
         static $url = null;
@@ -20,27 +20,27 @@ namespace {
             $url = parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH);
             $url = trim(substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), strlen(substr($url, 0, strrpos($url, '/')))), '/');
         }
-        $pattern = '/^' . str_replace(array('@', '#'), array('([^\/]+)' ,'(\d+)'), preg_quote(trim($path, '/'), '/')) . '$/ui';
-        $params = array();
-        $matched = (bool) preg_match($pattern, $url, $params);
-        if (!$matched) return;
-        array_pop($params);
+        $path = trim($path, '/');
+        $scnf = str_replace('%p', '%[^/]', $path);
+        $prnf = str_replace('%p', '%s', $path);
+        $args = sscanf($url, $scnf);
+        $path = vsprintf($prnf, $args);
+        if ($path !== $url) return;
         if (is_string($func)) {
             if (file_exists($func)) return require $func;
-            if (strpos($func, '->') !== false) {
+            if (iconv_strpos($func, '->') !== false) {
                 list($clazz, $method) = explode('->', $func, 2);
                 $func = array(new $clazz, $method);
             }
         }
-        call_user_func_array($func, $params);
-        exit(0);
+        call_user_func_array($func, $args);
     }
     function status($code) {
         switch ($code) {
             // Informational
             case 100: $msg = 'Continue'; break;
             case 101: $msg = 'Switching Protocols'; break;
-            // Successfull
+            // Successful
             case 200: $msg = 'OK'; break;
             case 201: $msg = 'Created'; break;
             case 202: $msg = 'Accepted'; break;
@@ -86,7 +86,7 @@ namespace {
             default: return;
         }
         $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
-        header(sprintf('%s %u %s', $protocol, $code, $msg));
+        header("$protocol $code $msg");
     }
     function url($url, $abs = false) {
         if (parse_url($url, PHP_URL_SCHEME) !== null) return $url;
@@ -108,9 +108,9 @@ namespace {
         if (strpos($url, '~/') === 0) return $root . $base . '/' . substr($url, 2);
         return strpos($url, '/') === 0 ? $root . $url : $root . $path . '/' . $url;
     }
-    function redirect($url, $code = 301, $exit = true) {
+    function redirect($url, $code = 301, $die = true) {
         header('Location: ' . url($url, true), true, $code);
-        if ($exit) exit;
+        if ($die) die;
     }
     function flash($name, $value, $hops = 1) {
         $_SESSION[$name] = $value;
@@ -121,46 +121,25 @@ namespace {
     }
     // View:
     class view {
-        static $globals = array();
-        static function __callStatic($name, $args) {
-            switch (count($args)) {
-                case 0:  unset(self::$globals[$name]); break;
-                case 1:  self::$globals[$name] = $args[0]; break;
-                default: self::$globals[$name] = $args;
-            }
+        function __construct($view, $layout = null) {
+            $this->view = $view;
+            $this->layout = $layout;
         }
-        function __construct($file) { $this->file = $file; }
         function __toString() {
-            extract(self::$globals);
             extract((array)$this);
-            start:
             ob_start();
-            require $file;
-            if (!isset($layout)) return ob_get_clean();
+            require $view;
             $view = ob_get_clean();
-            $file = $layout;
-            unset($layout);
-            goto start;
+            ob_start();
+            if ($layout != null) {
+               require $layout;
+               return ob_get_clean();
+            }
         }
     }
     function block(&$block = false) {
         if ($block === false) return ob_end_clean();
         ob_start(function($buffer) use (&$block) { $block = $buffer; });
-    }
-    function fragments($file) {
-        $doc = new DOMDocument();
-        $doc->loadHTMLFile($file);
-        $xpath = new DOMXpath($doc);
-        $elements = $xpath->query('//*[@fragment]');
-        $fragments = array();
-        $fragments['meta'] = get_meta_tags($file);
-        $fragments['title'] = $doc->getElementsByTagName('title')->item(0)->textContent;
-        foreach ($elements as $fragment) {
-            $name = $fragment->getAttribute('fragment');
-            $fragment->removeAttribute('fragment');
-            $fragments[$name] = simplexml_import_dom($fragment)->asXML();
-        }
-        return $fragments;
     }
     // Filters:
     function filter(&$value, array $filters) {
@@ -285,6 +264,25 @@ namespace {
             return strval($this->value);
         }
     }
+    // Flickr:
+    // TODO: POSTing to Flickr not implemented.
+    function flickr($args) {
+        $endpoint = isset($args['endpoint']) ? $args['endpoint'] : 'http://api.flickr.com/services/rest/';
+        $secret = isset($args['api_secret']) ? $args['api_secret'] : null;
+        unset($args['endpoint'], $args['api_secret']);
+        if ($secret != null) {
+            ksort($args);
+            $api_sig = $secret;
+            foreach($args as $k => $v) $api_sig .= $k . $v;
+            $api_sig = md5($api_sig);
+            $args['api_sig'] = $api_sig;
+        }
+        $url = $endpoint . '?' . http_build_query($args);
+        if (substr($endpoint, -15) === '/services/auth/') return $url;
+        $response = file_get_contents($url);
+        return isset($args['format']) && $args['format'] === 'php_serial' ? unserialize($response) : $response;
+    }
+    // Shutdowm function
     register_shutdown_function(function() {
         if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
         $flash =& $_SESSION['web.php:flash'];
