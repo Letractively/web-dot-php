@@ -320,8 +320,7 @@ namespace log {
 }
 // Password (PHP >= 5.3 version of http://www.openwall.com/phpass/)
 namespace password {
-    function hash($password, $iterations = 8)
-    {
+    function hash($password, $iterations = 8) {
         $random = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
         $itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         if ($iterations < 4 || $iterations > 31) $iterations = 8;
