@@ -336,7 +336,8 @@ namespace password {
             $c1 = ($c1 & 0x03) << 4;
             if ($i >= 16) {
                 $salt .= $itoa64[$c1];
-                break;
+                $hash = crypt($password, $salt);
+                return strlen($hash) == 60 ? $hash : '*';
             }
             $c2 = ord($random[$i++]);
             $c1 |= $c2 >> 4;
@@ -347,8 +348,6 @@ namespace password {
             $salt .= $itoa64[$c1];
             $salt .= $itoa64[$c2 & 0x3f];
         } while (true);
-        $hash = crypt($password, $salt);
-        return strlen($hash) == 60 ? $hash : '*';
     }
     function check($password, $hash) {
         return crypt($password, $hash) == $hash;
