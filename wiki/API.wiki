@@ -29,7 +29,7 @@ _func_
 
 {{{
 // Add a GET route using an anonymous function
-get('/hello/:name', function($name) {
+get('/hello/%p', function($name) {
   echo "Hello, $name!"
 });
 
