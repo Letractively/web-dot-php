@@ -119,7 +119,7 @@ namespace {
         else
             $_SESSION['web.php:flash'][$name] = $hops;
     }
-    // View:
+    // View
     class view {
         function __construct($view, $layout = null) {
             $this->view = $view;
@@ -141,7 +141,7 @@ namespace {
         if ($block === false) return ob_end_clean();
         ob_start(function($buffer) use (&$block) { $block = $buffer; });
     }
-    // Filters:
+    // Filters
     function filter(&$value, array $filters) {
         foreach ($filters as $filter) {
             $valid = true;
@@ -224,7 +224,7 @@ namespace {
         $title = preg_replace('#[/_|+\s-]+#', $delimiter, $title);
         return $title;
     }
-    // Form:
+    // Form
     class form {
         function __construct($args = null) {
             if ($args == null) return;
@@ -264,7 +264,7 @@ namespace {
             return strval($this->value);
         }
     }
-    // Flickr:
+    // Flickr
     // TODO: POSTing to Flickr not implemented.
     function flickr($args) {
         $endpoint = isset($args['endpoint']) ? $args['endpoint'] : 'http://api.flickr.com/services/rest/';
@@ -282,7 +282,7 @@ namespace {
         $response = file_get_contents($url);
         return isset($args['format']) && $args['format'] === 'php_serial' ? unserialize($response) : $response;
     }
-    // Shutdowm function
+    // Shutdowm Function
     register_shutdown_function(function() {
         if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
         $flash =& $_SESSION['web.php:flash'];
@@ -306,12 +306,9 @@ namespace log {
         return $level > LOG_ERR ? 'WARNING' : 'ERROR';
     }
     function append($message, $level) {
-        if (!defined('LOG_PATH')) return;
-        defined('LOG_FILE') or define('LOG_FILE', 'Y-m-d.\l\o\g');
-        defined('LOG_LEVEL') or define('LOG_LEVEL', LOG_WARNING);
-        if (LOG_LEVEL < $level) return;
         static $messages = null;
-        if ($messages === null) {
+        if ($messages == null) {
+            if (!defined('LOG_PATH') || !defined('LOG_FILE') || !defined('LOG_LEVEL') || LOG_LEVEL < $level) die('Logging needs to be configured.');
             register_shutdown_function(function() use (&$messages) {
                 file_put_contents(rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE), $messages, FILE_APPEND | LOCK_EX);
             });
