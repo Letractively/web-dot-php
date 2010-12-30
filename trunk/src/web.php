@@ -282,7 +282,7 @@ namespace {
         $response = file_get_contents($url);
         return isset($args['format']) && $args['format'] === 'php_serial' ? unserialize($response) : $response;
     }
-    // Shutdowm Function
+    // Shutdown Function
     register_shutdown_function(function() {
         if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
         $flash =& $_SESSION['web.php:flash'];
