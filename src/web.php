@@ -329,24 +329,24 @@ namespace password {
         $salt .= chr(ord('0') + $iterations % 10);
         $salt .= '$';
         $i = 0;
-        do {
-            $c1 = ord($random[$i++]);
-            $salt .= $itoa64[$c1 >> 2];
-            $c1 = ($c1 & 0x03) << 4;
-            if ($i >= 16) {
-                $salt .= $itoa64[$c1];
-                $hash = crypt($password, $salt);
-                return strlen($hash) == 60 ? $hash : '*';
-            }
-            $c2 = ord($random[$i++]);
-            $c1 |= $c2 >> 4;
+        calc:
+        $c1 = ord($random[$i++]);
+        $salt .= $itoa64[$c1 >> 2];
+        $c1 = ($c1 & 0x03) << 4;
+        if ($i >= 16) {
             $salt .= $itoa64[$c1];
-            $c1 = ($c2 & 0x0f) << 2;
-            $c2 = ord($random[$i++]);
-            $c1 |= $c2 >> 6;
-            $salt .= $itoa64[$c1];
-            $salt .= $itoa64[$c2 & 0x3f];
-        } while (true);
+            $hash = crypt($password, $salt);
+            return strlen($hash) == 60 ? $hash : '*';
+        }
+        $c2 = ord($random[$i++]);
+        $c1 |= $c2 >> 4;
+        $salt .= $itoa64[$c1];
+        $c1 = ($c2 & 0x0f) << 2;
+        $c2 = ord($random[$i++]);
+        $c1 |= $c2 >> 6;
+        $salt .= $itoa64[$c1];
+        $salt .= $itoa64[$c2 & 0x3f];
+        goto calc;
     }
     function check($password, $hash) {
         return crypt($password, $hash) == $hash;
