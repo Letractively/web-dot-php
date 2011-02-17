@@ -24,7 +24,7 @@ namespace {
         $scnf = str_replace('%p', '%[^/]', $path);
         $prnf = str_replace('%p', '%s', $path);
         $args = sscanf($url, $scnf);
-        $path = vsprintf($prnf, $args);
+        $path = @vsprintf($prnf, $args);
         if ($path !== $url) return;
         if (is_string($func)) {
             if (file_exists($func)) return require $func;
