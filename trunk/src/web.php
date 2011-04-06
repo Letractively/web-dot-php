@@ -1,18 +1,16 @@
 <?php
 namespace {
     function get($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] !== 'GET' ? false : route($path, $func);
     }
     function post($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] !== 'POST' ? false : route($path, $func);
     }
     function put($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method']) || $_POST['_method'] !== 'PUT') return;
-        route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method']) || $_POST['_method'] !== 'PUT' ? false : route($path, $func);
     }
     function delete($path, $func) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method']) || $_POST['_method'] !==  'DELETE') return;
-        route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method']) || $_POST['_method'] !== 'DELETE' ? false : route($path, $func);
     }
     function route($path, $func) {
         static $url = null;
@@ -25,7 +23,10 @@ namespace {
         $prnf = str_replace('%p', '%s', $path);
         $args = sscanf($url, $scnf);
         $path = @vsprintf($prnf, $args);
-        if ($path !== $url) return;
+        if ($path !== $url) return false;
+        return call($func, $args);
+    }
+    function call($func, $args = null) {
         if (is_string($func)) {
             if (file_exists($func)) return require $func;
             if (iconv_strpos($func, '->') !== false) {
@@ -33,7 +34,7 @@ namespace {
                 $func = array(new $clazz, $method);
             }
         }
-        call_user_func_array($func, $args);
+        return call_user_func_array($func, $args);
     }
     function status($code) {
         switch ($code) {
@@ -129,12 +130,11 @@ namespace {
             extract((array)$this);
             ob_start();
             require $view;
+            if ($layout == null) return ob_get_clean();
             $view = ob_get_clean();
             ob_start();
-            if ($layout != null) {
-               require $layout;
-               return ob_get_clean();
-            }
+            require $layout;
+            return ob_get_clean();
         }
     }
     function block(&$block = false) {
@@ -156,7 +156,7 @@ namespace {
                 case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
                 default:
                     if (is_callable($filter)) {
-                        $filtered = $filter($value);
+                        $filtered = call($filter, array($value));
                         if ($filtered !== null) {
                             if (is_bool($filtered)) {
                                 $valid = $filtered;
@@ -185,10 +185,10 @@ namespace {
     function equal($exact, $strict = true) {
         return function($value) use ($exact, $strict) { return $strict ? $value === $exact : $value == $exact; };
     }
-    function length($min, $max, $charset = 'UTF-8') {
+    function length($min, $max = null, $charset = 'UTF-8') {
         return function($value) use ($min, $max, $charset) {
             $len = iconv_strlen($value, $charset);
-            return $len >= $min && $len <= $max;
+            return $len >= $min && $len <= $max == null ? $min : $max;
         };
     }
     function minlength($min, $charset = 'UTF-8') {
@@ -204,6 +204,16 @@ namespace {
     function between($min, $max) {
         return function($value) use ($min, $max) {
             return $value >= $min && $value <= $max;
+        };
+    }
+    function minvalue($min) {
+        return function($value) use ($min) {
+            return $value >= $min;
+        };
+    }
+    function maxvalue($max) {
+        return function($value) use ($max) {
+            return $value <= $max;
         };
     }
     function choice() {
@@ -248,13 +258,16 @@ namespace {
     }
     class field {
         public $original, $value, $valid;
-        function  __construct($value = null) {
+        function __construct($value = null) {
             $this->original = $value;
             $this->value = $value;
             $this->valid = true;
         }
         function filter() {
             return $this->valid = filter($this->value, func_get_args());
+        }
+        function encode($quote = ENT_NOQUOTES, $charset = 'UTF-8', $double = true) {
+            return htmlspecialchars($this->value, $quote, $charset, $double);
         }
         function __invoke($value) {
             $this->value = $value;
