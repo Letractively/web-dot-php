@@ -1,16 +1,16 @@
 <?php
 namespace {
     function get($path, $func) {
-        return $_SERVER['REQUEST_METHOD'] !== 'GET' ? false : route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] === 'GET' ? route($path, $func) : false;
     }
     function post($path, $func) {
-        return $_SERVER['REQUEST_METHOD'] !== 'POST' ? false : route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] === 'POST' ? route($path, $func) : false;
     }
     function put($path, $func) {
-        return $_SERVER['REQUEST_METHOD'] !== 'PUT' || !isset($_POST['_method']) || $_POST['_method'] !== 'PUT' ? false : route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] === 'PUT' || (isset($_POST['_method']) && $_POST['_method'] === 'PUT') ? route($path, $func) : false;
     }
     function delete($path, $func) {
-        return $_SERVER['REQUEST_METHOD'] !== 'DELETE' || !isset($_POST['_method']) || $_POST['_method'] !== 'DELETE' ? false : route($path, $func);
+        return $_SERVER['REQUEST_METHOD'] === 'DELETE' || (isset($_POST['_method']) && $_POST['_method'] === 'DELETE') ? route($path, $func) : false;
     }
     function route($path, $func) {
         static $url = null;
