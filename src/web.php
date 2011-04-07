@@ -26,7 +26,7 @@ namespace {
         if ($path !== $url) return false;
         return call($func, $args);
     }
-    function call($func, $args = array()) {
+    function call($func, array $args = array()) {
         if (is_string($func)) {
             if (file_exists($func)) return require $func;
             if (iconv_strpos($func, '->') !== false) {
