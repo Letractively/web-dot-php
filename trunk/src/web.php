@@ -26,7 +26,7 @@ namespace {
         if ($path !== $url) return false;
         return call($func, $args);
     }
-    function call($func, $args = null) {
+    function call($func, $args = array()) {
         if (is_string($func)) {
             if (file_exists($func)) return require $func;
             if (iconv_strpos($func, '->') !== false) {
@@ -155,17 +155,19 @@ namespace {
                 case 'email': $valid = false !== filter_var($value, FILTER_VALIDATE_EMAIL); break;
                 case 'url':   $valid = false !== filter_var($value, FILTER_VALIDATE_URL); break;
                 default:
-                    if (is_callable($filter)) {
-                        $filtered = call($filter, array($value));
-                        if ($filtered !== null) {
-                            if (is_bool($filtered)) {
-                                $valid = $filtered;
-                            } else {
-                                $value = $filtered;
+                    if (is_callable($filter) || is_string($filter)) {
+                        if (is_string($filter) && strpos($filter, '/') === 0) {
+                            $valid = preg_match($filter, $value);
+                        } else {
+                            $filtered = call($filter, array($value));
+                            if ($filtered !== null) {
+                                if (is_bool($filtered)) {
+                                    $valid = $filtered;
+                                } else {
+                                    $value = $filtered;
+                                }
                             }
                         }
-                    } elseif ((strpos($filter, '/')) === 0) {
-                        $valid = preg_match($filter, $value);
                     } else {
                         trigger_error(sprintf('Invalid filter: %s', $filter), E_USER_WARNING);
                     }
@@ -319,9 +321,12 @@ namespace log {
         return $level > LOG_ERR ? 'WARNING' : 'ERROR';
     }
     function append($message, $level) {
+        defined('LOG_PATH')  or define('LOG_PATH', dirname($_SERVER['SCRIPT_FILENAME']) . '/data');
+        defined('LOG_LEVEL') or define('LOG_LEVEL', LOG_DEBUG);
+        defined('LOG_FILE')  or define('LOG_FILE', 'Y-m-d.\l\o\g');
+        if (LOG_LEVEL < $level) return;
         static $messages = null;
         if ($messages == null) {
-            if (!defined('LOG_PATH') || !defined('LOG_FILE') || !defined('LOG_LEVEL') || LOG_LEVEL < $level) die('Logging needs to be configured.');
             register_shutdown_function(function() use (&$messages) {
                 file_put_contents(rtrim(LOG_PATH, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . date_create()->format(LOG_FILE), $messages, FILE_APPEND | LOCK_EX);
             });
