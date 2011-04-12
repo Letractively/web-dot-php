@@ -120,6 +120,20 @@ namespace {
         else
             $_SESSION['web.php:flash'][$name] = $hops;
     }
+    function sendfile($path, $name = null, $mime = null, $die = true) {
+        defined('XSENDFILE_HEADER') or define('XSENDFILE_HEADER', 'X-Sendfile');
+        if ($mime == null) {
+            $fnfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fmim = finfo_file($fnfo, $path);
+            $mime = $fmim === false ? 'application/octet-stream' : $fmim;
+            finfo_close($fnfo);
+        }
+        if ($name == null) $name = basename($path);
+        header("Content-type: $mime");
+        header('Content-Disposition: attachment; filename="' . $name . '"');
+        header(XSENDFILE_HEADER . ': ' . $path);
+        if ($die) die;
+    }
     // View
     class view {
         function __construct($view, $layout = null) {
