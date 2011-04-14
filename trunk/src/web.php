@@ -121,17 +121,26 @@ namespace {
             $_SESSION['web.php:flash'][$name] = $hops;
     }
     function sendfile($path, $name = null, $mime = null, $die = true) {
-        defined('XSENDFILE_HEADER') or define('XSENDFILE_HEADER', 'X-Sendfile');
         if ($mime == null) {
             $fnfo = finfo_open(FILEINFO_MIME_TYPE);
             $fmim = finfo_file($fnfo, $path);
-            $mime = $fmim === false ? 'application/octet-stream' : $fmim;
             finfo_close($fnfo);
+            $mime = $fmim === false ? 'application/octet-stream' : $fmim;
         }
         if ($name == null) $name = basename($path);
-        header("Content-type: $mime");
-        header('Content-Disposition: attachment; filename="' . $name . '"');
-        header(XSENDFILE_HEADER . ': ' . $path);
+        header("Content-Type: $mime");
+        header("Content-Disposition: attachment; filename=\"$name\"");
+        if (defined('XSENDFILE_HEADER')) {
+            header(XSENDFILE_HEADER . ': ' . $path);
+        } else {
+            header('Content-Description: File Transfer');
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: ' . filesize($path));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            readfile($path);
+        }
         if ($die) die;
     }
     // View
