@@ -21,4 +21,6 @@ Propel is not actually an implementation of active record pattern, but it's a ra
 
 === RedBeanPHP (http://redbeanphp.com/) ===
 
-  [http://redbeanphp.com/ RedBeanPHP] is really interesting project. I think that RedBeanPHP is a little bit more original than typical Active Record implementing ORMs. If you are looking for something fresh, take a look at RedBeanPHP.
+  Start developing using the easiest ORM layer ever made! With RedBean, ORM (Object Relational Mapping) in PHP becomes a breeze. RedBeanPHP is a simple straightfoward, lightweight ORM solution; with a 'fire and forget' philosophy!
+
+[http://redbeanphp.com/ RedBeanPHP] is really interesting project. I think that RedBeanPHP is a little bit more original than typical Active Record implementing ORMs. If you are looking for something fresh, take a look at RedBeanPHP.
