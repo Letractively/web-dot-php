@@ -4,6 +4,10 @@
 
 = Development Status =
 
+== July 12th, 2011 ==
+
+It's been long since we updated this page. web.php has been quite stable for some time now, and it has been used successfully in several projects. I'm still planning to add some features to it. Hopefully soon. The slow activity on this project doesn't mean that it's dead, :-).
+
 == February 28th, 2009 ==
 
 Development of web.php has started again. I did a full rewrite of web.php. Now the base is done and it looks great. I dropped the helpers (and some other stuff), because they didn't seem to fit on web.php's philosophy.
