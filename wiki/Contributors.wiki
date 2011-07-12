@@ -4,7 +4,7 @@
 
 = Contributors =
 
-== Aapo Laakkonen (Vantaa, Finland) ==
+== Aapo Talvensaari (Vantaa, Finland) ==
 
 Aapo is in charge of managing the direction of the web.php framework. He is the one that makes the final decisions on what to include in the framework.
 
