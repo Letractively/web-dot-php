@@ -317,6 +317,8 @@ namespace {
         $response = file_get_contents($url);
         return isset($args['format']) && $args['format'] === 'php_serial' ? unserialize($response) : $response;
     }
+    // Handy Constants
+    define('IS_AJAX', isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&  ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'));
     // Shutdown Function
     register_shutdown_function(function() {
         if (!defined('SID') || !isset($_SESSION['web.php:flash'])) return;
