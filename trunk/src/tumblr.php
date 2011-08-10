@@ -51,10 +51,9 @@ class tumblr {
     function edit($args) {
         return $this->fetch("http://api.tumblr.com/v2/blog/{$this->host}/post/edit", $args, OAUTH_HTTP_METHOD_POST);
     }
-    function reblog($reblog_key, $comment = null, $id = null) {
-        $args = array('reblog_key' => $reblog_key);
+    function reblog($id, $reblog_key, $comment = null) {
+        $args = array('id' => $id, 'reblog_key' => $reblog_key);
         if ($comment != null) $args['comment'] = $comment;
-        if ($id != null) $args['id'] = $id;
         return $this->fetch("http://api.tumblr.com/v2/blog/{$this->host}/post/reblog", $args, OAUTH_HTTP_METHOD_POST);
     }    
     function delete($id) {
