@@ -1,14 +1,16 @@
 <?php
 namespace openid {
-    function discover($url) {
+    function auth($url, array $params = array()) {
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/xrds+xml'));
-        $resp = curl_exec($ch);
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => array('Accept: application/xrds+xml')
+        ));
+        $oid = curl_exec($ch);
         curl_close($ch);
-        return simplexml_load_string($resp);
-    }
-    function authenticate($url, array $params = array()) {
+        $url = simplexml_load_string($oid)->XRD->Service->URI;
         $needed = array(
             'openid.mode' => 'checkid_setup',
             'openid.ns' => 'http://specs.openid.net/auth/2.0',
@@ -24,11 +26,15 @@ namespace openid {
     function check($url) {
         $data = str_replace('openid.mode=id_res', 'openid.mode=check_authentication', $_SERVER['QUERY_STRING']);
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        $resp = curl_exec($ch);
+        curl_setopt_array($ch, array(
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_POSTFIELDS => $data
+        ));
+        $oid = curl_exec($ch);
         curl_close($ch);
-        return strpos($resp, 'is_valid:true') === 0;
+        return strpos($oid, 'is_valid:true') === 0;
     }
 }
