@@ -33,8 +33,7 @@ namespace log {
 			$messages .= sprintf('%s %7s %-20s %s', date('Y-m-d H:i:s.', $sec) . substr($usec, 2, 3) , level($level), basename($trace[0]['file']) . ':' . $trace[0]['line'], trim($message) . PHP_EOL);
 		};
 	}
-	function chromephp($log_level, $chromephp = './lib/ext/ChromePhp.php') {
-		include_once $chromephp;
+	function chromephp($log_level) {
 		return function($message, $level, $trace) use ($log_level) {
 			if ($log_level < $level) return;
 			switch ($level) {
