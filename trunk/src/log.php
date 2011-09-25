@@ -32,5 +32,17 @@ namespace log {
 			list($usec, $sec) = explode(' ', microtime());
 			$messages .= sprintf('%s %7s %-20s %s', date('Y-m-d H:i:s.', $sec) . substr($usec, 2, 3) , level($level), basename($trace[0]['file']) . ':' . $trace[0]['line'], trim($message) . PHP_EOL);
 		};
-	}	
+	}
+	function chromephp($log_level, $chromephp = './lib/ext/ChromePhp.php') {
+		include_once $chromephp;
+		return function($message, $level, $trace) use ($log_level) {
+			if ($log_level < $level) return;
+			switch ($level) {
+				case LOG_ERR: return \ChromePhp::error($message);
+				case LOG_WARNING: return \ChromePhp::warn($message);
+				case LOG_INFO: return \ChromePhp::info($message);
+				default: return \ChromePhp::log($message);
+			}
+		};
+	}
 }
