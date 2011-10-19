@@ -19,7 +19,7 @@ Well, it's more than clear, that web.php project has named after this Python pro
 
 == Sinatra (http://www.sinatrarb.com/) ==
 
-  [http://www.sinatrarb.com/) Sinatra] is a DSL for quickly creating web applications in Ruby with minimal effort.
+  [http://www.sinatrarb.com/ Sinatra] is a DSL for quickly creating web applications in Ruby with minimal effort.
 
 Sinatra is a very good source of inspiration, and simplicity.
 
