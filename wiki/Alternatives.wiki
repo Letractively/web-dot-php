@@ -17,6 +17,18 @@ We might not have developed web.php in a first place, if we did like Zend Framew
 
 Well, it's more than clear, that web.php project has named after this Python project. web.php's design also resembles web.py in a certain places. So, if you are a Python programmer and are looking for something similar to web.php, web.py might be the way to go.
 
+== Sinatra (http://www.sinatrarb.com/) ==
+
+  [http://www.sinatrarb.com/) Sinatra] is a DSL for quickly creating web applications in Ruby with minimal effort.
+
+Sinatra is a very good source of inspiration, and simplicity.
+
+== Mojolicious (http://mojolicio.us/) ==
+
+  [http://mojolicio.us/ Mojolicious] is a next generation web framework for the Perl programming language.
+
+This is a very beautiful framework. A little bit like Sinatra, but more complex and more powerful. We should definately look for ideas in this framework.
+
 == Cake (http://www.cakephp.org/) ==
 
   [http://www.cakephp.org/ Cake] is a rapid development framework for PHP which uses commonly known design patterns like ActiveRecord, Association Data Mapping, Front Controller and MVC.
