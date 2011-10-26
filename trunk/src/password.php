@@ -29,5 +29,5 @@ function hash($password, $iterations = 8) {
   goto calc;
 }
 function check($password, $hash) {
-  return crypt($password, $hash) == $hash;
+  return crypt($password, $hash) === $hash;
 }
