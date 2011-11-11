@@ -22,7 +22,8 @@ function route($path, $func) {
 	$scnf = str_replace('%p', '%[^/]', $path);
 	$prnf = str_replace('%p', '%s', $path);
 	$args = sscanf($url, $scnf);
-	$path = @vsprintf($prnf, $args);
+	if (substr_count($prnf, '%') !== count($args)) return false;
+	$path = vsprintf($prnf, $args);
 	if ($path !== $url) return false;
 	$args = array_map(function($value) { return is_string($value) ? urldecode($value) : $value;	}, $args);
 	return call($func, $args);
@@ -40,7 +41,7 @@ function call($func, array $args = array()) {
 function debug($value, $before = '<pre>',  $after = '</pre>') {
 	while (ob_get_level() > 0) @ob_end_clean();
 	if (is_array($value) || is_object($value)) $value = print_r($value, true);
-	die($before . $value . $after);
+	return $before . $value . $after;
 }
 function status($code) {
 	switch ($code) {
@@ -175,11 +176,28 @@ function block(&$block = false) {
 	if ($block === false) return ob_end_clean();
 	ob_start(function($buffer) use (&$block) { $block = $buffer; });
 }
-function partial($file, $args) {
+function partial($file, $args = null) {
 	ob_start();
-	extract($args);
+	if ($args !== null) extract($args);
 	include $file;
 	return ob_get_clean();
+}
+function pagelets($id = null, $func = null) {
+	static $pagelets = array();
+	if ($id == null && $func == null) {
+		ob_flush();
+		flush();		
+		$pagelets = array_map(function($pagelet) {
+			sleep(10);
+			$ret = $pagelet();
+			ob_flush();
+			flush();
+			return $ret;
+		}, $pagelets);
+		return json_encode($pagelets);
+	}
+	$pagelets[] = $func;
+	return "<div id=\"{$id}\"></div>";
 }
 // Filters
 function filter(&$value, array $filters) {
@@ -269,27 +287,12 @@ function specialchars($quote = ENT_NOQUOTES, $charset = 'UTF-8', $double = true)
 		return htmlspecialchars($value, $quote, $charset, $double);
 	};
 }
-function titlewrap($str, $width = 75, $break = '...') {
-	$title = explode("\n", wordwrap(strip_tags($str), $width, "\n", true), 2);
-	$title = $title[0];
-	if (iconv_strlen($title, 'UTF-8') < iconv_strlen($str, 'UTF-8')) $title = $title . $break;
-	return $title;
-}
-function descwrap($str, $width = 154) {
-	$desc = explode("\n", wordwrap(strip_tags($str), $width, "\n", true), 2);
-	$desc = $desc[0];
-	$desc = iconv_substr($desc, 0, iconv_strrpos($desc, '.'));
-	return "{$desc}.";
-}
-function slug($title, $delimiter = '-', $width = null) {
-	if ($width != null) {
-		$title = explode("\n", wordwrap($title, $width, "\n", true), 2);
-		$title = $title[0];
-	}
-	$title = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
-	$title = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $title);
-	$title = strtolower(trim($title, '/_|+ -'));
-	return preg_replace('#[/_|+\s-]+#', $delimiter, $title);
+function slug($str, $delimiter = '-', $width = null) {
+	if ($width != null) $str = titlewrap($str, $width, '');
+	$str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
+	$str = preg_replace('#[^a-z0-9/_|+\s-]#i', '', $str);
+	$str = strtolower(trim($str, '/_|+ -'));
+	return preg_replace('#[/_|+\s-]+#', $delimiter, $str);
 }
 // Form
 class form {
