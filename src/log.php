@@ -26,7 +26,7 @@ namespace log {
 			static $messages = null;
 			if ($messages == null) {
 				register_shutdown_function(function() use ($file, &$messages) {
-					file_put_contents($file, $messages, FILE_APPEND | LOCK_EX);
+					@file_put_contents($file, $messages, FILE_APPEND | LOCK_EX);
 				});
 			}
 			list($usec, $sec) = explode(' ', microtime());
