@@ -2,7 +2,23 @@
 namespace password;
 function hash($password, $iterations = 8) {
   // Password (PHP >= 5.3 version of http://www.openwall.com/phpass/)
-  $random = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
+	if (function_exists('mcrypt_create_iv')) {
+		$random = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
+	} else {
+		if (is_readable('/dev/urandom') && ($fh = @fopen('/dev/urandom', 'rb'))) {
+				$random = fread($fh, 16);
+				fclose($fh);
+		}
+		if (strlen($random) < 16) {
+			$random = '';
+			$state = microtime();
+			for ($i = 0; $i < 16; $i += 16) {
+				$state = md5(microtime() . $state);
+				$random .= pack('H*', md5($state));
+			}
+			$random = substr($random, 0, 16);
+		}
+	}
   $itoa64 = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   if ($iterations < 4 || $iterations > 31) $iterations = 8;
   $salt = '$2a$';
